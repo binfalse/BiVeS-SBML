@@ -26,8 +26,8 @@ import de.unirostock.sems.bives.sbml.parser.SBMLRule;
 import de.unirostock.sems.bives.sbml.parser.SBMLSpecies;
 import de.unirostock.sems.bives.sbml.parser.SBMLSpeciesType;
 import de.unirostock.sems.bives.sbml.parser.SBMLUnitDefinition;
-import de.unirostock.sems.xmltools.comparison.Connection;
-import de.unirostock.sems.xmltools.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.comparison.Connection;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**

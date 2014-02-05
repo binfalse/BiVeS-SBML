@@ -20,7 +20,7 @@ import de.unirostock.sems.bives.exception.BivesDocumentConsistencyException;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLGraphProducer;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
-import de.unirostock.sems.xmltools.exception.XmlDocumentParseException;
+import de.unirostock.sems.xmlutils.exception.XmlDocumentParseException;
 
 /**
  * @author Martin Scharm

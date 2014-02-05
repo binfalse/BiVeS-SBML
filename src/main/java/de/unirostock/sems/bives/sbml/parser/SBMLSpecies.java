@@ -9,7 +9,7 @@ import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.bives.tools.BivesTools;
-import de.unirostock.sems.xmltools.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**

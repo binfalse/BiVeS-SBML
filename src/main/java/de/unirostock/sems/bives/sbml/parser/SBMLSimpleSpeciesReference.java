@@ -7,7 +7,7 @@ import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
 import de.unirostock.sems.bives.ds.SBOTerm;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
-import de.unirostock.sems.xmltools.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**

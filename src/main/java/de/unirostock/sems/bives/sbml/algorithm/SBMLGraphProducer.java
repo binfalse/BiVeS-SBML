@@ -19,8 +19,8 @@ import de.unirostock.sems.bives.sbml.parser.SBMLReaction;
 import de.unirostock.sems.bives.sbml.parser.SBMLSimpleSpeciesReference;
 import de.unirostock.sems.bives.sbml.parser.SBMLSpecies;
 import de.unirostock.sems.bives.sbml.parser.SBMLSpeciesReference;
-import de.unirostock.sems.xmltools.comparison.Connection;
-import de.unirostock.sems.xmltools.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.comparison.Connection;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**

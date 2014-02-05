@@ -18,7 +18,7 @@ import de.unirostock.sems.bives.sbml.parser.SBMLRateRule;
 import de.unirostock.sems.bives.sbml.parser.SBMLReaction;
 import de.unirostock.sems.bives.sbml.parser.SBMLRule;
 import de.unirostock.sems.bives.sbml.parser.SBMLSBase;
-import de.unirostock.sems.xmltools.ds.TreeDocument;
+import de.unirostock.sems.xmlutils.ds.TreeDocument;
 
 
 /**

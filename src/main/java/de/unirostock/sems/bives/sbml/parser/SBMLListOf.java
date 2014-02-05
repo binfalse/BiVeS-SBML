@@ -4,7 +4,7 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
-import de.unirostock.sems.xmltools.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**

@@ -8,8 +8,8 @@ import java.util.Vector;
 import de.unirostock.sems.bives.ds.DiffReporter;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
-import de.unirostock.sems.xmltools.ds.DocumentNode;
-import de.unirostock.sems.xmltools.ds.TreeNode;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
