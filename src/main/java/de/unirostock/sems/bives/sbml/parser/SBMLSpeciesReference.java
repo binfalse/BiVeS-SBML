@@ -3,10 +3,11 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
 import de.binfalse.bfutils.GeneralTools;
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -49,15 +50,15 @@ public class SBMLSpeciesReference
 		else // level <= 2
 		{
 			// is there stoichiometryMath?
-			Vector<TreeNode> maths = documentNode.getChildrenWithTag ("stoichiometryMath");
+			List<TreeNode> maths = documentNode.getChildrenWithTag ("stoichiometryMath");
 			if (maths.size () > 1)
 				throw new BivesSBMLParseException ("SpeciesReference has "+maths.size ()+" stoichiometryMath elements. (expected not more than one element)");
 			if (maths.size () == 1)
 			{
-				maths = ((DocumentNode) maths.elementAt (0)).getChildrenWithTag ("math");
+				maths = ((DocumentNode) maths.get (0)).getChildrenWithTag ("math");
 				if (maths.size () != 1)
 					throw new BivesSBMLParseException ("stoichiometryMath in SpeciesReference has "+maths.size ()+" math elements. (expected exactly one element)");
-				stoichiometryMath = new MathML ((DocumentNode) maths.elementAt (0));
+				stoichiometryMath = new MathML ((DocumentNode) maths.get (0));
 			}
 			else
 				stoichiometry = 1.;
@@ -78,7 +79,7 @@ public class SBMLSpeciesReference
 			constant = false; // level <= 2
 	}
 
-	public String reportMofification (ClearConnectionManager conMgmt, SBMLSpeciesReference a, SBMLSpeciesReference b, MarkupDocument markupDocument)
+	public String reportMofification (SimpleConnectionManager conMgmt, SBMLSpeciesReference a, SBMLSpeciesReference b)
 	{
 		/*SBMLSpeciesReference a = (SBMLSpeciesReference) docA;
 		SBMLSpeciesReference b = (SBMLSpeciesReference) docB;*/
@@ -94,18 +95,18 @@ public class SBMLSpeciesReference
 		if (retA.equals (retB))
 			return retA;
 		else
-			return markupDocument.delete (retA) + " + " + markupDocument.insert (retB);
+			return MarkupDocument.delete (retA) + " + " + MarkupDocument.insert (retB);
 			//return "<span class='"+CLASS_DELETED+"'>" + retA + "</span> + <span class='"+CLASS_INSERTED +"'>" + retB + "</span>";
 	}
 
-	public String reportInsert (MarkupDocument markupDocument)
+	public String reportInsert ()
 	{
-		return markupDocument.insert (GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ());
+		return MarkupDocument.insert (GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ());
 	}
 
-	public String reportDelete (MarkupDocument markupDocument)
+	public String reportDelete ()
 	{
-		return markupDocument.delete (GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ());
+		return MarkupDocument.delete (GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ());
 	}
 
 	public String report ()

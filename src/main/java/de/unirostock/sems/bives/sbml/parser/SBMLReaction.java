@@ -3,10 +3,11 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.DiffReporter;
+import de.unirostock.sems.bives.algorithm.DiffReporter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -31,9 +32,9 @@ public class SBMLReaction
 	private SBMLListOf listOfReactantsNode;
 	private SBMLListOf listOfProductsNode;
 	private SBMLListOf listOfModifiersNode;
-	private Vector<SBMLSpeciesReference> listOfReactants;
-	private Vector<SBMLSpeciesReference> listOfProducts;
-	private Vector<SBMLSimpleSpeciesReference> listOfModifiers;
+	private List<SBMLSpeciesReference> listOfReactants;
+	private List<SBMLSpeciesReference> listOfProducts;
+	private List<SBMLSimpleSpeciesReference> listOfModifiers;
 	private SBMLKineticLaw kineticLaw;
 	
 	
@@ -83,18 +84,18 @@ public class SBMLReaction
 				throw new BivesSBMLParseException ("no valid compartment for species "+id+" defined: " + tmp);
 		}
 		
-		listOfReactants = new Vector<SBMLSpeciesReference> ();
-		listOfProducts = new Vector<SBMLSpeciesReference> ();
-		listOfModifiers = new Vector<SBMLSimpleSpeciesReference> ();
+		listOfReactants = new ArrayList<SBMLSpeciesReference> ();
+		listOfProducts = new ArrayList<SBMLSpeciesReference> ();
+		listOfModifiers = new ArrayList<SBMLSimpleSpeciesReference> ();
 		
-		Vector<TreeNode> nodes = documentNode.getChildrenWithTag ("listOfReactants");
+		List<TreeNode> nodes = documentNode.getChildrenWithTag ("listOfReactants");
 		for (int i = 0; i < nodes.size (); i++)
 		{
-			listOfReactantsNode = new SBMLListOf ((DocumentNode) nodes.elementAt (i), sbmlModel);
-			Vector<TreeNode> subnodes = ((DocumentNode) nodes.elementAt (i)).getChildrenWithTag ("speciesReference");
+			listOfReactantsNode = new SBMLListOf ((DocumentNode) nodes.get (i), sbmlModel);
+			List<TreeNode> subnodes = ((DocumentNode) nodes.get (i)).getChildrenWithTag ("speciesReference");
 			for (int j = 0; j < subnodes.size (); j++)
 			{
-				SBMLSpeciesReference sr = new SBMLSpeciesReference ((DocumentNode) subnodes.elementAt (j), sbmlModel);
+				SBMLSpeciesReference sr = new SBMLSpeciesReference ((DocumentNode) subnodes.get (j), sbmlModel);
 				listOfReactants.add (sr);
 			}
 		}
@@ -102,11 +103,11 @@ public class SBMLReaction
 		nodes = documentNode.getChildrenWithTag ("listOfProducts");
 		for (int i = 0; i < nodes.size (); i++)
 		{
-			listOfProductsNode = new SBMLListOf ((DocumentNode) nodes.elementAt (i), sbmlModel);
-			Vector<TreeNode> subnodes = ((DocumentNode) nodes.elementAt (i)).getChildrenWithTag ("speciesReference");
+			listOfProductsNode = new SBMLListOf ((DocumentNode) nodes.get (i), sbmlModel);
+			List<TreeNode> subnodes = ((DocumentNode) nodes.get (i)).getChildrenWithTag ("speciesReference");
 			for (int j = 0; j < subnodes.size (); j++)
 			{
-				SBMLSpeciesReference sr = new SBMLSpeciesReference ((DocumentNode) subnodes.elementAt (j), sbmlModel);
+				SBMLSpeciesReference sr = new SBMLSpeciesReference ((DocumentNode) subnodes.get (j), sbmlModel);
 				listOfProducts.add (sr);
 			}
 		}
@@ -114,11 +115,11 @@ public class SBMLReaction
 		nodes = documentNode.getChildrenWithTag ("listOfModifiers");
 		for (int i = 0; i < nodes.size (); i++)
 		{
-			listOfModifiersNode = new SBMLListOf ((DocumentNode) nodes.elementAt (i), sbmlModel);
-			Vector<TreeNode> subnodes = ((DocumentNode) nodes.elementAt (i)).getChildrenWithTag ("modifierSpeciesReference");
+			listOfModifiersNode = new SBMLListOf ((DocumentNode) nodes.get (i), sbmlModel);
+			List<TreeNode> subnodes = ((DocumentNode) nodes.get (i)).getChildrenWithTag ("modifierSpeciesReference");
 			for (int j = 0; j < subnodes.size (); j++)
 			{
-				SBMLSimpleSpeciesReference sr = new SBMLSimpleSpeciesReference ((DocumentNode) subnodes.elementAt (j), sbmlModel);
+				SBMLSimpleSpeciesReference sr = new SBMLSimpleSpeciesReference ((DocumentNode) subnodes.get (j), sbmlModel);
 				listOfModifiers.add (sr);
 			}
 		}
@@ -127,7 +128,7 @@ public class SBMLReaction
 		if (nodes.size () > 1)
 			throw new BivesSBMLParseException ("reaction "+id+" has "+nodes.size ()+" kinetic law elements. (expected not more tha one element)");
 		if (nodes.size () == 1)
-			kineticLaw = new SBMLKineticLaw ((DocumentNode) nodes.elementAt (0), sbmlModel);
+			kineticLaw = new SBMLKineticLaw ((DocumentNode) nodes.get (0), sbmlModel);
 	}
 	
 	public SBMLCompartment getCompartment ()
@@ -165,23 +166,23 @@ public class SBMLReaction
 		return listOfModifiersNode;
 	}
 	
-	public Vector<SBMLSpeciesReference> getReactants ()
+	public List<SBMLSpeciesReference> getReactants ()
 	{
 		return listOfReactants;
 	}
 	
-	public Vector<SBMLSpeciesReference> getProducts ()
+	public List<SBMLSpeciesReference> getProducts ()
 	{
 		return listOfProducts;
 	}
 	
-	public Vector<SBMLSimpleSpeciesReference> getModifiers ()
+	public List<SBMLSimpleSpeciesReference> getModifiers ()
 	{
 		return listOfModifiers;
 	}
 
 	@Override
-	public MarkupElement reportMofification (ClearConnectionManager conMgmt, DiffReporter docA, DiffReporter docB, MarkupDocument markupDocument)
+	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLReaction a = (SBMLReaction) docA;
 		SBMLReaction b = (SBMLReaction) docB;
@@ -193,24 +194,24 @@ public class SBMLReaction
 		if (idA.equals (idB))
 			me = new MarkupElement (idA);
 		else
-			me = new MarkupElement (markupDocument.delete (idA) + " "+markupDocument.rightArrow ()+" " + markupDocument.insert (idB));
+			me = new MarkupElement (MarkupDocument.delete (idA) + " "+MarkupDocument.rightArrow ()+" " + MarkupDocument.insert (idB));
 		
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
 
-		Vector<SBMLSpeciesReference> aS = a.listOfReactants;
-		Vector<SBMLSpeciesReference> bS = b.listOfReactants;
+		List<SBMLSpeciesReference> aS = a.listOfReactants;
+		List<SBMLSpeciesReference> bS = b.listOfReactants;
 		String sub = "", ret = "";
 		for (SBMLSpeciesReference sr : aS)
 		{
 			if (sub.length () > 0)
 				sub += " + ";
 			if (conMgmt.getConnectionForNode (sr.getDocumentNode ()) == null)
-				sub += sr.reportDelete (markupDocument);
+				sub += sr.reportDelete ();
 			else
 			{
 				Connection c = conMgmt.getConnectionForNode (sr.getDocumentNode ());
 				SBMLSpeciesReference partner = (SBMLSpeciesReference) b.sbmlModel.getFromNode (c.getPartnerOf (sr.getDocumentNode ()));
-				sub += sr.reportMofification (conMgmt, sr, partner, markupDocument);
+				sub += sr.reportMofification (conMgmt, sr, partner);
 			}
 		}
 		for (SBMLSpeciesReference sr : bS)
@@ -219,13 +220,13 @@ public class SBMLReaction
 			{
 				if (sub.length () > 0)
 					sub += " + ";
-				sub += sr.reportInsert (markupDocument);
+				sub += sr.reportInsert ();
 			}
 		}
 		if (sub.length () > 0)
-			ret += sub + " "+markupDocument.rightArrow ()+" ";
+			ret += sub + " "+MarkupDocument.rightArrow ()+" ";
 		else
-			ret += "&Oslash; "+markupDocument.rightArrow ()+" ";
+			ret += "&Oslash; "+MarkupDocument.rightArrow ()+" ";
 
 		aS = a.listOfProducts;
 		bS = b.listOfProducts;
@@ -237,14 +238,14 @@ public class SBMLReaction
 			if (conMgmt.getConnectionForNode (sr.getDocumentNode ()) == null)
 			{
 				//System.out.println ("reporting delete for " + sr.getDocumentNode ().getXPath ());
-				sub += sr.reportDelete (markupDocument);
+				sub += sr.reportDelete ();
 			}
 			else
 			{
 				//System.out.println ("reporting mod for " + sr.getDocumentNode ().getXPath ());
 				Connection c = conMgmt.getConnectionForNode (sr.getDocumentNode ());
 				SBMLSpeciesReference partner = (SBMLSpeciesReference) b.sbmlModel.getFromNode (c.getPartnerOf (sr.getDocumentNode ()));
-				sub += sr.reportMofification (conMgmt, sr, partner, markupDocument);
+				sub += sr.reportMofification (conMgmt, sr, partner);
 			}
 		}
 		for (SBMLSpeciesReference sr : bS)
@@ -254,7 +255,7 @@ public class SBMLReaction
 				//System.out.println ("reporting ins for " + sr.getDocumentNode ().getXPath ());
 				if (sub.length () > 0)
 					sub += " + ";
-				sub += sr.reportInsert (markupDocument);
+				sub += sr.reportInsert ();
 			}
 		}
 		if (sub.length () > 0)
@@ -265,20 +266,20 @@ public class SBMLReaction
 		me.addValue (ret);
 		
 
-		Vector<SBMLSimpleSpeciesReference> aM = a.listOfModifiers;
-		Vector<SBMLSimpleSpeciesReference> bM = b.listOfModifiers;
+		List<SBMLSimpleSpeciesReference> aM = a.listOfModifiers;
+		List<SBMLSimpleSpeciesReference> bM = b.listOfModifiers;
 		sub = "";
 		for (SBMLSimpleSpeciesReference sr : aM)
 		{
 			if (sub.length () > 0)
 				sub += "; ";
 			if (conMgmt.getConnectionForNode (sr.getDocumentNode ()) == null)
-				sub += sr.reportDelete (markupDocument);
+				sub += sr.reportDelete ();
 			else
 			{
 				Connection c = conMgmt.getConnectionForNode (sr.getDocumentNode ());
 				SBMLSimpleSpeciesReference partner = (SBMLSimpleSpeciesReference) b.sbmlModel.getFromNode (c.getPartnerOf (sr.getDocumentNode ()));
-				sub += sr.reportMofification (conMgmt, sr, partner, markupDocument);
+				sub += sr.reportMofification (conMgmt, sr, partner);
 			}
 		}
 		for (SBMLSimpleSpeciesReference sr : bM)
@@ -286,7 +287,7 @@ public class SBMLReaction
 			if (sub.length () > 0)
 				sub += "; ";
 			if (conMgmt.getConnectionForNode (sr.getDocumentNode ()) == null)
-				sub += sr.reportInsert (markupDocument);
+				sub += sr.reportInsert ();
 		}
 		if (sub.length () > 0)
 			me.addValue ("Modifiers: " + sub);
@@ -294,20 +295,20 @@ public class SBMLReaction
 		MarkupElement me2 = new MarkupElement ("Kinetic Law");
 		if (a.kineticLaw != null && b.kineticLaw != null)
 		{
-			a.kineticLaw.reportMofification (conMgmt, a.kineticLaw, b.kineticLaw, me2, markupDocument);
+			a.kineticLaw.reportMofification (conMgmt, a.kineticLaw, b.kineticLaw, me2);
 			if (me2.getValues ().size () > 0)
 				me.addSubElements (me2);
 		}
 			//me.addValue (markupDocument.highlight ("Kinetic Law:") + a.kineticLaw.reportMofification (conMgmt, a.kineticLaw, b.kineticLaw, markupDocument));
 		else if (a.kineticLaw != null)
 		{
-			a.kineticLaw.reportDelete (me2, markupDocument);
+			a.kineticLaw.reportDelete (me2);
 			me.addSubElements (me2);
 		}
 			//me.addValue (markupDocument.highlight ("Kinetic Law:") + a.kineticLaw.reportDelete (markupDocument));
 		else if (b.kineticLaw != null)
 		{
-			b.kineticLaw.reportInsert (me2, markupDocument);
+			b.kineticLaw.reportInsert (me2);
 			me.addSubElements (me2);
 		}
 			//me.addValue (markupDocument.highlight ("Kinetic Law:") + b.kineticLaw.reportInsert (markupDocument));
@@ -316,25 +317,25 @@ public class SBMLReaction
 	}
 
 	@Override
-	public MarkupElement reportInsert (MarkupDocument markupDocument)
+	public MarkupElement reportInsert ()
 	{
 
 		
 		
-		MarkupElement me = new MarkupElement (markupDocument.insert (getNameAndId ()));
-		report (markupDocument, me, true);
+		MarkupElement me = new MarkupElement (MarkupDocument.insert (getNameAndId ()));
+		report (me, true);
 		return me;
 	}
 
 	@Override
-	public MarkupElement reportDelete (MarkupDocument markupDocument)
+	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.delete (getNameAndId ()));
-		report (markupDocument, me, false);
+		MarkupElement me = new MarkupElement (MarkupDocument.delete (getNameAndId ()));
+		report (me, false);
 		return me;
 	}
 	
-	public void report (MarkupDocument markupDocument, MarkupElement me, boolean insert)
+	public void report (MarkupElement me, boolean insert)
 	{
 		
 		StringBuilder ret = new StringBuilder ();
@@ -350,7 +351,7 @@ public class SBMLReaction
 			ret.append (sub).append (" ");
 		else
 			ret.append ("&Oslash; ");
-		ret.append (markupDocument.rightArrow ()).append (" ");
+		ret.append (MarkupDocument.rightArrow ()).append (" ");
 		
 
 		sub = new StringBuilder ();
@@ -367,9 +368,9 @@ public class SBMLReaction
 			ret.append ("&Oslash;");
 		
 		if (insert)
-			me.addValue (markupDocument.insert (ret.toString ()));
+			me.addValue (MarkupDocument.insert (ret.toString ()));
 		else
-			me.addValue (markupDocument.delete (ret.toString ()));
+			me.addValue (MarkupDocument.delete (ret.toString ()));
 		
 		sub = new StringBuilder ();
 		for (SBMLSimpleSpeciesReference sr : listOfModifiers)
@@ -382,9 +383,9 @@ public class SBMLReaction
 		if (sub.length () > 0)
 		{
 			if (insert)
-				me.addValue (markupDocument.insert ("Modifiers: " + sub.toString ()));
+				me.addValue (MarkupDocument.insert ("Modifiers: " + sub.toString ()));
 			else
-				me.addValue (markupDocument.delete ("Modifiers: " + sub.toString ()));
+				me.addValue (MarkupDocument.delete ("Modifiers: " + sub.toString ()));
 		}
 	}
 }

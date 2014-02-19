@@ -3,9 +3,11 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
@@ -36,10 +38,10 @@ public class SBMLEventTrigger
 	{
 		super (documentNode, sbmlModel);
 		
-		Vector<TreeNode> maths = documentNode.getChildrenWithTag ("math");
+		List<TreeNode> maths = documentNode.getChildrenWithTag ("math");
 		if (maths.size () != 1)
 			throw new BivesSBMLParseException ("event trigger has "+maths.size ()+" math elements. (expected exactly one element)");
-		math = new MathML ((DocumentNode) maths.elementAt (0));
+		math = new MathML ((DocumentNode) maths.get (0));
 		
 
 		if (documentNode.getAttribute ("initialValue") != null)
@@ -76,30 +78,30 @@ public class SBMLEventTrigger
 		return math;
 	}
 
-	public void reportMofification (ClearConnectionManager conMgmt, SBMLEventTrigger a, SBMLEventTrigger b, MarkupElement me, MarkupDocument markupDocument)
+	public void reportMofification (SimpleConnectionManager conMgmt, SBMLEventTrigger a, SBMLEventTrigger b, MarkupElement me)
 	{
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return;
 		
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
 
 		if (a.math != null && b.math != null)
-			BivesTools.genMathHtmlStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me, markupDocument);
+			BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
 		else if (a.math != null)
-			BivesTools.genMathHtmlStats (a.math.getDocumentNode (), null, me, markupDocument);
+			BivesTools.genMathMarkupStats (a.math.getDocumentNode (), null, me);
 		else if (b.math != null)
-			BivesTools.genMathHtmlStats (null, b.math.getDocumentNode (), me, markupDocument);
+			BivesTools.genMathMarkupStats (null, b.math.getDocumentNode (), me);
 		
 	}
 
-	public void reportInsert (MarkupElement me, MarkupDocument markupDocument)
+	public void reportInsert (MarkupElement me)
 	{
-		BivesTools.genMathHtmlStats (null, math.getDocumentNode (), me, markupDocument);
+		BivesTools.genMathMarkupStats (null, math.getDocumentNode (), me);
 	}
 
-	public void reportDelete (MarkupElement me, MarkupDocument markupDocument)
+	public void reportDelete (MarkupElement me)
 	{
-		BivesTools.genMathHtmlStats (math.getDocumentNode (), null, me, markupDocument);
+		BivesTools.genMathMarkupStats (math.getDocumentNode (), null, me);
 	}
 	
 }

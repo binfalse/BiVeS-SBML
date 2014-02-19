@@ -157,7 +157,7 @@ public class SBMLDiff extends Diff
 			interpreter = new SBMLDiffInterpreter (connections, doc1, doc2);
 			interpreter.interprete ();
 		}
-		return ts.markup (interpreter.getReport ());
+		return ts.typeset (interpreter.getReport ());
 	}
 
 
@@ -170,7 +170,7 @@ public class SBMLDiff extends Diff
 			interpreter = new SBMLDiffInterpreter (connections, doc1, doc2);
 			interpreter.interprete ();
 		}
-		return new TypesettingMarkDown ().markup (interpreter.getReport ());
+		return new TypesettingMarkDown ().typeset (interpreter.getReport ());
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class SBMLDiff extends Diff
 			interpreter = new SBMLDiffInterpreter (connections, doc1, doc2);
 			interpreter.interprete ();
 		}
-		return new TypesettingReStructuredText ().markup (interpreter.getReport ());
+		return new TypesettingReStructuredText ().typeset (interpreter.getReport ());
 	}
 
 
@@ -194,7 +194,7 @@ public class SBMLDiff extends Diff
 			interpreter = new SBMLDiffInterpreter (connections, doc1, doc2);
 			interpreter.interprete ();
 		}
-		return new TypesettingHTML ().markup (interpreter.getReport ());
+		return new TypesettingHTML ().typeset (interpreter.getReport ());
 	}
 
 

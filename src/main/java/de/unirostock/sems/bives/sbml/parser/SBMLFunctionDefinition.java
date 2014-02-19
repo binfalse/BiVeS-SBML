@@ -3,10 +3,12 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.DiffReporter;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.unirostock.sems.bives.algorithm.DiffReporter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
@@ -30,10 +32,10 @@ implements DiffReporter
 	{
 		super (functionDefinition, sbmlModel);
 		
-		Vector<TreeNode> maths = functionDefinition.getChildrenWithTag ("math");
+		List<TreeNode> maths = functionDefinition.getChildrenWithTag ("math");
 		if (maths.size () != 1)
 			throw new BivesSBMLParseException ("FunctionDefinition "+id+" has "+maths.size ()+" math elements. (expected exactly one element)");
-		math = new MathML ((DocumentNode) maths.elementAt (0));
+		math = new MathML ((DocumentNode) maths.get (0));
 	}
 	
 	public MathML getMath ()
@@ -42,7 +44,7 @@ implements DiffReporter
 	}
 
 	@Override
-	public MarkupElement reportMofification (ClearConnectionManager conMgmt, DiffReporter docA, DiffReporter docB, MarkupDocument markupDocument)
+	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLFunctionDefinition a = (SBMLFunctionDefinition) docA;
 		SBMLFunctionDefinition b = (SBMLFunctionDefinition) docB;
@@ -54,28 +56,28 @@ implements DiffReporter
 		if (idA.equals (idB))
 			me = new MarkupElement (idA);
 		else
-			me = new MarkupElement (markupDocument.delete (idA) + " "+markupDocument.rightArrow ()+" " + markupDocument.insert (idB));
+			me = new MarkupElement (MarkupDocument.delete (idA) + " "+MarkupDocument.rightArrow ()+" " + MarkupDocument.insert (idB));
 
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
-		BivesTools.genMathHtmlStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
+		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
 		
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportInsert (MarkupDocument markupDocument)
+	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.insert (getNameAndId ()));
-		BivesTools.genMathHtmlStats (null, math.getDocumentNode (), me, markupDocument);
+		MarkupElement me = new MarkupElement (MarkupDocument.insert (getNameAndId ()));
+		BivesTools.genMathMarkupStats (null, math.getDocumentNode (), me);
 		//me.addValue (markupDocument.insert ("inserted"));
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportDelete (MarkupDocument markupDocument)
+	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.delete (getNameAndId ()));
-		BivesTools.genMathHtmlStats (math.getDocumentNode (), null, me, markupDocument);
+		MarkupElement me = new MarkupElement (MarkupDocument.delete (getNameAndId ()));
+		BivesTools.genMathMarkupStats (math.getDocumentNode (), null, me);
 		//me.addValue (markupDocument.delete ("deleted"));
 		return me;
 	}

@@ -3,8 +3,8 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.DiffReporter;
+import de.unirostock.sems.bives.algorithm.DiffReporter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.markup.Markup;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
@@ -83,13 +83,13 @@ public class SBMLParameter
 		return constant;
 	}
 	
-	public String markup (MarkupDocument markupDocument)
+	public String markup ()
 	{
 		return getNameAndId () + "=" + value + " " + units.getName () + (constant ? " [const]" : "");
 	}
 
 	@Override
-	public MarkupElement reportMofification (ClearConnectionManager conMgmt, DiffReporter docA, DiffReporter docB, MarkupDocument markupDocument)
+	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLParameter a = (SBMLParameter) docA;
 		SBMLParameter b = (SBMLParameter) docB;
@@ -101,26 +101,26 @@ public class SBMLParameter
 		if (idA.equals (idB))
 			me = new MarkupElement (idA);
 		else
-			me = new MarkupElement (markupDocument.delete (idA) + " "+markupDocument.rightArrow ()+" " + markupDocument.insert (idB));
+			me = new MarkupElement (MarkupDocument.delete (idA) + " "+MarkupDocument.rightArrow ()+" " + MarkupDocument.insert (idB));
 		
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
 		
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportInsert (MarkupDocument markupDocument)
+	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.insert (getNameAndId ()));
-		me.addValue (markupDocument.insert ("inserted"));
+		MarkupElement me = new MarkupElement (MarkupDocument.insert (getNameAndId ()));
+		me.addValue (MarkupDocument.insert ("inserted"));
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportDelete (MarkupDocument markupDocument)
+	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.delete (getNameAndId ()));
-		me.addValue (markupDocument.delete ("deleted"));
+		MarkupElement me = new MarkupElement (MarkupDocument.delete (getNameAndId ()));
+		me.addValue (MarkupDocument.delete ("deleted"));
 		return me;
 	}
 }

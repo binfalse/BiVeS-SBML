@@ -3,9 +3,11 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
-import de.unirostock.sems.bives.ds.DiffReporter;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.unirostock.sems.bives.algorithm.DiffReporter;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
@@ -36,10 +38,10 @@ public abstract class SBMLRule
 	{
 		super (documentNode, sbmlModel);
 		
-		Vector<TreeNode> maths = documentNode.getChildrenWithTag ("math");
+		List<TreeNode> maths = documentNode.getChildrenWithTag ("math");
 		if (maths.size () != 1)
 			throw new BivesSBMLParseException ("initial assignment has "+maths.size ()+" math elements. (expected exactly one element)");
-		math = new MathML ((DocumentNode) maths.elementAt (0));
+		math = new MathML ((DocumentNode) maths.get (0));
 	}
 	
 	public MathML getMath ()

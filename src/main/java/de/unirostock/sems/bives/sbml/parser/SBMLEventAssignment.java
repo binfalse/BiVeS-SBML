@@ -3,12 +3,14 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
 import de.binfalse.bflog.LOGGER;
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
@@ -39,10 +41,10 @@ public class SBMLEventAssignment
 	{
 		super (documentNode, sbmlModel);
 		
-		Vector<TreeNode> maths = documentNode.getChildrenWithTag ("math");
+		List<TreeNode> maths = documentNode.getChildrenWithTag ("math");
 		if (maths.size () != 1)
 			throw new BivesSBMLParseException ("event trigger has "+maths.size ()+" math elements. (expected exactly one element)");
-		math = new MathML ((DocumentNode) maths.elementAt (0));
+		math = new MathML ((DocumentNode) maths.get (0));
 		
 		variable = resolvVariable (documentNode.getAttribute ("variable"));
 	}
@@ -71,7 +73,7 @@ public class SBMLEventAssignment
 		return math;
 	}
 
-	public void reportMofification (ClearConnectionManager conMgmt, SBMLEventAssignment a, SBMLEventAssignment b, MarkupElement me, MarkupDocument markupDocument)
+	public void reportMofification (SimpleConnectionManager conMgmt, SBMLEventAssignment a, SBMLEventAssignment b, MarkupElement me)
 	{
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return;
@@ -81,19 +83,19 @@ public class SBMLEventAssignment
 		if (varA.equals (varB))
 			me.addValue ("for: " + varA);
 		else
-			me.addValue ("was for: " + markupDocument.delete (varA) + " but now for: " + markupDocument.insert (varB));
+			me.addValue ("was for: " + MarkupDocument.delete (varA) + " but now for: " + MarkupDocument.insert (varB));
 
-		BivesTools.genMathHtmlStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me, markupDocument);
+		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
 	}
 
-	public void reportInsert (MarkupElement me, MarkupDocument markupDocument)
+	public void reportInsert (MarkupElement me)
 	{
-		me.addValue (markupDocument.insert (SBMLModel.getSidName (variable) + " = " + flattenMath (math.getDocumentNode ())));
+		me.addValue (MarkupDocument.insert (SBMLModel.getSidName (variable) + " = " + flattenMath (math.getDocumentNode ())));
 	}
 
-	public void reportDelete (MarkupElement me, MarkupDocument markupDocument)
+	public void reportDelete (MarkupElement me)
 	{
-		me.addValue (markupDocument.delete (SBMLModel.getSidName (variable) + " = " + flattenMath (math.getDocumentNode ())));
+		me.addValue (MarkupDocument.delete (SBMLModel.getSidName (variable) + " = " + flattenMath (math.getDocumentNode ())));
 	}
 	
 	private String flattenMath (DocumentNode math)
@@ -104,7 +106,7 @@ public class SBMLEventAssignment
 		}
 		catch (TransformerException e)
 		{
-			LOGGER.error ("cannot parse math in event assignment", e);
+			LOGGER.error (e, "cannot parse math in event assignment");
 			return "[math parsing err]";
 		}
 		

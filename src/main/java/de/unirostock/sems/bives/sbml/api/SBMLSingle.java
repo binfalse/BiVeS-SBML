@@ -33,13 +33,13 @@ public class SBMLSingle extends Single
 	public SBMLSingle (File a) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
 	{
 		super (a);
-		doc1 = new SBMLDocument (treeA);
+		doc1 = new SBMLDocument (tree);
 	}
 	
 	public SBMLSingle (String a) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
 	{
 		super (a);
-		doc1 = new SBMLDocument (treeA);
+		doc1 = new SBMLDocument (tree);
 	}
 	
 	public SBMLSingle (SBMLDocument a) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException

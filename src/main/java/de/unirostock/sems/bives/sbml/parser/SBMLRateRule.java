@@ -3,8 +3,8 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.DiffReporter;
+import de.unirostock.sems.bives.algorithm.DiffReporter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -44,7 +44,7 @@ public class SBMLRateRule
 	}
 
 	@Override
-	public MarkupElement reportMofification (ClearConnectionManager conMgmt, DiffReporter docA, DiffReporter docB, MarkupDocument markupDocument)
+	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLRateRule a = (SBMLRateRule) docA;
 		SBMLRateRule b = (SBMLRateRule) docB;
@@ -56,28 +56,28 @@ public class SBMLRateRule
 		if (idA.equals (idB))
 			me = new MarkupElement ("RateRule for " + idA);
 		else
-			me = new MarkupElement ("RateRule for " + markupDocument.delete (idA)+ " &rarr; " + markupDocument.insert (idB));
+			me = new MarkupElement ("RateRule for " + MarkupDocument.delete (idA)+ " &rarr; " + MarkupDocument.insert (idB));
 		
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
-		BivesTools.genMathHtmlStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
+		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
 		
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportInsert (MarkupDocument markupDocument)
+	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.insert ("RateRule for "+SBMLModel.getSidName (variable)));
-		BivesTools.genMathHtmlStats (null, math.getDocumentNode (), me, markupDocument);
+		MarkupElement me = new MarkupElement (MarkupDocument.insert ("RateRule for "+SBMLModel.getSidName (variable)));
+		BivesTools.genMathMarkupStats (null, math.getDocumentNode (), me);
 		//me.addValue (markupDocument.insert ("inserted"));
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportDelete (MarkupDocument markupDocument)
+	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.delete ("RateRule for "+SBMLModel.getSidName (variable)));
-		BivesTools.genMathHtmlStats (math.getDocumentNode (), null, me, markupDocument);
+		MarkupElement me = new MarkupElement (MarkupDocument.delete ("RateRule for "+SBMLModel.getSidName (variable)));
+		BivesTools.genMathMarkupStats (math.getDocumentNode (), null, me);
 		//me.addValue (markupDocument.delete ("deleted"));
 		return me;
 	}

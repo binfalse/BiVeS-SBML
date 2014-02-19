@@ -4,11 +4,12 @@
 package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.Connector;
 import de.unirostock.sems.bives.algorithm.general.XyDiffConnector;
-import de.unirostock.sems.bives.ds.SBOTerm;
+import de.unirostock.sems.bives.ds.ontology.SBOTerm;
 import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.comparison.Connection;
@@ -42,12 +43,11 @@ public class SBMLConnector
 	
 
 	@Override
-	public void init (TreeDocument docA, TreeDocument docB) throws BivesConnectionException
+	protected void init () throws BivesConnectionException
 	{
 		// TODO: maybe preporcessing -> instead of id's use annotations/ontologies etc
 		// use id's
 		// use variables for rules
-		super.init (sbmlDocA.getTreeDocument (), sbmlDocB.getTreeDocument ());
 
 		// preprocessor connects by id and stuff
 		// xy propagates connections
@@ -166,7 +166,7 @@ public class SBMLConnector
 		if (a == null || b == null)
 			return false;
 		
-		return a.resolvModifier ().equals (b.resolvModifier ());
+		return a.resolveModifier ().equals (b.resolveModifier ());
 	}
 	
 }

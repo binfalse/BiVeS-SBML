@@ -3,10 +3,12 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
-import de.unirostock.sems.bives.ds.SBOTerm;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.unirostock.sems.bives.ds.Xhtml;
+import de.unirostock.sems.bives.ds.ontology.SBOTerm;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
 import de.unirostock.sems.xmlutils.ds.TreeNode;
@@ -37,14 +39,14 @@ public abstract class SBMLSBase
 			if (documentNode.getAttribute ("sboTerm") != null)
 				sboTerm = new SBOTerm (documentNode.getAttribute ("sboTerm"));
 			
-			Vector<TreeNode> nodeList = documentNode.getChildrenWithTag ("notes");
+			List<TreeNode> nodeList = documentNode.getChildrenWithTag ("notes");
 			if (nodeList.size () > 1)
 				throw new BivesSBMLParseException ("SBase with "+nodeList.size ()+" notes. (expected max one notes)");
 			if (nodeList.size () == 1)
 			{
 				notes = new Xhtml  ();
-				DocumentNode root = (DocumentNode) nodeList.elementAt (0);
-				Vector<TreeNode> kids = root.getChildren ();
+				DocumentNode root = (DocumentNode) nodeList.get (0);
+				List<TreeNode> kids = root.getChildren ();
 				for (TreeNode n : kids)
 					notes.addXhtml (n);
 			}
@@ -53,7 +55,7 @@ public abstract class SBMLSBase
 			if (nodeList.size () > 1)
 				throw new BivesSBMLParseException ("SBase with "+nodeList.size ()+" annotations. (expected max one annotation)");
 			if (nodeList.size () == 1)
-				annotation = (DocumentNode) nodeList.elementAt (0);
+				annotation = (DocumentNode) nodeList.get (0);
 		}
 	}
 	

@@ -3,10 +3,12 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.DiffReporter;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.unirostock.sems.bives.algorithm.DiffReporter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
 import de.unirostock.sems.bives.ds.Xhtml;
 import de.unirostock.sems.bives.markup.MarkupDocument;
@@ -38,10 +40,10 @@ public class SBMLConstraint
 	{
 		super (documentNode, sbmlModel);
 
-		Vector<TreeNode> nodes = documentNode.getChildrenWithTag ("math");
+		List<TreeNode> nodes = documentNode.getChildrenWithTag ("math");
 		if (nodes.size () != 1)
 			throw new BivesSBMLParseException ("constraint has "+nodes.size ()+" math elements. (expected exactly one element)");
-		math = new MathML ((DocumentNode) nodes.elementAt (0));
+		math = new MathML ((DocumentNode) nodes.get (0));
 
 		nodes = documentNode.getChildrenWithTag ("message");
 		if (nodes.size () > 1)
@@ -49,8 +51,8 @@ public class SBMLConstraint
 		if (nodes.size () == 1)
 		{
 			message = new Xhtml ();
-			DocumentNode root = (DocumentNode) nodes.elementAt (0);
-			Vector<TreeNode> kids = root.getChildren ();
+			DocumentNode root = (DocumentNode) nodes.get (0);
+			List<TreeNode> kids = root.getChildren ();
 			for (TreeNode n : kids)
 				message.addXhtml (n);
 		}
@@ -68,7 +70,7 @@ public class SBMLConstraint
 	}
 
 	@Override
-	public MarkupElement reportMofification (ClearConnectionManager conMgmt, DiffReporter docA, DiffReporter docB, MarkupDocument markupDocument)
+	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLConstraint a = (SBMLConstraint) docA;
 		SBMLConstraint b = (SBMLConstraint) docB;
@@ -77,9 +79,9 @@ public class SBMLConstraint
 		
 		MarkupElement me = new MarkupElement ("-");
 		
-		BivesTools.genMathHtmlStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me, markupDocument);
+		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
 		
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
 		
 		if (a.message != null && b.message != null)
 		{
@@ -87,28 +89,28 @@ public class SBMLConstraint
 			String msgB = b.message.toString ();
 			
 			if (!msgA.equals (msgB))
-				me.addValue ("message changed from: " + markupDocument.delete (msgA) + " to " + markupDocument.insert (msgB));
+				me.addValue ("message changed from: " + MarkupDocument.delete (msgA) + " to " + MarkupDocument.insert (msgB));
 		}
 		else if (a.message != null)
-			me.addValue ("message deleted: " + markupDocument.delete (a.message.toString ()));
+			me.addValue ("message deleted: " + MarkupDocument.delete (a.message.toString ()));
 		else if (b.message != null)
-			me.addValue ("message inserted: " + markupDocument.insert (b.message.toString ()));
+			me.addValue ("message inserted: " + MarkupDocument.insert (b.message.toString ()));
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportInsert (MarkupDocument markupDocument)
+	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.insert ("-"));
-		me.addValue (markupDocument.insert ("inserted"));
+		MarkupElement me = new MarkupElement (MarkupDocument.insert ("-"));
+		me.addValue (MarkupDocument.insert ("inserted"));
 		return me;
 	}
 	
 	@Override
-	public MarkupElement reportDelete (MarkupDocument markupDocument)
+	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.delete ("-"));
-		me.addValue (markupDocument.delete ("deleted"));
+		MarkupElement me = new MarkupElement (MarkupDocument.delete ("-"));
+		me.addValue (MarkupDocument.delete ("deleted"));
 		return me;
 	}
 	

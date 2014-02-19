@@ -91,10 +91,10 @@ public class SBMLUnit
 	}*/
 
 	@Override
-	public String markup (MarkupDocument markupDocument)
+	public String markup ()
 	{
-		String ret = multiplier == 1 ? "" : GeneralTools.prettyDouble (multiplier, 1) + markupDocument.multiply ();
-		ret += scale == 0 ? "" : "10^" + scale + markupDocument.multiply ();
+		String ret = multiplier == 1 ? "" : GeneralTools.prettyDouble (multiplier, 1) + MarkupDocument.multiply ();
+		ret += scale == 0 ? "" : "10^" + scale + MarkupDocument.multiply ();
 		ret += "[" + kind.name + "]";
 		ret += exponent == 1 ? "" : "^" + GeneralTools.prettyDouble (exponent, 1);
 		//ret += offset == 0 ? "" : "+offset";

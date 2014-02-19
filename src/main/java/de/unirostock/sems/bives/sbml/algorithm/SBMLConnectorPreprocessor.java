@@ -4,7 +4,9 @@
 package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.HashMap;
-import java.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.Connector;
 import de.unirostock.sems.bives.algorithm.NodeConnection;
@@ -45,9 +47,8 @@ public class SBMLConnectorPreprocessor
 	}
 	
 	@Override
-	public void init (TreeDocument docA, TreeDocument docB) throws BivesConnectionException
+	protected void init () throws BivesConnectionException
 	{
-		super.init (sbmlDocA.getTreeDocument (), sbmlDocB.getTreeDocument ());
 		
 		// not yet initialized?
 		if (preprocessor == null)
@@ -121,7 +122,7 @@ public class SBMLConnectorPreprocessor
 		HashMap<SBMLSBase, SBMLRule> aRuleMapper = new HashMap<SBMLSBase, SBMLRule> ();
 		HashMap<SBMLSBase, SBMLRule> rRuleMapper = new HashMap<SBMLSBase, SBMLRule> ();
 		
-		Vector<SBMLRule> rules = modelA.getRules ();
+		List<SBMLRule> rules = modelA.getRules ();
 		for (SBMLRule rule : rules)
 		{
 			if (rule.getRuleType () == SBMLRule.ASSIGNMENT_RULE)

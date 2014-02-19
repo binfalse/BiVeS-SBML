@@ -3,7 +3,9 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.unirostock.sems.bives.exception.BivesDocumentConsistencyException;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -31,10 +33,10 @@ public class SBMLDocument
 		DocumentNode root = tree.getRoot ();
 		parseRoot (root);
 		
-		Vector<TreeNode> nodes = root.getChildrenWithTag ("model");
+		List<TreeNode> nodes = root.getChildrenWithTag ("model");
 		if (nodes.size () != 1)
 			throw new BivesSBMLParseException ("sbml document has "+nodes.size ()+" model elements. (expected exactly one element)");
-		model = new SBMLModel ((DocumentNode) nodes.elementAt (0), this);
+		model = new SBMLModel ((DocumentNode) nodes.get (0), this);
 	}
 	
 	public TreeDocument getTreeDocument ()

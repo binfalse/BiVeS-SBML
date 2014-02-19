@@ -3,7 +3,9 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -14,34 +16,34 @@ public class SBMLDiffReport
 {
 	private String header;
 	
-	private Vector<String>	modifiedSpecies;
-	private Vector<String>	modifiedSpeciesTypes;
-	private Vector<String>	modifiedParameter;
-	private Vector<String>	modifiedReactions;
-	private Vector<String>	modifiedCompartments;
-	private Vector<String>	modifiedCompartmentTypes;
-	private Vector<String>	modifiedRules;
-	private Vector<String>	modifiedFunctions;
-	private Vector<String>	modifiedConstraints;
-	private Vector<String>	modifiedEvents;
-	private Vector<String>	modifiedInitialAssignments;
-	private Vector<String>	modifiedUnits;
+	private List<String>	modifiedSpecies;
+	private List<String>	modifiedSpeciesTypes;
+	private List<String>	modifiedParameter;
+	private List<String>	modifiedReactions;
+	private List<String>	modifiedCompartments;
+	private List<String>	modifiedCompartmentTypes;
+	private List<String>	modifiedRules;
+	private List<String>	modifiedFunctions;
+	private List<String>	modifiedConstraints;
+	private List<String>	modifiedEvents;
+	private List<String>	modifiedInitialAssignments;
+	private List<String>	modifiedUnits;
 	
 	public SBMLDiffReport ()
 	{
 		header = "";
-		modifiedSpecies = new Vector<String> ();
-		modifiedSpeciesTypes = new Vector<String> ();
-		modifiedParameter = new Vector<String> ();
-		modifiedReactions = new Vector<String> ();
-		modifiedCompartments = new Vector<String> ();
-		modifiedCompartmentTypes = new Vector<String> ();
-		modifiedRules = new Vector<String> ();
-		modifiedFunctions = new Vector<String> ();
-		modifiedConstraints = new Vector<String> ();
-		modifiedEvents = new Vector<String> ();
-		modifiedInitialAssignments = new Vector<String> ();
-		modifiedUnits = new Vector<String> ();
+		modifiedSpecies = new ArrayList<String> ();
+		modifiedSpeciesTypes = new ArrayList<String> ();
+		modifiedParameter = new ArrayList<String> ();
+		modifiedReactions = new ArrayList<String> ();
+		modifiedCompartments = new ArrayList<String> ();
+		modifiedCompartmentTypes = new ArrayList<String> ();
+		modifiedRules = new ArrayList<String> ();
+		modifiedFunctions = new ArrayList<String> ();
+		modifiedConstraints = new ArrayList<String> ();
+		modifiedEvents = new ArrayList<String> ();
+		modifiedInitialAssignments = new ArrayList<String> ();
+		modifiedUnits = new ArrayList<String> ();
 	}
 	
 	public String generateHTMLReport ()
@@ -64,7 +66,7 @@ public class SBMLDiffReport
 		return report;
 	}
 	
-	private String generateTable (Vector<String> mods, String headline, String cssclass)
+	private String generateTable (List<String> mods, String headline, String cssclass)
 	{
 		if (mods.size () < 1)
 			return "";

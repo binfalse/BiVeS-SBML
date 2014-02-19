@@ -3,10 +3,12 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import java.util.Vector;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.DiffReporter;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.unirostock.sems.bives.algorithm.DiffReporter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -30,7 +32,7 @@ public class SBMLEvent
 	private SBMLEventTrigger trigger;
 	private SBMLEventPriority priority; //optional
 	private SBMLEventDelay delay; //optional
-	private Vector<SBMLEventAssignment> listOfEventAssignments; //optional
+	private List<SBMLEventAssignment> listOfEventAssignments; //optional
 	
 	
 	/**
@@ -61,42 +63,42 @@ public class SBMLEvent
 			useValuesFromTriggerTime = true; // level <= 2
 		
 		// tigger optional w/ L3V2
-		Vector<TreeNode> nodes = documentNode.getChildrenWithTag ("trigger");
+		List<TreeNode> nodes = documentNode.getChildrenWithTag ("trigger");
 		if (nodes.size () == 1)
 			//throw new BivesSBMLParseException ("event has "+nodes.size ()+" trigger elements. (expected exactly one element)");
-		trigger = new SBMLEventTrigger ((DocumentNode) nodes.elementAt (0), sbmlModel);
+		trigger = new SBMLEventTrigger ((DocumentNode) nodes.get (0), sbmlModel);
 		
 		nodes = documentNode.getChildrenWithTag ("delay");
 		if (nodes.size () > 1)
 			throw new BivesSBMLParseException ("event has "+nodes.size ()+" delay elements. (expected not more than one element)");
 		if (nodes.size () == 1)
-			delay = new SBMLEventDelay ((DocumentNode) nodes.elementAt (0), sbmlModel);
+			delay = new SBMLEventDelay ((DocumentNode) nodes.get (0), sbmlModel);
 		
 		nodes = documentNode.getChildrenWithTag ("priority");
 		if (nodes.size () > 1)
 			throw new BivesSBMLParseException ("event has "+nodes.size ()+" priority elements. (expected not more than one element)");
 		if (nodes.size () == 1)
-			priority = new SBMLEventPriority ((DocumentNode) nodes.elementAt (0), sbmlModel);
+			priority = new SBMLEventPriority ((DocumentNode) nodes.get (0), sbmlModel);
 		
-		listOfEventAssignments = new Vector<SBMLEventAssignment> ();
+		listOfEventAssignments = new ArrayList<SBMLEventAssignment> ();
 		nodes = documentNode.getChildrenWithTag ("listOfEventAssignments");
 		if (nodes.size () < 1)
 			throw new BivesSBMLParseException ("event has "+nodes.size ()+" event assignment list elements. (expected at least one element)");
 		for (int i = 0; i < nodes.size (); i++)
 		{
-			Vector<TreeNode> ass = ((DocumentNode) nodes.elementAt (i)).getChildrenWithTag ("eventAssignment");
+			List<TreeNode> ass = ((DocumentNode) nodes.get (i)).getChildrenWithTag ("eventAssignment");
 			if (ass.size () < 1)
 				throw new BivesSBMLParseException ("event assignment list has "+ass.size ()+" event assignment elements. (expected at least one element)");
 			for (int j = 0; j < ass.size (); j++)
 			{
-				SBMLEventAssignment ea = new SBMLEventAssignment ((DocumentNode) ass.elementAt (j), sbmlModel);
+				SBMLEventAssignment ea = new SBMLEventAssignment ((DocumentNode) ass.get (j), sbmlModel);
 				listOfEventAssignments.add (ea);
 			}
 		}
 	}
 
 	@Override
-	public MarkupElement reportMofification (ClearConnectionManager conMgmt, DiffReporter docA, DiffReporter docB, MarkupDocument markupDocument)
+	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLEvent a = (SBMLEvent) docA;
 		SBMLEvent b = (SBMLEvent) docB;
@@ -108,26 +110,26 @@ public class SBMLEvent
 		if (idA.equals (idB))
 			me = new MarkupElement (idA);
 		else
-			me = new MarkupElement (markupDocument.delete (idA) + " "+markupDocument.rightArrow ()+" " + markupDocument.insert (idB));
+			me = new MarkupElement (MarkupDocument.delete (idA) + " "+MarkupDocument.rightArrow ()+" " + MarkupDocument.insert (idB));
 		
-		BivesTools.genAttributeHtmlStats (a.documentNode, b.documentNode, me, markupDocument);
+		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
 		
 		// trigger -> not optional!
 		// changed in L3V2
 		MarkupElement me2 = new MarkupElement ("Trigger");
 		if (a.trigger != null && b.trigger != null)
 		{
-			a.trigger.reportMofification (conMgmt, a.trigger, b.trigger, me2, markupDocument);
+			a.trigger.reportMofification (conMgmt, a.trigger, b.trigger, me2);
 			me.addSubElements (me2);
 		}
 		else if (a.trigger != null)
 		{
-			a.trigger.reportDelete (me2, markupDocument);
+			a.trigger.reportDelete (me2);
 			me.addSubElements (me2);
 		}
 		else if (b.trigger != null)
 		{
-			b.trigger.reportInsert (me2, markupDocument);
+			b.trigger.reportInsert (me2);
 			me.addSubElements (me2);
 		}
 		
@@ -135,17 +137,17 @@ public class SBMLEvent
 		me2 = new MarkupElement ("Priority");
 		if (a.priority != null && b.priority != null)
 		{
-			a.priority.reportMofification (conMgmt, a.priority, b.priority, me2, markupDocument);
+			a.priority.reportMofification (conMgmt, a.priority, b.priority, me2);
 			me.addSubElements (me2);
 		}
 		else if (a.priority != null)
 		{
-			a.priority.reportDelete (me2, markupDocument);
+			a.priority.reportDelete (me2);
 			me.addSubElements (me2);
 		}
 		else if (b.priority != null)
 		{
-			b.priority.reportInsert (me2, markupDocument);
+			b.priority.reportInsert (me2);
 			me.addSubElements (me2);
 		}
 		
@@ -153,41 +155,41 @@ public class SBMLEvent
 		me2 = new MarkupElement ("Delay");
 		if (a.delay != null && b.delay != null)
 		{
-			a.delay.reportMofification (conMgmt, a.delay, b.delay, me2, markupDocument);
+			a.delay.reportMofification (conMgmt, a.delay, b.delay, me2);
 			me.addSubElements (me2);
 		}
 		else if (a.priority != null)
 		{
-			a.delay.reportDelete (me2, markupDocument);
+			a.delay.reportDelete (me2);
 			me.addSubElements (me2);
 		}
 		else if (b.priority != null)
 		{
-			b.delay.reportInsert (me2, markupDocument);
+			b.delay.reportInsert (me2);
 			me.addSubElements (me2);
 		}
 		
 		// assignments
-		Vector<SBMLEventAssignment> assA = a.listOfEventAssignments;
-		Vector<SBMLEventAssignment> assB = b.listOfEventAssignments;
+		List<SBMLEventAssignment> assA = a.listOfEventAssignments;
+		List<SBMLEventAssignment> assB = b.listOfEventAssignments;
 		if (assA.size () > 0 || assB.size () > 0)
 		{
 			me2 = new MarkupElement ("Assignments");
 			for (SBMLEventAssignment ass : assA)
 			{
 				if (conMgmt.getConnectionForNode (ass.documentNode) == null)
-					ass.reportDelete (me2, markupDocument);
+					ass.reportDelete (me2);
 				else
 				{
 					Connection con = conMgmt.getConnectionForNode (ass.documentNode);
 					SBMLEventAssignment partner = (SBMLEventAssignment) b.sbmlModel.getFromNode (con.getPartnerOf (ass.documentNode));
-					ass.reportMofification (conMgmt, ass, partner, me2, markupDocument);
+					ass.reportMofification (conMgmt, ass, partner, me2);
 				}
 			}
 			for (SBMLEventAssignment ass : assB)
 			{
 				if (conMgmt.getConnectionForNode (ass.documentNode) == null)
-					ass.reportInsert (me2, markupDocument);
+					ass.reportInsert (me2);
 			}
 		}
 		
@@ -195,18 +197,18 @@ public class SBMLEvent
 	}
 
 	@Override
-	public MarkupElement reportInsert (MarkupDocument markupDocument)
+	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.insert (getNameAndId ()));
-		me.addValue (markupDocument.insert ("inserted"));
+		MarkupElement me = new MarkupElement (MarkupDocument.insert (getNameAndId ()));
+		me.addValue (MarkupDocument.insert ("inserted"));
 		return me;
 	}
 
 	@Override
-	public MarkupElement reportDelete (MarkupDocument markupDocument)
+	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (markupDocument.delete (getNameAndId ()));
-		me.addValue (markupDocument.delete ("deleted"));
+		MarkupElement me = new MarkupElement (MarkupDocument.delete (getNameAndId ()));
+		me.addValue (MarkupDocument.delete ("deleted"));
 		return me;
 	}
 	

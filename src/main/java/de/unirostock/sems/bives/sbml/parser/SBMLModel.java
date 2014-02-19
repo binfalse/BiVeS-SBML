@@ -4,7 +4,9 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 import java.util.HashMap;
-import java.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.exception.BivesDocumentConsistencyException;
@@ -31,11 +33,11 @@ public class SBMLModel
 	private HashMap<String, SBMLSpecies> listOfSpecies;
 	private HashMap<String, SBMLSpeciesType> listOfSpeciesTypes;
 	private HashMap<String, SBMLParameter> listOfParameters;
-	private Vector<SBMLInitialAssignment> listOfInitialAssignments;
-	private Vector<SBMLRule> listOfRules;
-	private Vector<SBMLConstraint> listOfConstraints;
+	private List<SBMLInitialAssignment> listOfInitialAssignments;
+	private List<SBMLRule> listOfRules;
+	private List<SBMLConstraint> listOfConstraints;
 	private HashMap<String, SBMLReaction> listOfReactions;
-	private Vector<SBMLEvent> listOfEvents;
+	private List<SBMLEvent> listOfEvents;
 	private HashMap<String, SBMLSimpleSpeciesReference> listOfSpeciesReferences;
 
 	private String id; //optional
@@ -70,11 +72,11 @@ public class SBMLModel
 		listOfSpecies = new  HashMap<String, SBMLSpecies> ();
 		listOfSpeciesTypes = new  HashMap<String, SBMLSpeciesType> ();
 		listOfParameters = new  HashMap<String, SBMLParameter> ();
-		listOfInitialAssignments = new  Vector<SBMLInitialAssignment> ();
-		listOfRules = new  Vector<SBMLRule> ();
-		listOfConstraints = new  Vector<SBMLConstraint> ();
+		listOfInitialAssignments = new  ArrayList<SBMLInitialAssignment> ();
+		listOfRules = new  ArrayList<SBMLRule> ();
+		listOfConstraints = new  ArrayList<SBMLConstraint> ();
 		listOfReactions = new  HashMap<String, SBMLReaction> ();
-		listOfEvents = new  Vector<SBMLEvent> ();
+		listOfEvents = new  ArrayList<SBMLEvent> ();
 		listOfSpeciesReferences = new  HashMap<String, SBMLSimpleSpeciesReference> ();
 		
 		parseTree ();
@@ -167,15 +169,15 @@ public class SBMLModel
 
 	private void parseEvents (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfEvents");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfEvents");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("event");
+			List<TreeNode> node = los.getChildrenWithTag ("event");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLEvent n = new SBMLEvent ((DocumentNode) node.elementAt (j), this);
+				SBMLEvent n = new SBMLEvent ((DocumentNode) node.get (j), this);
 				listOfEvents.add (n);
 			}
 		}
@@ -183,15 +185,15 @@ public class SBMLModel
 
 	private void parseReactions (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfReactions");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfReactions");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("reaction");
+			List<TreeNode> node = los.getChildrenWithTag ("reaction");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLReaction n = new SBMLReaction ((DocumentNode) node.elementAt (j), this);
+				SBMLReaction n = new SBMLReaction ((DocumentNode) node.get (j), this);
 				listOfReactions.put (n.getID (), n);
 			}
 		}
@@ -200,15 +202,15 @@ public class SBMLModel
 
 	private void parseConstraints (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfConstraints");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfConstraints");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("constraint");
+			List<TreeNode> node = los.getChildrenWithTag ("constraint");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLConstraint n = new SBMLConstraint ((DocumentNode) node.elementAt (j), this);
+				SBMLConstraint n = new SBMLConstraint ((DocumentNode) node.get (j), this);
 				listOfConstraints.add (n);
 			}
 		}
@@ -217,29 +219,29 @@ public class SBMLModel
 
 	private void parseRules (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfRules");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfRules");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("algebraicRule");
+			List<TreeNode> node = los.getChildrenWithTag ("algebraicRule");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLAlgebraicRule n = new SBMLAlgebraicRule ((DocumentNode) node.elementAt (j), this);
+				SBMLAlgebraicRule n = new SBMLAlgebraicRule ((DocumentNode) node.get (j), this);
 				listOfRules.add (n);
 			}
 			
 			node = los.getChildrenWithTag ("assignmentRule");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLAssignmentRule n = new SBMLAssignmentRule ((DocumentNode) node.elementAt (j), this);
+				SBMLAssignmentRule n = new SBMLAssignmentRule ((DocumentNode) node.get (j), this);
 				listOfRules.add (n);
 			}
 			
 			node = los.getChildrenWithTag ("rateRule");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLRateRule n = new SBMLRateRule ((DocumentNode) node.elementAt (j), this);
+				SBMLRateRule n = new SBMLRateRule ((DocumentNode) node.get (j), this);
 				listOfRules.add (n);
 			}
 		}
@@ -247,15 +249,15 @@ public class SBMLModel
 
 	private void parseInitialAssignments (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfInitialAssignments");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfInitialAssignments");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("initialAssignment");
+			List<TreeNode> node = los.getChildrenWithTag ("initialAssignment");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLInitialAssignment n = new SBMLInitialAssignment ((DocumentNode) node.elementAt (j), this);
+				SBMLInitialAssignment n = new SBMLInitialAssignment ((DocumentNode) node.get (j), this);
 				listOfInitialAssignments.add (n);
 			}
 		}
@@ -263,15 +265,15 @@ public class SBMLModel
 
 	private void parseSpecies (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> lospeciess = root.getChildrenWithTag ("listOfSpecies");
+		List<TreeNode> lospeciess = root.getChildrenWithTag ("listOfSpecies");
 		for (int i = 0; i < lospeciess.size (); i++)
 		{
-			DocumentNode lospecies = (DocumentNode) lospeciess.elementAt (i);
+			DocumentNode lospecies = (DocumentNode) lospeciess.get (i);
 			
-			Vector<TreeNode> species = lospecies.getChildrenWithTag ("species");
+			List<TreeNode> species = lospecies.getChildrenWithTag ("species");
 			for (int j = 0; j < species.size (); j++)
 			{
-				SBMLSpecies s = new SBMLSpecies ((DocumentNode) species.elementAt (j), this);
+				SBMLSpecies s = new SBMLSpecies ((DocumentNode) species.get (j), this);
 				listOfSpecies.put (s.getID (), s);
 			}
 		}
@@ -279,15 +281,15 @@ public class SBMLModel
 
 	private void parseSpeciesTypes (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfSpeciesTypes");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfSpeciesTypes");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("speciesType");
+			List<TreeNode> node = los.getChildrenWithTag ("speciesType");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLSpeciesType n = new SBMLSpeciesType ((DocumentNode) node.elementAt (j), this);
+				SBMLSpeciesType n = new SBMLSpeciesType ((DocumentNode) node.get (j), this);
 				listOfSpeciesTypes.put (n.getID (), n);
 			}
 		}
@@ -295,15 +297,15 @@ public class SBMLModel
 
 	private void parseParameters (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfParameters");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfParameters");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("parameter");
+			List<TreeNode> node = los.getChildrenWithTag ("parameter");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLParameter n = new SBMLParameter ((DocumentNode) node.elementAt (j), this);
+				SBMLParameter n = new SBMLParameter ((DocumentNode) node.get (j), this);
 				listOfParameters.put (n.getID (), n);
 			}
 		}
@@ -311,15 +313,15 @@ public class SBMLModel
 
 	private void parseCompartments (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> locompartments = root.getChildrenWithTag ("listOfCompartments");
+		List<TreeNode> locompartments = root.getChildrenWithTag ("listOfCompartments");
 		for (int i = 0; i < locompartments.size (); i++)
 		{
-			DocumentNode locompartment = (DocumentNode) locompartments.elementAt (i);
+			DocumentNode locompartment = (DocumentNode) locompartments.get (i);
 			
-			Vector<TreeNode> compartments = locompartment.getChildrenWithTag ("compartment");
+			List<TreeNode> compartments = locompartment.getChildrenWithTag ("compartment");
 			for (int j = 0; j < compartments.size (); j++)
 			{
-				SBMLCompartment c = new SBMLCompartment ((DocumentNode) compartments.elementAt (j), this);
+				SBMLCompartment c = new SBMLCompartment ((DocumentNode) compartments.get (j), this);
 				listOfCompartments.put (c.getID (), c);
 			}
 		}
@@ -327,15 +329,15 @@ public class SBMLModel
 
 	private void parseCompartmentTypes (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> loss = root.getChildrenWithTag ("listOfCompartmentTypes");
+		List<TreeNode> loss = root.getChildrenWithTag ("listOfCompartmentTypes");
 		for (int i = 0; i < loss.size (); i++)
 		{
-			DocumentNode los = (DocumentNode) loss.elementAt (i);
+			DocumentNode los = (DocumentNode) loss.get (i);
 			
-			Vector<TreeNode> node = los.getChildrenWithTag ("compartmentType");
+			List<TreeNode> node = los.getChildrenWithTag ("compartmentType");
 			for (int j = 0; j < node.size (); j++)
 			{
-				SBMLCompartmentType n = new SBMLCompartmentType ((DocumentNode) node.elementAt (j), this);
+				SBMLCompartmentType n = new SBMLCompartmentType ((DocumentNode) node.get (j), this);
 				listOfCompartmentTypes.put (n.getID (), n);
 			}
 		}
@@ -350,13 +352,13 @@ public class SBMLModel
 			listOfUnitDefinitions.put (ud.getID (), ud);
 		}
 		
-		Vector<TreeNode> lounits = root.getChildrenWithTag ("listOfUnitDefinitions");
+		List<TreeNode> lounits = root.getChildrenWithTag ("listOfUnitDefinitions");
 		for (int i = 0; i < lounits.size (); i++)
 		{
-			DocumentNode lounit = (DocumentNode) lounits.elementAt (i);
+			DocumentNode lounit = (DocumentNode) lounits.get (i);
 			
-			Vector<TreeNode> units = lounit.getChildrenWithTag ("unitDefinition");
-			Vector<String> problems = new Vector<String> ();
+			List<TreeNode> units = lounit.getChildrenWithTag ("unitDefinition");
+			List<String> problems = new ArrayList<String> ();
 			boolean nextRound = true;
 			while (nextRound && units.size () > 0)
 			{
@@ -367,7 +369,7 @@ public class SBMLModel
 					SBMLUnitDefinition ud = null;
 					try
 					{
-						ud = new SBMLUnitDefinition ((DocumentNode) units.elementAt (j), this);
+						ud = new SBMLUnitDefinition ((DocumentNode) units.get (j), this);
 						String id = ud.getID ();
 						if (listOfUnitDefinitions.get (id) != null)
 						{
@@ -395,15 +397,15 @@ public class SBMLModel
 
 	private void parseFunctions (DocumentNode root) throws BivesSBMLParseException
 	{
-		Vector<TreeNode> lofunctions = root.getChildrenWithTag ("listOfFunctionDefinitions");
+		List<TreeNode> lofunctions = root.getChildrenWithTag ("listOfFunctionDefinitions");
 		for (int i = 0; i < lofunctions.size (); i++)
 		{
-			DocumentNode lofunction = (DocumentNode) lofunctions.elementAt (i);
+			DocumentNode lofunction = (DocumentNode) lofunctions.get (i);
 			
-			Vector<TreeNode> functions = lofunction.getChildrenWithTag ("functionDefinition");
+			List<TreeNode> functions = lofunction.getChildrenWithTag ("functionDefinition");
 			for (int j = 0; j < functions.size (); j++)
 			{
-				SBMLFunctionDefinition fd = new SBMLFunctionDefinition ((DocumentNode) functions.elementAt (j), this);
+				SBMLFunctionDefinition fd = new SBMLFunctionDefinition ((DocumentNode) functions.get (j), this);
 				listOfFunctionDefinitions.put (fd.getID (), fd);
 			}
 		}
@@ -494,22 +496,22 @@ public class SBMLModel
 		return listOfReactions;
 	}
 	
-	public Vector<SBMLConstraint> getConstraints()
+	public List<SBMLConstraint> getConstraints()
 	{
 		return listOfConstraints;
 	}
 	
-	public Vector<SBMLInitialAssignment> getInitialAssignments()
+	public List<SBMLInitialAssignment> getInitialAssignments()
 	{
 		return listOfInitialAssignments;
 	}
 	
-	public Vector<SBMLEvent> getEvents ()
+	public List<SBMLEvent> getEvents ()
 	{
 		return listOfEvents;
 	}
 	
-	public Vector<SBMLRule> getRules ()
+	public List<SBMLRule> getRules ()
 	{
 		return listOfRules;
 	}

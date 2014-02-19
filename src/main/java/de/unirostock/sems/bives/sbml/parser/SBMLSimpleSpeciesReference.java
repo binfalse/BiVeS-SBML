@@ -3,8 +3,8 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
-import de.unirostock.sems.bives.algorithm.ClearConnectionManager;
-import de.unirostock.sems.bives.ds.SBOTerm;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
+import de.unirostock.sems.bives.ds.ontology.SBOTerm;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
@@ -42,7 +42,7 @@ extends SBMLSBase
 		return species;
 	}
 
-	public String reportMofification (ClearConnectionManager conMgmt, SBMLSimpleSpeciesReference a, SBMLSimpleSpeciesReference b, MarkupDocument markupDocument)
+	public String reportMofification (SimpleConnectionManager conMgmt, SBMLSimpleSpeciesReference a, SBMLSimpleSpeciesReference b)
 	{
 		/*SBMLSimpleSpeciesReference a = (SBMLSimpleSpeciesReference) docA;
 		SBMLSimpleSpeciesReference b = (SBMLSimpleSpeciesReference) docB;*/
@@ -50,30 +50,30 @@ extends SBMLSBase
 		//	return species.getNameAndId ();
 		
 		SBOTerm sboA = a.getSBOTerm (), sboB = b.getSBOTerm ();
-		String retA = a.species.getID () + (sboA == null? "("+SBOTerm.resolvModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sboA.resolvModifier ()+")");
-		String retB = b.species.getID () + (sboB == null? "("+SBOTerm.resolvModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sboB.resolvModifier ()+")");
+		String retA = a.species.getID () + (sboA == null? "("+SBOTerm.resolveModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sboA.resolveModifier ()+")");
+		String retB = b.species.getID () + (sboB == null? "("+SBOTerm.resolveModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sboB.resolveModifier ()+")");
 		
 		if (retA.equals (retB))
 			return retA;
 		else
-			return markupDocument.delete (retA) + " + " + markupDocument.insert (retB);
+			return MarkupDocument.delete (retA) + " + " + MarkupDocument.insert (retB);
 	}
 
-	public String reportInsert (MarkupDocument markupDocument)
+	public String reportInsert ()
 	{
 		SBOTerm sbo = getSBOTerm ();
-		return markupDocument.insert (species.getID () + (sbo == null? "("+SBOTerm.resolvModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sbo.resolvModifier ()+")"));
+		return MarkupDocument.insert (species.getID () + (sbo == null? "("+SBOTerm.resolveModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sbo.resolveModifier ()+")"));
 	}
 
-	public String reportDelete (MarkupDocument markupDocument)
+	public String reportDelete ()
 	{
 		SBOTerm sbo = getSBOTerm ();
-		return markupDocument.delete (species.getID () + (sbo == null? "("+SBOTerm.resolvModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sbo.resolvModifier ()+")"));
+		return MarkupDocument.delete (species.getID () + (sbo == null? "("+SBOTerm.resolveModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sbo.resolveModifier ()+")"));
 	}
 	
 	public String report ()
 	{
 		SBOTerm sbo = getSBOTerm ();		
-		return species.getID () + (sbo == null? "("+SBOTerm.resolvModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sbo.resolvModifier ()+")");
+		return species.getID () + (sbo == null? "("+SBOTerm.resolveModifier (SBOTerm.MOD_UNKNOWN)+")" : "("+sbo.resolveModifier ()+")");
 	}
 }
