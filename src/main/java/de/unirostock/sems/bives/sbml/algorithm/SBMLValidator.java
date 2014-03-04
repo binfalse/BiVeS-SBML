@@ -3,6 +3,8 @@
  */
 package de.unirostock.sems.bives.sbml.algorithm;
 
+import java.io.File;
+
 import de.unirostock.sems.bives.algorithm.ModelValidator;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.ds.TreeDocument;
@@ -42,6 +44,24 @@ public class SBMLValidator
 			return false;
 		}
 		return true;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.ModelValidator#validate(java.io.File)
+	 */
+	@Override
+	public boolean validate (File d)
+	{
+		try
+		{
+			return validate (new TreeDocument (XmlTools.readDocument (d), null));
+		}
+		catch (Exception e)
+		{
+			error = e;
+			return false;
+		}
 	}
 	
 	
