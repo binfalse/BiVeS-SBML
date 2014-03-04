@@ -5,7 +5,6 @@ package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.HashMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.binfalse.bflog.LOGGER;
@@ -33,16 +32,26 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLDiffInterpreter to interpret a mapping of SBML models.
  *
+ * @author Martin Scharm
  */
 public class SBMLDiffInterpreter
 	extends Interpreter
 {
-	//private SBMLDiffReport report;
+	/** The markup document. */
 	private MarkupDocument markupDocument;
+	
+	/** The SBML documents A and B. */
 	private SBMLDocument sbmlDocA, sbmlDocB;
 	
+	/**
+	 * Instantiates a new SBML diff interpreter.
+	 *
+	 * @param conMgmt the connection manager
+	 * @param sbmlDocA the original document
+	 * @param sbmlDocB the modified document
+	 */
 	public SBMLDiffInterpreter (SimpleConnectionManager conMgmt, SBMLDocument sbmlDocA,
 		SBMLDocument sbmlDocB)
 	{
@@ -53,12 +62,11 @@ public class SBMLDiffInterpreter
 			this.sbmlDocB = sbmlDocB;
 	}
 	
-	// TODO!!!
-	public void annotatePatch ()
-	{
-		// TODO!!!
-	}
-	
+	/**
+	 * Gets the produced report.
+	 *
+	 * @return the report
+	 */
 	public MarkupDocument getReport ()
 	{
 		return markupDocument;
@@ -79,9 +87,9 @@ public class SBMLDiffInterpreter
 		String lvA = "L" + sbmlDocA.getLevel () + "V" + sbmlDocA.getVersion ();
 		String lvB = "L" + sbmlDocB.getLevel () + "V" + sbmlDocB.getVersion ();
 		if (lvA.equals (lvB))
-			markupDocument.addHeader ("Both documents have same Level/Version: " + markupDocument.highlight (lvA));
+			markupDocument.addHeader ("Both documents have same Level/Version: " + MarkupDocument.highlight (lvA));
 		else
-			markupDocument.addHeader ("Level/Version has changed: from " + markupDocument.delete (lvA) + " to " + markupDocument.delete (lvB));
+			markupDocument.addHeader ("Level/Version has changed: from " + MarkupDocument.delete (lvA) + " to " + MarkupDocument.delete (lvB));
 		
 		checkUnits (modelA, modelB);
 		checkParameters (modelA, modelB);
@@ -97,6 +105,12 @@ public class SBMLDiffInterpreter
 		checkEvents (modelA, modelB);
 	}
 	
+	/**
+	 * Check the rules defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkRules (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Rules");
@@ -105,7 +119,7 @@ public class SBMLDiffInterpreter
 		for (SBMLRule rule : rules)
 		{
 			DocumentNode dn = rule.getDocumentNode ();
-			LOGGER.info ("rule: " + dn.getXPath ());
+			LOGGER.info ("rule: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -123,7 +137,7 @@ public class SBMLDiffInterpreter
 		for (SBMLRule rule : rules)
 		{
 			DocumentNode dn = rule.getDocumentNode ();
-			LOGGER.info ("rule: " + dn.getXPath ());
+			LOGGER.info ("rule: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -134,6 +148,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check compartments defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkCompartments (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Compartments");
@@ -142,7 +162,7 @@ public class SBMLDiffInterpreter
 		for (SBMLCompartment compartment : compartments.values ())
 		{
 			DocumentNode dn = compartment.getDocumentNode ();
-			LOGGER.info ("compartment: " + dn.getXPath ());
+			LOGGER.info ("compartment: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -160,7 +180,7 @@ public class SBMLDiffInterpreter
 		for (SBMLCompartment compartment : compartments.values ())
 		{
 			DocumentNode dn = compartment.getDocumentNode ();
-			LOGGER.info ("compartment: " + dn.getXPath ());
+			LOGGER.info ("compartment: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -171,6 +191,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check compartment types defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkCompartmentTypes (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Compartment Types");
@@ -179,7 +205,7 @@ public class SBMLDiffInterpreter
 		for (SBMLCompartmentType compartment : compartmenttypes.values ())
 		{
 			DocumentNode dn = compartment.getDocumentNode ();
-			LOGGER.info ("compartmenttype: " + dn.getXPath ());
+			LOGGER.info ("compartmenttype: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -197,7 +223,7 @@ public class SBMLDiffInterpreter
 		for (SBMLCompartmentType compartment : compartmenttypes.values ())
 		{
 			DocumentNode dn = compartment.getDocumentNode ();
-			LOGGER.info ("compartmenttype: " + dn.getXPath ());
+			LOGGER.info ("compartmenttype: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -208,6 +234,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check parameters defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkParameters (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Parameters");
@@ -216,7 +248,7 @@ public class SBMLDiffInterpreter
 		for (SBMLParameter parameter : parameters.values ())
 		{
 			DocumentNode dn = parameter.getDocumentNode ();
-			LOGGER.info ("parameter: " + dn.getXPath ());
+			LOGGER.info ("parameter: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -234,7 +266,7 @@ public class SBMLDiffInterpreter
 		for (SBMLParameter parameter : parameters.values ())
 		{
 			DocumentNode dn = parameter.getDocumentNode ();
-			LOGGER.info ("parameter: " + dn.getXPath ());
+			LOGGER.info ("parameter: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -245,6 +277,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check events defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkEvents (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Events");
@@ -253,7 +291,7 @@ public class SBMLDiffInterpreter
 		for (SBMLEvent event : events)
 		{
 			DocumentNode dn = event.getDocumentNode ();
-			LOGGER.info ("event: " + dn.getXPath ());
+			LOGGER.info ("event: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -271,7 +309,7 @@ public class SBMLDiffInterpreter
 		for (SBMLEvent event : events)
 		{
 			DocumentNode dn = event.getDocumentNode ();
-			LOGGER.info ("event: " + dn.getXPath ());
+			LOGGER.info ("event: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -282,6 +320,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check species defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkSpecies (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Species");
@@ -290,7 +334,7 @@ public class SBMLDiffInterpreter
 		for (SBMLSpecies spec : species.values ())
 		{
 			DocumentNode dn = spec.getDocumentNode ();
-			LOGGER.info ("species: " + dn.getXPath ());
+			LOGGER.info ("species: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -308,7 +352,7 @@ public class SBMLDiffInterpreter
 		for (SBMLSpecies spec : species.values ())
 		{
 			DocumentNode dn = spec.getDocumentNode ();
-			LOGGER.info ("species: " + dn.getXPath ());
+			LOGGER.info ("species: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -319,6 +363,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check species types defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkSpeciesTypes (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Species Types");
@@ -327,7 +377,7 @@ public class SBMLDiffInterpreter
 		for (SBMLSpeciesType spec : speciestypes.values ())
 		{
 			DocumentNode dn = spec.getDocumentNode ();
-			LOGGER.info ("speciestype: " + dn.getXPath ());
+			LOGGER.info ("speciestype: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -345,7 +395,7 @@ public class SBMLDiffInterpreter
 		for (SBMLSpeciesType spec : speciestypes.values ())
 		{
 			DocumentNode dn = spec.getDocumentNode ();
-			LOGGER.info ("speciestype: " + dn.getXPath ());
+			LOGGER.info ("speciestype: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -356,6 +406,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check reactions defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkReactions (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Reactions");
@@ -364,7 +420,7 @@ public class SBMLDiffInterpreter
 		for (SBMLReaction reaction : reactions.values ())
 		{
 			DocumentNode dn = reaction.getDocumentNode ();
-			LOGGER.info ("reaction: " + dn.getXPath ());
+			LOGGER.info ("reaction: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -382,7 +438,7 @@ public class SBMLDiffInterpreter
 		for (SBMLReaction reaction : reactions.values ())
 		{
 			DocumentNode dn = reaction.getDocumentNode ();
-			LOGGER.info ("reaction: " + dn.getXPath ());
+			LOGGER.info ("reaction: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -393,6 +449,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check functions defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkFunctions (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Functions");
@@ -401,7 +463,7 @@ public class SBMLDiffInterpreter
 		for (SBMLFunctionDefinition function : functions.values ())
 		{
 			DocumentNode dn = function.getDocumentNode ();
-			LOGGER.info ("function: " + dn.getXPath ());
+			LOGGER.info ("function: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -419,7 +481,7 @@ public class SBMLDiffInterpreter
 		for (SBMLFunctionDefinition function : functions.values ())
 		{
 			DocumentNode dn = function.getDocumentNode ();
-			LOGGER.info ("function: " + dn.getXPath ());
+			LOGGER.info ("function: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -430,6 +492,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check units defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkUnits (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Units");
@@ -440,7 +508,7 @@ public class SBMLDiffInterpreter
 			if (unit.isBaseUnit ())
 				continue;
 			DocumentNode dn = unit.getDocumentNode ();
-			LOGGER.info ("unit: " + dn.getXPath ());
+			LOGGER.info ("unit: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -460,7 +528,7 @@ public class SBMLDiffInterpreter
 			if (unit.isBaseUnit ())
 				continue;
 			DocumentNode dn = unit.getDocumentNode ();
-			LOGGER.info ("unit: " + dn.getXPath ());
+			LOGGER.info ("unit: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -471,6 +539,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check initial assignments defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkInitialAssignments (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Initial Assignments");
@@ -479,7 +553,7 @@ public class SBMLDiffInterpreter
 		for (SBMLInitialAssignment ia : initAss)
 		{
 			DocumentNode dn = ia.getDocumentNode ();
-			LOGGER.info ("init. ass.: " + dn.getXPath ());
+			LOGGER.info ("init. ass.: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -497,7 +571,7 @@ public class SBMLDiffInterpreter
 		for (SBMLInitialAssignment ia : initAss)
 		{
 			DocumentNode dn = ia.getDocumentNode ();
-			LOGGER.info ("init. ass.: " + dn.getXPath ());
+			LOGGER.info ("init. ass.: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -508,6 +582,12 @@ public class SBMLDiffInterpreter
 			markupDocument.addSection (msec);
 	}
 	
+	/**
+	 * Check constraints defined in the SBML documents.
+	 *
+	 * @param modelA the original model
+	 * @param modelB the modified model
+	 */
 	private void checkConstraints (SBMLModel modelA, SBMLModel modelB)
 	{
 		MarkupSection msec = new MarkupSection ("Constraints");
@@ -516,7 +596,7 @@ public class SBMLDiffInterpreter
 		for (SBMLConstraint constraint : constraints)
 		{
 			DocumentNode dn = constraint.getDocumentNode ();
-			LOGGER.info ("constraint: " + dn.getXPath ());
+			LOGGER.info ("constraint: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			
@@ -534,7 +614,7 @@ public class SBMLDiffInterpreter
 		for (SBMLConstraint constraint : constraints)
 		{
 			DocumentNode dn = constraint.getDocumentNode ();
-			LOGGER.info ("constraint: " + dn.getXPath ());
+			LOGGER.info ("constraint: ", dn.getXPath ());
 
 			Connection con = conMgmt.getConnectionForNode (dn);
 			

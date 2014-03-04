@@ -374,7 +374,7 @@ public class SBMLModel
 						if (listOfUnitDefinitions.get (id) != null)
 						{
 							if (id.equals ("substance") || id.equals ("volume") || id.equals ("area") || id.equals ("length"))
-								LOGGER.warn ("std unit " + id + " redefined");
+								LOGGER.warn ("std unit ", id, " redefined");
 							else
 								throw new BivesSBMLParseException ("Multiple definitions of unit " + ud.getID ());
 						}
