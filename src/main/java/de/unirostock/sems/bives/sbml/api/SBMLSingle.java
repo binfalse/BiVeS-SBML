@@ -23,86 +23,150 @@ import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.exception.XmlDocumentParseException;
 
 /**
- * @author Martin Scharm
+ * The Class SBMLSingle to study single SBML documents.
  *
+ * @author Martin Scharm
  */
 public class SBMLSingle extends Single
 {
-	protected SBMLDocument doc1;
 	
-	public SBMLSingle (File a) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
-	{
-		super (a);
-		doc1 = new SBMLDocument (tree);
-	}
-	
-	public SBMLSingle (String a) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
-	{
-		super (a);
-		doc1 = new SBMLDocument (tree);
-	}
-	
-	public SBMLSingle (SBMLDocument a) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException
-	{
-		super (a.getTreeDocument ());
-		doc1 = a;
-	}
+	/** The doc. */
+	protected SBMLDocument doc;
 
-
-
+	/** The graph producer. */
 	protected SBMLGraphProducer graphProducer;
+	
+	/**
+	 * Instantiates a new object to study single SBML documents.
+	 *
+	 * @param file
+	 *          the file containing the model
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
+	public SBMLSingle (File file) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
+	{
+		super (file);
+		doc = new SBMLDocument (tree);
+	}
+	
+	/**
+	 * Instantiates a new object to study single SBML documents.
+	 *
+	 * @param xml
+	 *          the encoded the model
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
+	public SBMLSingle (String xml) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
+	{
+		super (xml);
+		doc = new SBMLDocument (tree);
+	}
+	
+	/**
+	 * Instantiates a new object to study single SBML documents.
+	 *
+	 * @param doc
+	 *          the document
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 */
+	public SBMLSingle (SBMLDocument doc) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException
+	{
+		super (doc.getTreeDocument ());
+		this.doc = doc;
+	}
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getCRNGraphML()
+	 */
 	@Override
 	public String getCRNGraphML() throws ParserConfigurationException {
 		if (graphProducer == null)
-			graphProducer = new SBMLGraphProducer (doc1);
+			graphProducer = new SBMLGraphProducer (doc);
 		return new GraphTranslatorGraphML ().translate (graphProducer.getCRN ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getCRNGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
+	 */
 	@Override
 	public Object getCRNGraph (GraphTranslator gt) throws Exception
 	{
 		if (graphProducer == null)
-			graphProducer = new SBMLGraphProducer (doc1);
+			graphProducer = new SBMLGraphProducer (doc);
 		return gt.translate (graphProducer.getCRN ());
 	}
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getCRNDotGraph()
+	 */
 	@Override
 	public String getCRNDotGraph ()
 	{
 		if (graphProducer == null)
-			graphProducer = new SBMLGraphProducer (doc1);
+			graphProducer = new SBMLGraphProducer (doc);
 		return new GraphTranslatorDot ().translate (graphProducer.getCRN ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getCRNJsonGraph()
+	 */
 	@Override
 	public String getCRNJsonGraph ()
 	{
 		if (graphProducer == null)
-			graphProducer = new SBMLGraphProducer (doc1);
+			graphProducer = new SBMLGraphProducer (doc);
 		return new GraphTranslatorJson ().translate (graphProducer.getCRN ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getHierarchyGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
+	 */
 	@Override
 	public Object getHierarchyGraph (GraphTranslator gt)
 	{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getHierarchyGraphML()
+	 */
 	@Override
 	public String getHierarchyGraphML () throws ParserConfigurationException
 	{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getHierarchyDotGraph()
+	 */
 	@Override
 	public String getHierarchyDotGraph ()
 	{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Single#getHierarchyJsonGraph()
+	 */
 	@Override
 	public String getHierarchyJsonGraph ()
 	{

@@ -30,14 +30,40 @@ import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.exception.XmlDocumentParseException;
 
 /**
- * @author Martin Scharm
+ * The Class SBMLDiff to compare two SBML models.
  *
+ * @author Martin Scharm
  */
 public class SBMLDiff extends Diff
 {
-	protected SBMLDocument doc1;
-	protected SBMLDocument doc2;
 	
+	/** The original document. */
+	protected SBMLDocument doc1;
+	
+	/** The modified document. */
+	protected SBMLDocument doc2;
+
+
+
+	/** The graph producer. */
+	protected SBMLGraphProducer graphProducer;
+	
+	/** The interpreter. */
+	protected SBMLDiffInterpreter interpreter;
+	
+	/**
+	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the file containing the original SBML model
+	 * @param b the file containing the modified SBML model
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLDiff (File a, File b) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
 	{
 		super (a, b);
@@ -45,6 +71,19 @@ public class SBMLDiff extends Diff
 		doc2 = new SBMLDocument (treeB);
 	}
 	
+	/**
+	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the XML code representing the original v model
+	 * @param b the XML code representing the modified SBML model
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLDiff (String a, String b) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException, BivesSBMLParseException
 	{
 		super (a, b);
@@ -52,65 +91,37 @@ public class SBMLDiff extends Diff
 		doc2 = new SBMLDocument (treeB);
 	}
 	
+	/**
+	 * Instantiates a new sBML differ.
+	 *
+	 * @param a the original SBML document
+	 * @param b the modified SBML document
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the sAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 */
 	public SBMLDiff (SBMLDocument a, SBMLDocument b) throws XmlDocumentParseException, FileNotFoundException, ParserConfigurationException, SAXException, IOException, BivesDocumentConsistencyException
 	{
 		super (a.getTreeDocument (), b.getTreeDocument ());
 		doc1 = a;
 		doc2 = b;
 	}
-	
-	
-	
 
-	/**
-	 * @param args
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws FileNotFoundException 
-	 * @throws BivesDocumentParseException 
-	 * @throws BivesConnectionException 
-	 * @throws BivesConsistencyException 
+
+
+
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#mapTrees()
 	 */
-	/*public static void main(String[] args) throws ParserConfigurationException, BivesDocumentParseException, FileNotFoundException, SAXException, IOException, BivesConnectionException, BivesConsistencyException
-	{
-		//args = new String [] {"test/TestModel_for_IB2013-version-one", "--graphml", "test/TestModel_for_IB2013-version-two"};
-		
-		
-		ArgsParser p = new Diff.ArgsParser (args);
-		
-		SBMLDiff diff = new SBMLDiff (p.getFileA(), p.getFileB());
-		diff.mapTrees();
-		
-		switch (p.getAction())
-		{
-			case Diff.PROD_ALL:
-				System.out.println(diff.getJSON());
-				break;
-			case Diff.PROD_GRAPH:
-				System.out.println(diff.getGraphML());
-				break;
-			case Diff.PROD_REPORT:
-				System.out.println (diff.getHTMLReport());
-				break;
-			default:
-				System.out.println(diff.getDiff());
-		}
-		
-	}*/
-
-
-
-
 	@Override
-	public boolean mapTrees() throws BivesSBMLParseException, BivesConnectionException {
-
+	public boolean mapTrees() throws BivesSBMLParseException, BivesConnectionException
+	{
 		SBMLConnector con = new SBMLConnector (doc1, doc2);
-		
-		con.init (treeA, treeB);
 		con.findConnections ();
 		connections = con.getConnections();
-		
 		
 		treeA.getRoot ().resetModifications ();
 		treeA.getRoot ().evaluate (connections);
@@ -118,28 +129,13 @@ public class SBMLDiff extends Diff
 		treeB.getRoot ().resetModifications ();
 		treeB.getRoot ().evaluate (connections);
 		
-		/*Vector<TreeNode> nodes = connections.getUnmatched (treeA.getRoot (), new Vector<TreeNode> ());
-		LOGGER.debug ("unmatched nodes in treeA");
-		for (TreeNode n : nodes)
-		{
-			LOGGER.debug (n.getXPath ());
-		}
-		nodes = connections.getUnmatched (treeB.getRoot (), new Vector<TreeNode> ());
-		LOGGER.debug ("unmatched nodes in treeB");
-		for (TreeNode n : nodes)
-		{
-			LOGGER.debug (n.getXPath ());
-		}*/
-		
 		return true;
 	}
 
 
-
-	protected SBMLGraphProducer graphProducer;
-	protected SBMLDiffInterpreter interpreter;
-
-
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getCRNGraphML()
+	 */
 	@Override
 	public String getCRNGraphML() throws ParserConfigurationException {
 		if (graphProducer == null)
@@ -150,6 +146,9 @@ public class SBMLDiff extends Diff
 
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getReport(de.unirostock.sems.bives.markup.Typesetting)
+	 */
 	@Override
 	public String getReport(Typesetting ts) {
 		if (interpreter == null)
@@ -163,6 +162,9 @@ public class SBMLDiff extends Diff
 
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getMarkDownReport()
+	 */
 	@Override
 	public String getMarkDownReport() {
 		if (interpreter == null)
@@ -173,6 +175,9 @@ public class SBMLDiff extends Diff
 		return new TypesettingMarkDown ().typeset (interpreter.getReport ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getReStructuredTextReport()
+	 */
 	@Override
 	public String getReStructuredTextReport ()
 	{
@@ -187,6 +192,9 @@ public class SBMLDiff extends Diff
 
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getHTMLReport()
+	 */
 	@Override
 	public String getHTMLReport() {
 		if (interpreter == null)
@@ -199,6 +207,9 @@ public class SBMLDiff extends Diff
 
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getCRNGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
+	 */
 	@Override
 	public Object getCRNGraph (GraphTranslator gt) throws Exception
 	{
@@ -208,6 +219,9 @@ public class SBMLDiff extends Diff
 	}
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getCRNDotGraph()
+	 */
 	@Override
 	public String getCRNDotGraph ()
 	{
@@ -216,6 +230,9 @@ public class SBMLDiff extends Diff
 		return new GraphTranslatorDot ().translate (graphProducer.getCRN ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getCRNJsonGraph()
+	 */
 	@Override
 	public String getCRNJsonGraph ()
 	{
@@ -224,24 +241,36 @@ public class SBMLDiff extends Diff
 		return new GraphTranslatorJson ().translate (graphProducer.getCRN ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getHierarchyGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
+	 */
 	@Override
 	public Object getHierarchyGraph (GraphTranslator gt)
 	{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getHierarchyGraphML()
+	 */
 	@Override
 	public String getHierarchyGraphML () throws ParserConfigurationException
 	{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getHierarchyDotGraph()
+	 */
 	@Override
 	public String getHierarchyDotGraph ()
 	{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.api.Diff#getHierarchyJsonGraph()
+	 */
 	@Override
 	public String getHierarchyJsonGraph ()
 	{

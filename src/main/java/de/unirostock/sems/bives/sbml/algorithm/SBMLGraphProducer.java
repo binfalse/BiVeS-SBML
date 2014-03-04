@@ -13,6 +13,7 @@ import de.unirostock.sems.bives.algorithm.GraphProducer;
 import de.unirostock.sems.bives.ds.crn.CRNCompartment;
 import de.unirostock.sems.bives.ds.crn.CRNReaction;
 import de.unirostock.sems.bives.ds.crn.CRNSubstance;
+import de.unirostock.sems.bives.exception.BivesUnsupportedException;
 import de.unirostock.sems.bives.sbml.parser.SBMLCompartment;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.bives.sbml.parser.SBMLModel;
@@ -53,20 +54,31 @@ extends GraphProducer
 	@Override
 	protected void produceCRN ()
 	{
-		processCrnA ();
-		if (single)
-			crn.setSingleDocument ();
-		else
-			processCrnB ();
+		try
+		{
+			processCrnA ();
+			if (single)
+				crn.setSingleDocument ();
+			else
+				processCrnB ();
+		}
+		catch (BivesUnsupportedException e)
+		{
+			LOGGER.error (e, "something bad happened");
+		}
+		
+		if (crn.getSubstances ().size () < 1)
+			crn = null;
 	}
 
 	@Override
-	protected void produceHierachyGraph ()
+	protected void produceHierarchyGraph ()
 	{
 		// nothing to do for SBML
+		hn = null;
 	}
 	
-	protected void processCrnA ()
+	protected void processCrnA () throws BivesUnsupportedException
 	{
 		SBMLModel modelA = sbmlDocA.getModel ();
 		LOGGER.info ("searching for compartments in A");
@@ -109,7 +121,7 @@ extends GraphProducer
 		}
 	}
 	
-	protected void processCrnB ()
+	protected void processCrnB () throws BivesUnsupportedException
 	{
 		SBMLModel modelB = sbmlDocB.getModel ();
 		LOGGER.info ("searching for compartments in A");

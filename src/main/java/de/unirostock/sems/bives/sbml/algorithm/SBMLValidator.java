@@ -3,36 +3,45 @@
  */
 package de.unirostock.sems.bives.sbml.algorithm;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-
-import org.xml.sax.SAXException;
-
 import de.unirostock.sems.bives.algorithm.ModelValidator;
-import de.unirostock.sems.bives.exception.BivesException;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.ds.TreeDocument;
-import de.unirostock.sems.xmlutils.tools.DocumentTools;
+import de.unirostock.sems.xmlutils.tools.XmlTools;
 
 
 /**
- * TODO
- * @author Martin Scharm
+ * The Class SBMLValidator validates SBML code.
  *
+ * @author Martin Scharm
  */
 public class SBMLValidator
 	extends ModelValidator
 {
+	
+	/** The doc. */
 	private SBMLDocument doc;
+	
+	
+	/** The error. */
+	private Exception error;
+	
+	
 	/* (non-Javadoc)
 	 * @see de.unirostock.sems.xmldiff.algorithm.ModelValidator#validate(de.unirostock.sems.xmldiff.ds.xml.TreeDocument)
 	 */
 	@Override
-	public boolean validate (TreeDocument d) throws BivesException
+	public boolean validate (TreeDocument d)
 	{
-		return validate (DocumentTools.printSubDoc (d.getRoot ()));
+		try
+		{
+			doc = new SBMLDocument (d);
+		}
+		catch (Exception e)
+		{
+			error = e;
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -40,21 +49,37 @@ public class SBMLValidator
 	 * @see de.unirostock.sems.xmldiff.algorithm.ModelValidator#validate(java.lang.String)
 	 */
 	@Override
-	public boolean validate (String d) throws BivesException
+	public boolean validate (String d)
 	{
-		/*DocumentBuilder builder = DocumentBuilderFactory.newInstance ()
-			.newDocumentBuilder ();
-		TreeDocument td = new TreeDocument (builder.parse (new ByteArrayInputStream(d.getBytes ())));
-		doc = new SBMLDocument (td);
-		/*if (doc.checkConsistency () > 0)*/
-			throw new BivesException ("not yet implemented");
-		//return true;
+		try
+		{
+			return validate (new TreeDocument (XmlTools.readDocument (d), null));
+		}
+		catch (Exception e)
+		{
+			error = e;
+			return false;
+		}
 	}
 
 
-	public String getModelID () throws BivesException
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.ModelValidator#getDocument()
+	 */
+	@Override
+	public SBMLDocument getDocument ()
 	{
-		throw new BivesException ("not yet implemented");
+		return doc;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.ModelValidator#getError()
+	 */
+	@Override
+	public Exception getError ()
+	{
+		return error;
 	}
 	
 }
