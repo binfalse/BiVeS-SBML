@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.binfalse.bflog.LOGGER;
@@ -26,15 +25,27 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLGraphProducer to create the graphs.
  *
+ * @author Martin Scharm
  */
 public class SBMLGraphProducer
 extends GraphProducer
 {
+	
+	/** The SBML documents A and B. */
 	private SBMLDocument sbmlDocA, sbmlDocB;
+	
+	/** The connection manager. */
 	private SimpleConnectionManager conMgmt;
 	
+	/**
+	 * Instantiates a new SBML graph producer for difference graphs.
+	 *
+	 * @param conMgmt the connection manager
+	 * @param sbmlDocA the original document
+	 * @param sbmlDocB the modified document
+	 */
 	public SBMLGraphProducer (SimpleConnectionManager conMgmt, SBMLDocument sbmlDocA, SBMLDocument sbmlDocB)
 	{
 		super (false);
@@ -43,6 +54,11 @@ extends GraphProducer
 		this.conMgmt = conMgmt;
 	}
 	
+	/**
+	 * Instantiates a new SBML graph producer for single document graphs.
+	 *
+	 * @param sbmlDoc the SBML document
+	 */
 	public SBMLGraphProducer (SBMLDocument sbmlDoc)
 	{
 		super (true);
@@ -51,6 +67,9 @@ extends GraphProducer
 	
 
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.GraphProducer#produceCRN()
+	 */
 	@Override
 	protected void produceCRN ()
 	{
@@ -71,6 +90,9 @@ extends GraphProducer
 			crn = null;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.GraphProducer#produceHierarchyGraph()
+	 */
 	@Override
 	protected void produceHierarchyGraph ()
 	{
@@ -78,6 +100,11 @@ extends GraphProducer
 		hn = null;
 	}
 	
+	/**
+	 * Process Chemical Reaction Network of the original document.
+	 *
+	 * @throws BivesUnsupportedException the bives unsupported exception
+	 */
 	protected void processCrnA () throws BivesUnsupportedException
 	{
 		SBMLModel modelA = sbmlDocA.getModel ();
@@ -121,6 +148,11 @@ extends GraphProducer
 		}
 	}
 	
+	/**
+	 * Process Chemical Reaction Network of the modified document.
+	 *
+	 * @throws BivesUnsupportedException the bives unsupported exception
+	 */
 	protected void processCrnB () throws BivesUnsupportedException
 	{
 		SBMLModel modelB = sbmlDocB.getModel ();

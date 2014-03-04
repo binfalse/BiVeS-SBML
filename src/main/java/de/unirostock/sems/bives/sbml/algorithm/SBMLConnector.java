@@ -4,8 +4,6 @@
 package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.Connector;
 import de.unirostock.sems.bives.algorithm.general.XyDiffConnector;
@@ -14,49 +12,72 @@ import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.comparison.Connection;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
-import de.unirostock.sems.xmlutils.ds.TreeDocument;
 import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLConnector to connect SBML documents.
  *
+ * @author Martin Scharm
  */
 public class SBMLConnector
 	extends Connector
 {
+	
+	/** The preprocessor. */
 	private Connector preprocessor;
+	
+	/** The SBML documents A and B. */
 	private SBMLDocument sbmlDocA, sbmlDocB;
 
+	/**
+	 * Instantiates a new SBML connector.
+	 *
+	 * @param sbmlDocA the original document
+	 * @param sbmlDocB the modified document
+	 */
 	public SBMLConnector (SBMLDocument sbmlDocA, SBMLDocument sbmlDocB)
 	{
-		super ();
+		super (sbmlDocA.getTreeDocument (), sbmlDocB.getTreeDocument ());
 		this.sbmlDocA = sbmlDocA;
 		this.sbmlDocB = sbmlDocB;
 	}
 	
+	/**
+	 * Instantiates a new SBML connector.
+	 *
+	 * @param preprocessor the preprocessor
+	 */
 	public SBMLConnector (Connector preprocessor)
 	{
-		super ();
+		super (preprocessor.getDocA (), preprocessor.getDocB ());
 		this.preprocessor = preprocessor;
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.Connector#init()
+	 */
 	@Override
 	protected void init () throws BivesConnectionException
 	{
-		// TODO: maybe preporcessing -> instead of id's use annotations/ontologies etc
-		// use id's
-		// use variables for rules
-
-		// preprocessor connects by id and stuff
-		// xy propagates connections
-		XyDiffConnector id = new XyDiffConnector (new SBMLConnectorPreprocessor (sbmlDocA, sbmlDocB));
-		id.init (docA, docB);
-		id.findConnections ();
-
-		conMgmt = id.getConnections ();
-		//System.out.println (conMgmt);
+		// not yet initialized?
+		if (preprocessor == null)
+		{
+			// preprocessor connects by id and stuff
+			// xy propagates connections
+			XyDiffConnector id = new XyDiffConnector (new SBMLConnectorPreprocessor (sbmlDocA, sbmlDocB));
+			id.findConnections ();
+	
+			conMgmt = id.getConnections ();
+		}
+		else
+		{
+			//preprocessor.init (docA, docB);
+			preprocessor.findConnections ();
+	
+			conMgmt = preprocessor.getConnections ();
+		}
 		
 	}
 	

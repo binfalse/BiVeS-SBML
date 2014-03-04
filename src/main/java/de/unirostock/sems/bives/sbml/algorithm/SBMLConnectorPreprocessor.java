@@ -5,7 +5,6 @@ package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.HashMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.Connector;
@@ -20,32 +19,50 @@ import de.unirostock.sems.bives.sbml.parser.SBMLRateRule;
 import de.unirostock.sems.bives.sbml.parser.SBMLReaction;
 import de.unirostock.sems.bives.sbml.parser.SBMLRule;
 import de.unirostock.sems.bives.sbml.parser.SBMLSBase;
-import de.unirostock.sems.xmlutils.ds.TreeDocument;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLConnectorPreprocessor to pre-compute a mapping.
  *
+ * @author Martin Scharm
  */
 public class SBMLConnectorPreprocessor
 	extends Connector
 {
+	
+	/** The preprocessor. */
 	private Connector preprocessor;
+	
+	/** The SBML documents A and B. */
 	private SBMLDocument sbmlDocA, sbmlDocB;
 
+	/**
+	 * Instantiates a new sBML connector preprocessor.
+	 *
+	 * @param sbmlDocA the original document
+	 * @param sbmlDocB the modified document
+	 */
 	public SBMLConnectorPreprocessor (SBMLDocument sbmlDocA, SBMLDocument sbmlDocB)
 	{
-		super ();
+		super (sbmlDocA.getTreeDocument (), sbmlDocB.getTreeDocument ());
 		this.sbmlDocA = sbmlDocA;
 		this.sbmlDocB = sbmlDocB;
 	}
 	
+	/**
+	 * Instantiates a new sBML connector preprocessor.
+	 *
+	 * @param preprocessor the preprocessor
+	 */
 	public SBMLConnectorPreprocessor (Connector preprocessor)
 	{
-		super ();
+		super (preprocessor.getDocA (), preprocessor.getDocB ());
 		this.preprocessor = preprocessor;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.Connector#init()
+	 */
 	@Override
 	protected void init () throws BivesConnectionException
 	{
@@ -54,15 +71,13 @@ public class SBMLConnectorPreprocessor
 		if (preprocessor == null)
 		{
 			// then we'll use by default an id-connector...
-			IdConnector id = new IdConnector ();
-			id.init (docA, docB);
+			IdConnector id = new IdConnector (docA, docB, true);
 			id.findConnections ();
 	
 			conMgmt = id.getConnections ();
 		}
 		else
 		{
-			preprocessor.init (docA, docB);
 			preprocessor.findConnections ();
 	
 			conMgmt = preprocessor.getConnections ();
@@ -150,9 +165,6 @@ public class SBMLConnectorPreprocessor
 					conMgmt.addConnection (new NodeConnection (a.getDocumentNode (), rule.getDocumentNode ()));
 			}
 		}
-		//System.out.println ("after pre:");
-		//System.out.println (conMgmt);
-		
 	}
 	
 }
