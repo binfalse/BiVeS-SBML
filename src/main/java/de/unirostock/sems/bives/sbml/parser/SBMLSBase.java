@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.ds.Xhtml;
@@ -15,17 +14,34 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLSBase.
+ * This base type is designed to allow a modeler or a software package to attach arbitrary information to each major element or list in an SBML model.
  *
+ * @author Martin Scharm
  */
 public abstract class SBMLSBase
 	extends SBMLGenericObject
 {
-	private String metaid;
-	private SBOTerm sboTerm;
-	private Xhtml notes;
-	private DocumentNode annotation;
 	
+	/** The metaid. */
+	private String metaid; //optional
+	
+	/** The SBO term. */
+	private SBOTerm sboTerm; //optional
+	
+	/** The notes. */
+	private Xhtml notes; //optional
+	
+	/** The annotation. */
+	private DocumentNode annotation; // optional
+	
+	/**
+	 * Instantiates a new SBMLS base.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLSBase(DocumentNode documentNode, SBMLModel sbmlModel) throws BivesSBMLParseException
 	{
 		super (documentNode, sbmlModel);
@@ -59,33 +75,43 @@ public abstract class SBMLSBase
 		}
 	}
 	
+	/**
+	 * Gets the SBO term.
+	 *
+	 * @return the SBO term
+	 */
 	public SBOTerm getSBOTerm ()
 	{
 		return sboTerm;
 	}
 	
+	/**
+	 * Gets the meta id.
+	 *
+	 * @return the meta id
+	 */
 	public String getMetaId ()
 	{
 		return metaid;
 	}
 	
+	/**
+	 * Gets the notes.
+	 *
+	 * @return the notes
+	 */
 	public Xhtml getNotes ()
 	{
 		return notes;
 	}
 	
+	/**
+	 * Gets the annotation.
+	 *
+	 * @return the annotation
+	 */
 	public DocumentNode getAnnotation ()
 	{
 		return annotation;
-	}
-	
-	protected String reportAnnotation ()
-	{
-		return "";
-	}
-	
-	protected String reportNotes ()
-	{
-		return "";
 	}
 }

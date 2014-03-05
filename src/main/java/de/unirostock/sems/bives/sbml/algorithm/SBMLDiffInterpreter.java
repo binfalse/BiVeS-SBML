@@ -127,7 +127,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (rule.reportDelete ());
 			else
 			{
-				MarkupElement me = rule.reportMofification (conMgmt, rule, (SBMLRule) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = rule.reportModification (conMgmt, rule, (SBMLRule) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -170,7 +170,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (compartment.reportDelete());
 			else
 			{
-				MarkupElement me = compartment.reportMofification (conMgmt, compartment, (SBMLCompartment) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = compartment.reportModification (conMgmt, compartment, (SBMLCompartment) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -213,7 +213,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (compartment.reportDelete ());
 			else
 			{
-				MarkupElement me = compartment.reportMofification (conMgmt, compartment, (SBMLCompartmentType) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = compartment.reportModification (conMgmt, compartment, (SBMLCompartmentType) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -256,7 +256,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (parameter.reportDelete ());
 			else
 			{
-				MarkupElement me = parameter.reportMofification (conMgmt, parameter, (SBMLParameter) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = parameter.reportModification (conMgmt, parameter, (SBMLParameter) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -299,7 +299,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (event.reportDelete ());
 			else
 			{
-				MarkupElement me = event.reportMofification (conMgmt, event, (SBMLEvent) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = event.reportModification (conMgmt, event, (SBMLEvent) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -342,7 +342,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (spec.reportDelete ());
 			else
 			{
-				MarkupElement me = spec.reportMofification (conMgmt, spec, (SBMLSpecies) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = spec.reportModification (conMgmt, spec, (SBMLSpecies) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -385,7 +385,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (spec.reportDelete ());
 			else
 			{
-				MarkupElement me = spec.reportMofification (conMgmt, spec, (SBMLSpeciesType) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = spec.reportModification (conMgmt, spec, (SBMLSpeciesType) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -428,7 +428,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (reaction.reportDelete ());
 			else
 			{
-				MarkupElement me = reaction.reportMofification (conMgmt, reaction, (SBMLReaction) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = reaction.reportModification (conMgmt, reaction, (SBMLReaction) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -471,7 +471,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (function.reportDelete ());
 			else
 			{
-				MarkupElement me = function.reportMofification (conMgmt, function, (SBMLFunctionDefinition) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = function.reportModification (conMgmt, function, (SBMLFunctionDefinition) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -516,7 +516,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (unit.reportDelete ());
 			else
 			{
-				MarkupElement me = unit.reportMofification (conMgmt, unit, (SBMLUnitDefinition) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = unit.reportModification (conMgmt, unit, (SBMLUnitDefinition) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -561,7 +561,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (ia.reportDelete ());
 			else
 			{
-				MarkupElement me = ia.reportMofification (conMgmt, ia, (SBMLInitialAssignment) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = ia.reportModification (conMgmt, ia, (SBMLInitialAssignment) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}
@@ -604,7 +604,7 @@ public class SBMLDiffInterpreter
 				msec.addValue (constraint.reportDelete ());
 			else
 			{
-				MarkupElement me = constraint.reportMofification (conMgmt, constraint, (SBMLConstraint) modelB.getFromNode (con.getPartnerOf (dn)));
+				MarkupElement me = constraint.reportModification (conMgmt, constraint, (SBMLConstraint) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
 				msec.addValue (me);
 			}

@@ -19,21 +19,27 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLUnitDefinition.
  *
+ * @author Martin Scharm
  */
 public class SBMLUnitDefinition
 	extends SBMLGenericIdNameObject
 	implements DiffReporter, Markup
 {
+	
+	/** The base unit. */
 	private boolean baseUnit; // is this a base unit?
+	
+	/** The list of units defining this unit. */
 	private List<SBMLUnit> listOfUnits;
 	
 	/**
 	 * Instantiates a new SBML base unit.
-	 * 
+	 *
 	 * @param name the name of the unit
-	 * @throws BivesSBMLParseException 
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLUnitDefinition (String name, SBMLModel sbmlModel) throws BivesSBMLParseException
 	{
@@ -44,9 +50,12 @@ public class SBMLUnitDefinition
 	}
 	
 	/**
-	 * @param documentNode
-	 * @throws BivesSBMLParseException 
-	 * @throws BivesConsistencyException 
+	 * Instantiates a new SBML unit definition.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
 	 */
 	public SBMLUnitDefinition (DocumentNode documentNode, SBMLModel sbmlModel) throws BivesSBMLParseException, BivesDocumentConsistencyException
 	{
@@ -71,13 +80,21 @@ public class SBMLUnitDefinition
 			throw new BivesSBMLParseException ("UnitDefinition "+id+" has "+listOfUnits.size ()+" units. (expected at least one unit)");
 	}
 	
+	/**
+	 * Checks if this is a base unit.
+	 *
+	 * @return true, if it is a base unit
+	 */
 	public boolean isBaseUnit ()
 	{
 		return baseUnit;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLUnitDefinition a = (SBMLUnitDefinition) docA;
 		SBMLUnitDefinition b = (SBMLUnitDefinition) docB;
@@ -104,6 +121,9 @@ public class SBMLUnitDefinition
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -112,6 +132,9 @@ public class SBMLUnitDefinition
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{
@@ -120,16 +143,19 @@ public class SBMLUnitDefinition
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.markup.Markup#markup()
+	 */
 	@Override
 	public String markup ()
 	{
-		String ret = "";
+		StringBuilder ret = new StringBuilder ();
 		for (int i = 0; i < listOfUnits.size (); i++)
 		{
-			ret += listOfUnits.get (i).markup ();//.unitToHTMLString ();
+			ret.append (listOfUnits.get (i).markup ());//.unitToHTMLString ();
 			if (i+1 < listOfUnits.size ())
-				ret += " "+MarkupDocument.multiply ()+" ";
+				ret.append (" ").append (MarkupDocument.multiply ()).append (" ");
 		}
-		return ret;
+		return ret.toString ();
 	}
 }

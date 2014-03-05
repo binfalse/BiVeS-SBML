@@ -13,8 +13,9 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLSpeciesType representing type of species (level < 3).
  *
+ * @author Martin Scharm
  */
 public class SBMLSpeciesType
 	extends SBMLGenericIdNameObject
@@ -22,9 +23,11 @@ public class SBMLSpeciesType
 {
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlModel
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML species type.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLSpeciesType (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -32,8 +35,11 @@ public class SBMLSpeciesType
 		super (documentNode, sbmlModel);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLSpeciesType a = (SBMLSpeciesType) docA;
 		SBMLSpeciesType b = (SBMLSpeciesType) docB;
@@ -52,6 +58,9 @@ public class SBMLSpeciesType
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -60,6 +69,9 @@ public class SBMLSpeciesType
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

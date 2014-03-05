@@ -4,8 +4,8 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
+
 import de.binfalse.bfutils.GeneralTools;
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
@@ -16,20 +16,29 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLSpeciesReference representing a link to a species.
  *
+ * @author Martin Scharm
  */
 public class SBMLSpeciesReference
 	extends SBMLSimpleSpeciesReference
 {
+	
+	/** The stoichiometry factor. */
 	private Double stoichiometry;
-	private MathML stoichiometryMath;
-	private boolean constant;
+	
+	/** The stoichiometry math. */
+	private MathML stoichiometryMath; // only level 2
+	
+	/** The constant. */
+	private boolean constant; // only level 3+
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML species reference.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the corresponding SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLSpeciesReference (DocumentNode documentNode,
 		SBMLModel sbmlModel) throws BivesSBMLParseException
@@ -79,16 +88,16 @@ public class SBMLSpeciesReference
 			constant = false; // level <= 2
 	}
 
-	public String reportMofification (SimpleConnectionManager conMgmt, SBMLSpeciesReference a, SBMLSpeciesReference b)
+	/**
+	 * Report the modifications of this species reference.
+	 *
+	 * @param conMgmt the connection manager
+	 * @param a the original species reference
+	 * @param b the modified species reference
+	 * @return the string
+	 */
+	public String reportModification (SimpleConnectionManager conMgmt, SBMLSpeciesReference a, SBMLSpeciesReference b)
 	{
-		/*SBMLSpeciesReference a = (SBMLSpeciesReference) docA;
-		SBMLSpeciesReference b = (SBMLSpeciesReference) docB;*/
-		//if (a.getDocumentNode ().getModification () == 0)
-		//	return stoichiometry + species.getNameAndId ();
-
-		//System.out.println (a + " - " + b);
-		//System.out.println (a.species + " - " + b.species);
-		
 		String retA = GeneralTools.prettyDouble (a.stoichiometry, 1) + a.species.getID ();
 		String retB = GeneralTools.prettyDouble (b.stoichiometry, 1) + b.species.getID ();
 		
@@ -96,36 +105,33 @@ public class SBMLSpeciesReference
 			return retA;
 		else
 			return MarkupDocument.delete (retA) + " + " + MarkupDocument.insert (retB);
-			//return "<span class='"+CLASS_DELETED+"'>" + retA + "</span> + <span class='"+CLASS_INSERTED +"'>" + retB + "</span>";
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.sbml.parser.SBMLSimpleSpeciesReference#reportInsert()
+	 */
+	@Override
 	public String reportInsert ()
 	{
 		return MarkupDocument.insert (GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.sbml.parser.SBMLSimpleSpeciesReference#reportDelete()
+	 */
+	@Override
 	public String reportDelete ()
 	{
 		return MarkupDocument.delete (GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.sbml.parser.SBMLSimpleSpeciesReference#report()
+	 */
+	@Override
 	public String report ()
 	{
 		return GeneralTools.prettyDouble (stoichiometry, 1) + species.getID ();
 	}
-	
-	
-	
-	/*private String getStoichiometry ()
-	{
-		if ((stoichiometry == Math.rint (stoichiometry)) && !Double.isInfinite (stoichiometry) && !Double.isNaN (stoichiometry))
-		{
-			int s = stoichiometry.intValue ();
-			if (s == 1)
-				return "";
-	    return stoichiometry.intValue () + " ";
-		}
-		return stoichiometry.toString () + " ";
-	}*/
 	
 }

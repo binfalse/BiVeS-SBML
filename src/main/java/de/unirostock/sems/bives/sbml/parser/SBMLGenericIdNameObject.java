@@ -8,15 +8,27 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLGenericIdNameObject representing a generic object that has an id and a name.
  *
+ * @author Martin Scharm
  */
 public abstract class SBMLGenericIdNameObject
 extends SBMLSBase
 {
+	
+	/** The id. */
 	protected String id;
+	
+	/** The name. */
 	protected String name; // optional
 	
+	/**
+	 * Instantiates a new SBML generic id-name-object.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLGenericIdNameObject (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
 	{
@@ -45,7 +57,7 @@ extends SBMLSBase
 	}
 	
 	/**
-	 * Gets the name (if defined) and the id as <code>NAME (ID)</code>
+	 * Gets the name (if defined) and the id as: <code>NAME (ID)</code>.
 	 *
 	 * @return the name and id
 	 */
@@ -56,11 +68,21 @@ extends SBMLSBase
 		return id + " (" + name + ")";
 	}
 	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public final String getID ()
 	{
 		return id;
 	}
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public final String getName ()
 	{
 		return name;

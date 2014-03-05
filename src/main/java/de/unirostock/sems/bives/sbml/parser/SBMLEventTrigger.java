@@ -4,12 +4,10 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.ds.MathML;
-import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.bives.tools.BivesTools;
@@ -18,20 +16,30 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLEventTrigger. The exact moment at which the math in the trigger evaluates to "true" during a simulation is taken to be the time point when the Event is triggered.
+.
  *
+ * @author Martin Scharm
  */
 public class SBMLEventTrigger
 	extends SBMLSBase
 {
+	
+	/** The math must evaluate to a boolean. */
 	private MathML math;
+	
+	/** The initial value. */
 	private Boolean initialValue;
+	
+	/** The persistent. */
 	private Boolean persistent;
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML event trigger.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLEventTrigger (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -73,12 +81,25 @@ public class SBMLEventTrigger
 			persistent = null; // level <= 2
 	}
 	
+	/**
+	 * Gets the math.
+	 *
+	 * @return the math
+	 */
 	public MathML getMath ()
 	{
 		return math;
 	}
 
-	public void reportMofification (SimpleConnectionManager conMgmt, SBMLEventTrigger a, SBMLEventTrigger b, MarkupElement me)
+	/**
+	 * Report modifications.
+	 *
+	 * @param conMgmt the connection manager
+	 * @param a the original version
+	 * @param b the modified version
+	 * @param me the markup element
+	 */
+	public void reportModification (SimpleConnectionManager conMgmt, SBMLEventTrigger a, SBMLEventTrigger b, MarkupElement me)
 	{
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return;
@@ -94,11 +115,21 @@ public class SBMLEventTrigger
 		
 	}
 
+	/**
+	 * Report insert.
+	 *
+	 * @param me the me
+	 */
 	public void reportInsert (MarkupElement me)
 	{
 		BivesTools.genMathMarkupStats (null, math.getDocumentNode (), me);
 	}
 
+	/**
+	 * Report delete.
+	 *
+	 * @param me the me
+	 */
 	public void reportDelete (MarkupElement me)
 	{
 		BivesTools.genMathMarkupStats (math.getDocumentNode (), null, me);

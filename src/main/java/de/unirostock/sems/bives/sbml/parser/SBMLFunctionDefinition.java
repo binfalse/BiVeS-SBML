@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.DiffReporter;
@@ -19,15 +18,25 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLFunctionDefinition associates an identifier with a function definition.
  *
+ * @author Martin Scharm
  */
 public class SBMLFunctionDefinition
 extends SBMLGenericIdNameObject
 implements DiffReporter
 {
+	
+	/** The math. */
 	private MathML math;
 	
+	/**
+	 * Instantiates a new SBML function definition.
+	 *
+	 * @param functionDefinition the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLFunctionDefinition (DocumentNode functionDefinition, SBMLModel sbmlModel) throws BivesSBMLParseException
 	{
 		super (functionDefinition, sbmlModel);
@@ -38,13 +47,21 @@ implements DiffReporter
 		math = new MathML ((DocumentNode) maths.get (0));
 	}
 	
+	/**
+	 * Gets the math.
+	 *
+	 * @return the math
+	 */
 	public MathML getMath ()
 	{
 		return math;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLFunctionDefinition a = (SBMLFunctionDefinition) docA;
 		SBMLFunctionDefinition b = (SBMLFunctionDefinition) docB;
@@ -64,6 +81,9 @@ implements DiffReporter
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -73,6 +93,9 @@ implements DiffReporter
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

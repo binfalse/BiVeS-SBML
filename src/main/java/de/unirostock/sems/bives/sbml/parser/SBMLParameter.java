@@ -14,22 +14,31 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLParameter is used to define a symbol associated with a value; this symbol can then be used in mathematical formulas in a model.
  *
+ * @author Martin Scharm
  */
 public class SBMLParameter
 	extends SBMLGenericIdNameObject
 	implements DiffReporter, Markup
 {
+	
+	/** The value. */
 	private Double value; //optional
+	
+	/** The units. */
 	private SBMLUnitDefinition units; //optional
-	private boolean constant; //optional
+	
+	/** The constant. */
+	private boolean constant; //optional pre level 3
 	
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML parameter.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLParameter (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -73,23 +82,39 @@ public class SBMLParameter
 		
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public double getValue ()
 	{
 		return value;
 	}
 	
+	/**
+	 * Checks if the parameter is constant.
+	 *
+	 * @return true, if is constant
+	 */
 	public boolean isConstant ()
 	{
 		return constant;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.markup.Markup#markup()
+	 */
 	public String markup ()
 	{
 		return getNameAndId () + "=" + value + " " + units.getName () + (constant ? " [const]" : "");
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLParameter a = (SBMLParameter) docA;
 		SBMLParameter b = (SBMLParameter) docB;
@@ -108,6 +133,9 @@ public class SBMLParameter
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -116,6 +144,9 @@ public class SBMLParameter
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

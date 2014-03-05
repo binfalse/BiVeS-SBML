@@ -13,19 +13,37 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLCompartment, a bounded space in which species are located.
  *
+ * @author Martin Scharm
  */
 public class SBMLCompartment
 	extends SBMLGenericIdNameObject
 	implements DiffReporter
 {
+	
+	/** The spatial dimensions. */
 	private double spatialDimensions; //optional
+	
+	/** The size. */
 	private double size; //optional
+	
+	/** The units. */
 	private SBMLUnitDefinition units; //optional
+	
+	/** The constant flag. */
 	private boolean constant;
-	private SBMLCompartmentType compartmentType;
+	
+	/** The compartment type. */
+	private SBMLCompartmentType compartmentType; // only level < 3
 
+	/**
+	 * Instantiates a new SBML compartment.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLCompartment (DocumentNode documentNode, SBMLModel sbmlModel) throws BivesSBMLParseException
 	{
 		super (documentNode, sbmlModel);
@@ -86,8 +104,11 @@ public class SBMLCompartment
 			constant = true; // level <= 2
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLCompartment a = (SBMLCompartment) docA;
 		SBMLCompartment b = (SBMLCompartment) docB;
@@ -106,6 +127,9 @@ public class SBMLCompartment
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -114,6 +138,9 @@ public class SBMLCompartment
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

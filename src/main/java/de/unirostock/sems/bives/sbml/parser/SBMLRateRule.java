@@ -13,18 +13,23 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLRateRule used to express equations that determine the rates of change of variables.
  *
+ * @author Martin Scharm
  */
 public class SBMLRateRule
 	extends SBMLRule
 {
+	
+	/** The variable of interest. */
 	private SBMLSBase variable;
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML rate rule.
+	 *
+	 * @param documentNode the document node in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLRateRule (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -33,18 +38,26 @@ public class SBMLRateRule
 		type = SBMLRule.RATE_RULE;
 		if (documentNode.getAttribute ("variable") == null)
 			throw new BivesSBMLParseException ("rate rule doesn't define variable");
-		variable = resolvVariable (documentNode.getAttribute ("variable"));
+		variable = resolveVariable (documentNode.getAttribute ("variable"));
 		if (variable == null)
 			throw new BivesSBMLParseException ("cannot map varibale in rate rule: " + documentNode.getAttribute ("variable"));
 	}
 	
+	/**
+	 * Gets the variable of interest.
+	 *
+	 * @return the variable
+	 */
 	public SBMLSBase getVariable ()
 	{
 		return variable;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLRateRule a = (SBMLRateRule) docA;
 		SBMLRateRule b = (SBMLRateRule) docB;
@@ -64,6 +77,9 @@ public class SBMLRateRule
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -73,6 +89,9 @@ public class SBMLRateRule
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

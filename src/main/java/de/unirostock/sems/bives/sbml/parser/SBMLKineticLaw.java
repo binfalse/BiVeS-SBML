@@ -2,7 +2,6 @@ package de.unirostock.sems.bives.sbml.parser;
 
 import java.util.HashMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
@@ -17,15 +16,27 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLKineticLaw defines the speed at which the process defined by the reaction takes place.
  *
+ * @author Martin Scharm
  */
 public class SBMLKineticLaw
 	extends SBMLSBase
 {
+	
+	/** The math. */
 	private MathML math;
+	
+	/** The list of local parameters. */
 	private HashMap<String, SBMLParameter> listOfLocalParameters;
 	
+	/**
+	 * Instantiates a new SBML kinetic law.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	public SBMLKineticLaw (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
 	{
@@ -50,17 +61,30 @@ public class SBMLKineticLaw
 		}
 	}
 	
+	/**
+	 * Gets the math.
+	 *
+	 * @return the math
+	 */
 	public MathML getMath ()
 	{
 		return math;
 	}
 
-	public void reportMofification (SimpleConnectionManager conMgmt, SBMLKineticLaw a, SBMLKineticLaw b, MarkupElement me)
+	/**
+	 * Report modification of the entities.
+	 *
+	 * @param conMgmt the connection manager
+	 * @param a the original version
+	 * @param b the modified version
+	 * @param me the markup element
+	 */
+	public void reportModification (SimpleConnectionManager conMgmt, SBMLKineticLaw a, SBMLKineticLaw b, MarkupElement me)
 	{
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return;
 
-		String ret = "";
+		//String ret = "";
 		HashMap<String, SBMLParameter> locParA = a.listOfLocalParameters;
 		HashMap<String, SBMLParameter> locParB = b.listOfLocalParameters;
 		for (String key : locParA.keySet ())
@@ -95,6 +119,11 @@ public class SBMLKineticLaw
 		//return ret;
 	}
 
+	/**
+	 * Report insert.
+	 *
+	 * @param me the me
+	 */
 	public void reportInsert (MarkupElement me)
 	{
 		for (SBMLParameter locPar : listOfLocalParameters.values ())
@@ -110,6 +139,11 @@ public class SBMLKineticLaw
 		return ret;*/
 	}
 
+	/**
+	 * Report delete.
+	 *
+	 * @param me the me
+	 */
 	public void reportDelete (MarkupElement me)
 	{
 		for (SBMLParameter locPar : listOfLocalParameters.values ())

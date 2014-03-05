@@ -19,26 +19,43 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLEvent describes the time and form of instantaneous, discontinuous state changes in the model.
  *
+ * @author Martin Scharm
  */
 public class SBMLEvent
 	extends SBMLSBase
 	implements DiffReporter
 {
+	
+	/** The id. */
 	private String id; //optional
+	
+	/** The name. */
 	private String name; //optional
+	
+	/** allows a model to indicate the moment at which the event's assignments are to be evaluated. */
 	private boolean useValuesFromTriggerTime;
+	
+	/** The trigger. */
 	private SBMLEventTrigger trigger;
+	
+	/** The priority. */
 	private SBMLEventPriority priority; //optional
+	
+	/** The delay. */
 	private SBMLEventDelay delay; //optional
+	
+	/** The list of event assignments. */
 	private List<SBMLEventAssignment> listOfEventAssignments; //optional
 	
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new sBML event.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLEvent (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -97,8 +114,11 @@ public class SBMLEvent
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLEvent a = (SBMLEvent) docA;
 		SBMLEvent b = (SBMLEvent) docB;
@@ -119,7 +139,7 @@ public class SBMLEvent
 		MarkupElement me2 = new MarkupElement ("Trigger");
 		if (a.trigger != null && b.trigger != null)
 		{
-			a.trigger.reportMofification (conMgmt, a.trigger, b.trigger, me2);
+			a.trigger.reportModification (conMgmt, a.trigger, b.trigger, me2);
 			me.addSubElements (me2);
 		}
 		else if (a.trigger != null)
@@ -137,7 +157,7 @@ public class SBMLEvent
 		me2 = new MarkupElement ("Priority");
 		if (a.priority != null && b.priority != null)
 		{
-			a.priority.reportMofification (conMgmt, a.priority, b.priority, me2);
+			a.priority.reportModification (conMgmt, a.priority, b.priority, me2);
 			me.addSubElements (me2);
 		}
 		else if (a.priority != null)
@@ -155,7 +175,7 @@ public class SBMLEvent
 		me2 = new MarkupElement ("Delay");
 		if (a.delay != null && b.delay != null)
 		{
-			a.delay.reportMofification (conMgmt, a.delay, b.delay, me2);
+			a.delay.reportModification (conMgmt, a.delay, b.delay, me2);
 			me.addSubElements (me2);
 		}
 		else if (a.priority != null)
@@ -183,7 +203,7 @@ public class SBMLEvent
 				{
 					Connection con = conMgmt.getConnectionForNode (ass.documentNode);
 					SBMLEventAssignment partner = (SBMLEventAssignment) b.sbmlModel.getFromNode (con.getPartnerOf (ass.documentNode));
-					ass.reportMofification (conMgmt, ass, partner, me2);
+					ass.reportModification (conMgmt, ass, partner, me2);
 				}
 			}
 			for (SBMLEventAssignment ass : assB)
@@ -196,6 +216,9 @@ public class SBMLEvent
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -204,6 +227,9 @@ public class SBMLEvent
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{
@@ -212,6 +238,11 @@ public class SBMLEvent
 		return me;
 	}
 	
+	/**
+	 * Gets the name and id.
+	 *
+	 * @return the name and id
+	 */
 	private String getNameAndId ()
 	{
 		if (name != null && id != null)

@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
@@ -22,19 +21,26 @@ import de.unirostock.sems.xmlutils.tools.DocumentTools;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLEventAssignment. An "event assignment" has effect when the event is executed.
  *
+ * @author Martin Scharm
  */
 public class SBMLEventAssignment
 	extends SBMLSBase
 {
+	
+	/** The math. */
 	private MathML math;
+	
+	/** The variable of interest. */
 	private SBMLSBase variable;
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML event assignment.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLEventAssignment (DocumentNode documentNode,
 		SBMLModel sbmlModel) throws BivesSBMLParseException
@@ -46,11 +52,18 @@ public class SBMLEventAssignment
 			throw new BivesSBMLParseException ("event trigger has "+maths.size ()+" math elements. (expected exactly one element)");
 		math = new MathML ((DocumentNode) maths.get (0));
 		
-		variable = resolvVariable (documentNode.getAttribute ("variable"));
+		variable = resolveVariable (documentNode.getAttribute ("variable"));
 	}
 
 	
-	protected final SBMLSBase resolvVariable (String ref) throws BivesSBMLParseException
+	/**
+	 * Resolve variable.
+	 *
+	 * @param ref the reference to a variable name
+	 * @return the SBML SBase representing the variable
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
+	protected final SBMLSBase resolveVariable (String ref) throws BivesSBMLParseException
 	{
 		SBMLSBase var = sbmlModel.getCompartment (ref);
 		if (var == null)
@@ -63,17 +76,35 @@ public class SBMLEventAssignment
 	}
 	
 	
+	/**
+	 * Gets the variable of interest.
+	 *
+	 * @return the variable
+	 */
 	public SBMLSBase getVariable ()
 	{
 		return variable;
 	}
 	
+	/**
+	 * Gets the math.
+	 *
+	 * @return the math
+	 */
 	public MathML getMath ()
 	{
 		return math;
 	}
 
-	public void reportMofification (SimpleConnectionManager conMgmt, SBMLEventAssignment a, SBMLEventAssignment b, MarkupElement me)
+	/**
+	 * Report modification on this entity.
+	 *
+	 * @param conMgmt the connection manager
+	 * @param a the original version
+	 * @param b the modified version
+	 * @param me the markup element
+	 */
+	public void reportModification (SimpleConnectionManager conMgmt, SBMLEventAssignment a, SBMLEventAssignment b, MarkupElement me)
 	{
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return;
@@ -88,16 +119,32 @@ public class SBMLEventAssignment
 		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
 	}
 
+	/**
+	 * Report insert.
+	 *
+	 * @param me the me
+	 */
 	public void reportInsert (MarkupElement me)
 	{
 		me.addValue (MarkupDocument.insert (SBMLModel.getSidName (variable) + " = " + flattenMath (math.getDocumentNode ())));
 	}
 
+	/**
+	 * Report delete.
+	 *
+	 * @param me the me
+	 */
 	public void reportDelete (MarkupElement me)
 	{
 		me.addValue (MarkupDocument.delete (SBMLModel.getSidName (variable) + " = " + flattenMath (math.getDocumentNode ())));
 	}
 	
+	/**
+	 * Flatten math.
+	 *
+	 * @param math the math
+	 * @return the string
+	 */
 	private String flattenMath (DocumentNode math)
 	{
 		try

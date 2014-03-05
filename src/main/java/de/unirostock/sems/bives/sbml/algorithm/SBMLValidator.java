@@ -5,6 +5,7 @@ package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.io.File;
 
+import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.algorithm.ModelValidator;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.ds.TreeDocument;
@@ -24,10 +25,6 @@ public class SBMLValidator
 	private SBMLDocument doc;
 	
 	
-	/** The error. */
-	private Exception error;
-	
-	
 	/* (non-Javadoc)
 	 * @see de.unirostock.sems.xmldiff.algorithm.ModelValidator#validate(de.unirostock.sems.xmldiff.ds.xml.TreeDocument)
 	 */
@@ -41,6 +38,7 @@ public class SBMLValidator
 		catch (Exception e)
 		{
 			error = e;
+			LOGGER.info (e, "error validating document");
 			return false;
 		}
 		return true;
@@ -55,11 +53,12 @@ public class SBMLValidator
 	{
 		try
 		{
-			return validate (new TreeDocument (XmlTools.readDocument (d), null));
+			return validate (new TreeDocument (XmlTools.readDocument (d), d.toURI ()));
 		}
 		catch (Exception e)
 		{
 			error = e;
+			LOGGER.info (e, "error validating document");
 			return false;
 		}
 	}
@@ -78,6 +77,7 @@ public class SBMLValidator
 		catch (Exception e)
 		{
 			error = e;
+			LOGGER.info (e, "error validating document");
 			return false;
 		}
 	}
@@ -90,16 +90,6 @@ public class SBMLValidator
 	public SBMLDocument getDocument ()
 	{
 		return doc;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.algorithm.ModelValidator#getError()
-	 */
-	@Override
-	public Exception getError ()
-	{
-		return error;
 	}
 	
 }

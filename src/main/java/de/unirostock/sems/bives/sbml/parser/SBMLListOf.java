@@ -8,17 +8,20 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLListOf represents a list of something in SBML.
  *
+ * @author Martin Scharm
  */
 public class SBMLListOf
 	extends SBMLSBase
 {
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlModel
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML list of ...
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLListOf (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException

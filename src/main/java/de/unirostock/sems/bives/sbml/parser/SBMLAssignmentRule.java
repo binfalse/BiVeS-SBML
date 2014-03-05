@@ -13,18 +13,23 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLAssignmentRule used to express equations that set the values of variables.
  *
+ * @author Martin Scharm
  */
 public class SBMLAssignmentRule
 	extends SBMLRule
 {
+	
+	/** The variable that is modified in this rule. */
 	private SBMLSBase variable;
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML assignment rule.
+	 *
+	 * @param documentNode the corresponding document node in the XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLAssignmentRule (DocumentNode documentNode,
 		SBMLModel sbmlModel) throws BivesSBMLParseException
@@ -33,18 +38,26 @@ public class SBMLAssignmentRule
 		type = SBMLRule.ASSIGNMENT_RULE;
 		if (documentNode.getAttribute ("variable") == null)
 			throw new BivesSBMLParseException ("rate rule doesn't define variable");
-		variable = resolvVariable (documentNode.getAttribute ("variable"));
+		variable = resolveVariable (documentNode.getAttribute ("variable"));
 		if (variable == null)
 			throw new BivesSBMLParseException ("cannot map varibale in rate rule: " + documentNode.getAttribute ("variable"));
 	}
 	
+	/**
+	 * Gets the corresponding variable.
+	 *
+	 * @return the variable
+	 */
 	public SBMLSBase getVariable ()
 	{
 		return variable;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLAssignmentRule a = (SBMLAssignmentRule) docA;
 		SBMLAssignmentRule b = (SBMLAssignmentRule) docB;
@@ -64,6 +77,9 @@ public class SBMLAssignmentRule
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -73,6 +89,9 @@ public class SBMLAssignmentRule
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

@@ -13,28 +13,51 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLSpecies representing a species in an SBML document.
  *
+ * @author Martin Scharm
  */
 public class SBMLSpecies
 	extends SBMLGenericIdNameObject
 	implements DiffReporter
 {
+	
+	/** The compartment which hosts this species. */
 	private SBMLCompartment compartment;
+	
+	/** The initial amount of the species. */
 	private Double initialAmount; //optional
+	
+	/** The initial concentration. */
 	private Double initialConcentration; //optional
+	
+	/** The units. */
 	private	SBMLUnitDefinition substanceUnits; //optional
-	private boolean hasOnlySubstanceUnits;
-	private boolean boundaryCondition;
+	
+	/** The has only substance units. */
+	private boolean hasOnlySubstanceUnits; // level 2+
+	
+	/** The boundary condition. */
+	private boolean boundaryCondition; // optional before 3, defaults to false
+	
+	/** The constant. */
 	private boolean constant;
-	private Integer charge; //optional
-	private	SBMLParameter conversionFactor; //optional
-	private SBMLSpeciesType speciesType; //optional
+	
+	/** The charge. */
+	private Integer charge; //optional, only < level 3
+	
+	/** The conversion factor. */
+	private	SBMLParameter conversionFactor; //optional only level 3+
+	
+	/** The species type. */
+	private SBMLSpeciesType speciesType; //optional only level < 3
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML species.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLSpecies (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -180,38 +203,71 @@ public class SBMLSpecies
 		return initialConcentration;
 	}
 	
+	/**
+	 * Gets the compartment that hosts this species.
+	 *
+	 * @return the compartment
+	 */
 	public SBMLCompartment getCompartment ()
 	{
 		return compartment;
 	}
 	
+	/**
+	 * Is this species allowed to have an assignment rule.
+	 *
+	 * @return true, if allowed
+	 */
 	public boolean canHaveAssignmentRule ()
 	{
 		return !constant;
 	}
 	
+	/**
+	 * Can this species take part in a reaction as a reactant or product?
+	 *
+	 * @return true, if that is possible
+	 */
 	public boolean canBeReactantOrProduct ()
 	{
 		return boundaryCondition || (!boundaryCondition && !constant);
 	}
 	
+	/**
+	 * Checks if this species is constant.
+	 *
+	 * @return true, if it is constant
+	 */
 	public boolean isConstant ()
 	{
 		return constant;
 	}
 	
+	/**
+	 * Checks for a boundary condition.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasBoundaryCondition ()
 	{
 		return boundaryCondition;
 	}
 	
+	/**
+	 * Checks if this species has only substance units.
+	 *
+	 * @return true, if it has only substance units
+	 */
 	public boolean hasOnlySubstanceUnits ()
 	{
 		return hasOnlySubstanceUnits;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLSpecies a = (SBMLSpecies) docA;
 		SBMLSpecies b = (SBMLSpecies) docB;
@@ -230,6 +286,9 @@ public class SBMLSpecies
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -238,6 +297,9 @@ public class SBMLSpecies
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

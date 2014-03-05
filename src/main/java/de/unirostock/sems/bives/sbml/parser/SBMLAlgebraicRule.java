@@ -13,17 +13,20 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLAlgebraicRule used to express equations that are neither assignments of model variables nor rates of change.
  *
+ * @author Martin Scharm
  */
 public class SBMLAlgebraicRule
 	extends SBMLRule
 {
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML algebraic rule.
+	 *
+	 * @param documentNode the corresponding document node int the XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLAlgebraicRule (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -32,8 +35,11 @@ public class SBMLAlgebraicRule
 		type = SBMLRule.ALGEBRAIC_RULE;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLAlgebraicRule a = (SBMLAlgebraicRule) docA;
 		SBMLAlgebraicRule b = (SBMLAlgebraicRule) docB;
@@ -48,6 +54,9 @@ public class SBMLAlgebraicRule
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -57,6 +66,9 @@ public class SBMLAlgebraicRule
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

@@ -9,26 +9,55 @@ import java.util.List;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLDiffReport creates a report about the differences between two versions of an SBML document.
  *
+ * @author Martin Scharm
  */
 public class SBMLDiffReport
 {
+	
+	/** The header. */
 	private String header;
 	
+	/** The modified species. */
 	private List<String>	modifiedSpecies;
+	
+	/** The modified species types. */
 	private List<String>	modifiedSpeciesTypes;
+	
+	/** The modified parameter. */
 	private List<String>	modifiedParameter;
+	
+	/** The modified reactions. */
 	private List<String>	modifiedReactions;
+	
+	/** The modified compartments. */
 	private List<String>	modifiedCompartments;
+	
+	/** The modified compartment types. */
 	private List<String>	modifiedCompartmentTypes;
+	
+	/** The modified rules. */
 	private List<String>	modifiedRules;
+	
+	/** The modified functions. */
 	private List<String>	modifiedFunctions;
+	
+	/** The modified constraints. */
 	private List<String>	modifiedConstraints;
+	
+	/** The modified events. */
 	private List<String>	modifiedEvents;
+	
+	/** The modified initial assignments. */
 	private List<String>	modifiedInitialAssignments;
+	
+	/** The modified units. */
 	private List<String>	modifiedUnits;
 	
+	/**
+	 * Instantiates a new sBML diff report.
+	 */
 	public SBMLDiffReport ()
 	{
 		header = "";
@@ -46,6 +75,11 @@ public class SBMLDiffReport
 		modifiedUnits = new ArrayList<String> ();
 	}
 	
+	/**
+	 * Generate html report.
+	 *
+	 * @return the string
+	 */
 	public String generateHTMLReport ()
 	{
 		String report = "<h2>Diff Report</h2><p>Please keep in mind that these modifications are choosen by what we think is important!</p><p>"+header+"</p>";
@@ -66,6 +100,14 @@ public class SBMLDiffReport
 		return report;
 	}
 	
+	/**
+	 * Generate table.
+	 *
+	 * @param mods the mods
+	 * @param headline the headline
+	 * @param cssclass the cssclass
+	 * @return the string
+	 */
 	private String generateTable (List<String> mods, String headline, String cssclass)
 	{
 		if (mods.size () < 1)
@@ -83,66 +125,131 @@ public class SBMLDiffReport
 			"<thead><th>ID (name)</th><th>Modification</th></thead>" + rep + "</table>";
 	}
 	
+	/**
+	 * Adds the header.
+	 *
+	 * @param header the header
+	 */
 	public void addHeader (String header)
 	{
 		this.header += header;
 	}
 	
+	/**
+	 * Modify species.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifySpecies (String rep)
 	{
 		modifiedSpecies.add (rep);
 	}
 	
+	/**
+	 * Modify species types.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifySpeciesTypes (String rep)
 	{
 		modifiedSpeciesTypes.add (rep);
 	}
 	
+	/**
+	 * Modify parameter.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyParameter (String rep)
 	{
 		modifiedParameter.add (rep);
 	}
 	
+	/**
+	 * Modify reaction.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyReaction (String rep)
 	{
 		modifiedReactions.add (rep);
 	}
 	
+	/**
+	 * Modify compartments.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyCompartments (String rep)
 	{
 		modifiedCompartments.add (rep);
 	}
 	
+	/**
+	 * Modify compartment types.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyCompartmentTypes (String rep)
 	{
 		modifiedCompartmentTypes.add (rep);
 	}
 	
+	/**
+	 * Modify rules.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyRules (String rep)
 	{
 		modifiedRules.add (rep);
 	}
 	
+	/**
+	 * Modify functions.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyFunctions (String rep)
 	{
 		modifiedFunctions.add (rep);
 	}
 	
+	/**
+	 * Modify contraints.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyContraints (String rep)
 	{
 		modifiedConstraints.add (rep);
 	}
 	
+	/**
+	 * Modify events.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyEvents (String rep)
 	{
 		modifiedEvents.add (rep);
 	}
 	
+	/**
+	 * Modify initial assignments.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyInitialAssignments (String rep)
 	{
 		modifiedInitialAssignments.add (rep);
 	}
 	
+	/**
+	 * Modify units.
+	 *
+	 * @param rep the rep
+	 */
 	public void modifyUnits (String rep)
 	{
 		modifiedUnits.add (rep);

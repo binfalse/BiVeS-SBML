@@ -12,24 +12,42 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLUnit representing a factor based on a unit: 
+ * 
+ * <pre>
+ * (multiplier * 10^scale * kind)^exponent
+ *	</pre>
  *
+ * @author Martin Scharm
  */
 public class SBMLUnit
 	extends SBMLSBase
 	implements Markup
 {
+	
+	/** those are BASE_UNITS. */
+	public final static String [] BASE_UNITS = new String [] {"substance", "volume", "area", "length", "ampere", "farad", "joule", "lux", "radian", "volt", "avogadro", "gram", "katal", "metre", "second", "watt", "becquerel", "gray", "kelvin", "mole", "siemens", "weber", "candela", "henry", "kilogram", "newton", "sievert", "coulomb", "hertz", "litre", "ohm", "steradian", "dimensionless", "item", "lumen", "pascal", "tesla"};
+	
+	/** The unit this unit is based on. */
 	private SBMLUnitDefinition kind;
+	
+	/** The exponent. */
 	private double exponent;
+	
+	/** The scale. */
 	private int scale;
+	
+	/** The multiplier. */
 	private double multiplier;
 
 	
 	/**
 	 * Instantiates a new SBML unit derived from a base unit.
 	 *
-	 * @param documentNode the DocumentNode defining this unit 
-	 * @throws BivesSBMLParseException 
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
 	 */
 	public SBMLUnit (DocumentNode documentNode, SBMLModel sbmlModel) throws BivesSBMLParseException, BivesDocumentConsistencyException
 	{
@@ -84,21 +102,22 @@ public class SBMLUnit
 		else
 			exponent = 1; // level <= 2
 	}
-	
-	/*public String unitToHTMLString ()
-	{
-		return "(" + multiplier + "&middot;10^" + scale + "&middot;" + kind.name + ")^" + exponent;
-	}*/
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.markup.Markup#markup()
+	 */
 	@Override
 	public String markup ()
 	{
-		String ret = multiplier == 1 ? "" : GeneralTools.prettyDouble (multiplier, 1) + MarkupDocument.multiply ();
-		ret += scale == 0 ? "" : "10^" + scale + MarkupDocument.multiply ();
-		ret += "[" + kind.name + "]";
-		ret += exponent == 1 ? "" : "^" + GeneralTools.prettyDouble (exponent, 1);
-		//ret += offset == 0 ? "" : "+offset";
-		return "(" + ret + ")";
-		//return "(" + multiplier + ""+markupDocument.multiply ()+"10^" + scale + ""+markupDocument.multiply ()+"" + kind.name + ")^" + exponent;
+		StringBuilder ret = new StringBuilder ("(")
+		.append (GeneralTools.prettyDouble (multiplier, 1, "", MarkupDocument.multiply ()));
+		
+		if (scale != 0)
+			ret.append ("10^").append (scale).append (MarkupDocument.multiply ());
+		
+		ret.append ("[").append (kind.name).append ("]")
+		.append (GeneralTools.prettyDouble (exponent, 1, "^", ""));
+
+		return ret.append (")").toString ();
 	}
 }

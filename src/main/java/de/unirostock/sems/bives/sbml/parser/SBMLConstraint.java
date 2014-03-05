@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.DiffReporter;
@@ -20,20 +19,27 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLConstraint, a mechanism for stating the assumptions under which a model is designed to operate.
  *
+ * @author Martin Scharm
  */
 public class SBMLConstraint
 	extends SBMLSBase
 	implements DiffReporter
 {
+	
+	/** The math. */
 	private MathML math;
+	
+	/** The message may be displayed to the user when the condition of the constraint in math evaluates to a value of “false”. */
 	private Xhtml message;
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML constraint.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLConstraint (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -59,18 +65,31 @@ public class SBMLConstraint
 		
 	}
 	
+	/**
+	 * Gets the math.
+	 *
+	 * @return the math
+	 */
 	public MathML getMath ()
 	{
 		return math;
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	public Xhtml getMessage ()
 	{
 		return message;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLConstraint a = (SBMLConstraint) docA;
 		SBMLConstraint b = (SBMLConstraint) docB;
@@ -98,6 +117,9 @@ public class SBMLConstraint
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -106,6 +128,9 @@ public class SBMLConstraint
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

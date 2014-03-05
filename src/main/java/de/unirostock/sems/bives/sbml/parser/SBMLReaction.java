@@ -18,30 +18,52 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLReaction represents any kind of process that can change the quantity of one or more species in a model.
  *
+ * @author Martin Scharm
  */
 public class SBMLReaction
 	extends SBMLGenericIdNameObject
 	implements DiffReporter
 {
+	
+	/** The reversible flag. */
 	private boolean reversible;
+	
+	/** The fast flag. */
 	private boolean fast;
+	
+	/** The compartment in which the reaction takes place. */
 	private SBMLCompartment compartment; //optional
 
+	/** The list of reactants node. */
 	private SBMLListOf listOfReactantsNode;
+	
+	/** The list of products node. */
 	private SBMLListOf listOfProductsNode;
+	
+	/** The list of modifiers node. */
 	private SBMLListOf listOfModifiersNode;
+	
+	/** The list of reactants. */
 	private List<SBMLSpeciesReference> listOfReactants;
+	
+	/** The list of products. */
 	private List<SBMLSpeciesReference> listOfProducts;
+	
+	/** The list of modifiers. */
 	private List<SBMLSimpleSpeciesReference> listOfModifiers;
+	
+	/** The kinetic law. */
 	private SBMLKineticLaw kineticLaw;
 	
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML reaction.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLReaction (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -131,58 +153,111 @@ public class SBMLReaction
 			kineticLaw = new SBMLKineticLaw ((DocumentNode) nodes.get (0), sbmlModel);
 	}
 	
+	/**
+	 * Gets the compartment.
+	 *
+	 * @return the compartment
+	 */
 	public SBMLCompartment getCompartment ()
 	{
 		return compartment;
 	}
 	
+	/**
+	 * Checks if this reaction is reversible.
+	 *
+	 * @return true, if it is reversible
+	 */
 	public boolean isReversible ()
 	{
 		return reversible;
 	}
 	
+	/**
+	 * Checks if this reaction is fast.
+	 *
+	 * @return true, if it is fast
+	 */
 	public boolean isFast ()
 	{
 		return fast;
 	}
 	
+	/**
+	 * Gets the kinetic law.
+	 *
+	 * @return the kinetic law
+	 */
 	public SBMLKineticLaw getKineticLaw ()
 	{
 		return kineticLaw;
 	}
 	
+	/**
+	 * Gets the list of reactants node.
+	 *
+	 * @return the list of reactants node
+	 */
 	public SBMLListOf getListOfReactantsNode ()
 	{
 		return listOfReactantsNode;
 	}
 	
+	/**
+	 * Gets the list of products node.
+	 *
+	 * @return the list of products node
+	 */
 	public SBMLListOf getListOfProductsNode ()
 	{
 		return listOfProductsNode;
 	}
 	
+	/**
+	 * Gets the list of modifiers node.
+	 *
+	 * @return the list of modifiers node
+	 */
 	public SBMLListOf getListOfModifiersNode ()
 	{
 		return listOfModifiersNode;
 	}
 	
+	/**
+	 * Gets the reactants.
+	 *
+	 * @return the reactants
+	 */
 	public List<SBMLSpeciesReference> getReactants ()
 	{
 		return listOfReactants;
 	}
 	
+	/**
+	 * Gets the products.
+	 *
+	 * @return the products
+	 */
 	public List<SBMLSpeciesReference> getProducts ()
 	{
 		return listOfProducts;
 	}
 	
+	/**
+	 * Gets the modifiers.
+	 *
+	 * @return the modifiers
+	 */
 	public List<SBMLSimpleSpeciesReference> getModifiers ()
 	{
 		return listOfModifiers;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLReaction a = (SBMLReaction) docA;
 		SBMLReaction b = (SBMLReaction) docB;
@@ -211,7 +286,7 @@ public class SBMLReaction
 			{
 				Connection c = conMgmt.getConnectionForNode (sr.getDocumentNode ());
 				SBMLSpeciesReference partner = (SBMLSpeciesReference) b.sbmlModel.getFromNode (c.getPartnerOf (sr.getDocumentNode ()));
-				sub += sr.reportMofification (conMgmt, sr, partner);
+				sub += sr.reportModification (conMgmt, sr, partner);
 			}
 		}
 		for (SBMLSpeciesReference sr : bS)
@@ -245,7 +320,7 @@ public class SBMLReaction
 				//System.out.println ("reporting mod for " + sr.getDocumentNode ().getXPath ());
 				Connection c = conMgmt.getConnectionForNode (sr.getDocumentNode ());
 				SBMLSpeciesReference partner = (SBMLSpeciesReference) b.sbmlModel.getFromNode (c.getPartnerOf (sr.getDocumentNode ()));
-				sub += sr.reportMofification (conMgmt, sr, partner);
+				sub += sr.reportModification (conMgmt, sr, partner);
 			}
 		}
 		for (SBMLSpeciesReference sr : bS)
@@ -279,7 +354,7 @@ public class SBMLReaction
 			{
 				Connection c = conMgmt.getConnectionForNode (sr.getDocumentNode ());
 				SBMLSimpleSpeciesReference partner = (SBMLSimpleSpeciesReference) b.sbmlModel.getFromNode (c.getPartnerOf (sr.getDocumentNode ()));
-				sub += sr.reportMofification (conMgmt, sr, partner);
+				sub += sr.reportModification (conMgmt, sr, partner);
 			}
 		}
 		for (SBMLSimpleSpeciesReference sr : bM)
@@ -295,7 +370,7 @@ public class SBMLReaction
 		MarkupElement me2 = new MarkupElement ("Kinetic Law");
 		if (a.kineticLaw != null && b.kineticLaw != null)
 		{
-			a.kineticLaw.reportMofification (conMgmt, a.kineticLaw, b.kineticLaw, me2);
+			a.kineticLaw.reportModification (conMgmt, a.kineticLaw, b.kineticLaw, me2);
 			if (me2.getValues ().size () > 0)
 				me.addSubElements (me2);
 		}
@@ -316,6 +391,9 @@ public class SBMLReaction
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -327,6 +405,9 @@ public class SBMLReaction
 		return me;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{
@@ -335,6 +416,12 @@ public class SBMLReaction
 		return me;
 	}
 	
+	/**
+	 * Typeset this reaction.
+	 *
+	 * @param me the markup element
+	 * @param insert is that an insert? otherwise we report a delete
+	 */
 	public void report (MarkupElement me, boolean insert)
 	{
 		

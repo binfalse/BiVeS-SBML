@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.DiffReporter;
@@ -19,20 +18,27 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLInitialAssignment assigning initial values to entities in a model.
  *
+ * @author Martin Scharm
  */
 public class SBMLInitialAssignment
 	extends SBMLSBase
 	implements DiffReporter
 {
+	
+	/** The entity to assign. */
 	private SBMLSBase symbol;
+	
+	/** The math. */
 	private MathML math;
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlDocument
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML initial assignment.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLInitialAssignment (DocumentNode documentNode,
 		SBMLModel sbmlModel) throws BivesSBMLParseException
@@ -57,18 +63,31 @@ public class SBMLInitialAssignment
 		math = new MathML ((DocumentNode) maths.get (0));
 	}
 	
+	/**
+	 * Gets the symbol.
+	 *
+	 * @return the symbol
+	 */
 	public SBMLSBase getSymbol ()
 	{
 		return symbol;
 	}
 	
+	/**
+	 * Gets the math.
+	 *
+	 * @return the math
+	 */
 	public MathML getMath ()
 	{
 		return math;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLInitialAssignment a = (SBMLInitialAssignment) docA;
 		SBMLInitialAssignment b = (SBMLInitialAssignment) docB;
@@ -88,6 +107,9 @@ public class SBMLInitialAssignment
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -96,6 +118,9 @@ public class SBMLInitialAssignment
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

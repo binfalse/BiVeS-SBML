@@ -12,8 +12,9 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLCompartmentType, a grouping construct used to establish a relationship between multiple SBMLCompartments. (only level < 3)
  *
+ * @author Martin Scharm
  */
 public class SBMLCompartmentType
 	extends SBMLGenericIdNameObject
@@ -21,9 +22,11 @@ public class SBMLCompartmentType
 {
 	
 	/**
-	 * @param documentNode
-	 * @param sbmlModel
-	 * @throws BivesSBMLParseException
+	 * Instantiates a new SBML compartment type.
+	 *
+	 * @param documentNode the document node encoding this entity in the corresponding XML tree
+	 * @param sbmlModel the SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 */
 	public SBMLCompartmentType (DocumentNode documentNode, SBMLModel sbmlModel)
 		throws BivesSBMLParseException
@@ -31,8 +34,11 @@ public class SBMLCompartmentType
 		super (documentNode, sbmlModel);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportMofification(de.unirostock.sems.bives.algorithm.SimpleConnectionManager, de.unirostock.sems.bives.algorithm.DiffReporter, de.unirostock.sems.bives.algorithm.DiffReporter)
+	 */
 	@Override
-	public MarkupElement reportMofification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
+	public MarkupElement reportModification (SimpleConnectionManager conMgmt, DiffReporter docA, DiffReporter docB)
 	{
 		SBMLCompartmentType a = (SBMLCompartmentType) docA;
 		SBMLCompartmentType b = (SBMLCompartmentType) docB;
@@ -49,6 +55,9 @@ public class SBMLCompartmentType
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportInsert()
+	 */
 	@Override
 	public MarkupElement reportInsert ()
 	{
@@ -57,6 +66,9 @@ public class SBMLCompartmentType
 		return me;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.unirostock.sems.bives.algorithm.DiffReporter#reportDelete()
+	 */
 	@Override
 	public MarkupElement reportDelete ()
 	{

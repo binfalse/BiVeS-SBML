@@ -15,18 +15,29 @@ import de.unirostock.sems.xmlutils.ds.TreeNode;
 
 
 /**
- * @author Martin Scharm
+ * The Class SBMLDocument representing a document holding an SBMLModel.
  *
+ * @author Martin Scharm
  */
 public class SBMLDocument
 extends ModelDocument
 {
-	
-	//private String nameSpace;
+	/** The level. */
 	private int level;
+	
+	/** The version. */
 	private int version;
+	
+	/** The model. */
 	private SBMLModel model;
 	
+	/**
+	 * Instantiates a new SBML document.
+	 *
+	 * @param doc the XML document
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 */
 	public SBMLDocument (TreeDocument doc) throws BivesSBMLParseException, BivesDocumentConsistencyException
 	{
 		super (doc);
@@ -39,30 +50,46 @@ extends ModelDocument
 		model = new SBMLModel ((DocumentNode) nodes.get (0), this);
 	}
 	
+	/**
+	 * Gets the level.
+	 *
+	 * @return the level
+	 */
 	public int getLevel ()
 	{
 		return level;
 	}
 	
+	/**
+	 * Gets the version.
+	 *
+	 * @return the version
+	 */
 	public int getVersion ()
 	{
 		return version;
 	}
 	
+	/**
+	 * Gets the model.
+	 *
+	 * @return the model
+	 */
 	public SBMLModel getModel ()
 	{
 		return model;
 	}
 
+	/**
+	 * Parses the root.
+	 *
+	 * @param root the root
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 */
 	private void parseRoot (DocumentNode root) throws BivesSBMLParseException
 	{
 		if (!root.getTagName ().equals ("sbml"))
 			throw new BivesSBMLParseException ("sbml document doesn't start with sbml tag.");
-		/*
-		nameSpace = root.getAttribute ("xmlns");
-		if (nameSpace == null)
-			throw new BivesSBMLParseException ("no namespace for model defined.");
-		*/
 		try
 		{
 			level = Integer.parseInt (root.getAttribute ("level"));
