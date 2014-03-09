@@ -1,0 +1,69 @@
+<project name="BiVeS-SBML" default="dist" basedir=".">
+    <description>
+        BiVeS - BioModel Version Control System
+        This package provides SBML integration for BiVeS
+    </description>
+
+    <property name="app.name" value="BiVeS-SBML" />
+    <property name="app.version" value="1.2.5" />
+    <property name="src" location="src/main/java" />
+    <property name="build" location="build" />
+    <property name="dist" location="dist" />
+    <property name="lib" location="lib" />
+
+    <path id="compile.classpath">
+        <fileset dir="${lib}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+
+    <target name="init" description="initialize workspace">
+        <assertDirAvailable dir="${lib}" />
+        <tstamp />
+        <mkdir dir="${build}" />
+        <mkdir dir="${dist}" />
+    </target>
+
+    <target name="compile" depends="init" description="compile the source">
+        <javac srcdir="${src}" destdir="${build}">
+            <classpath refid="compile.classpath" />
+        </javac>
+    </target>
+
+    <target name="dist" depends="compile" description="generate the distribution">
+        <jar jarfile="${dist}/${app.name}-${app.version}.jar" basedir="${build}" />
+        <jar jarfile="${dist}/${app.name}-${app.version}-fat.jar" basedir="${build}">
+            <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
+        </jar>
+    </target>
+
+    <target name="sign" depends="dist" description="sign a dist">
+        <checksum file="${dist}/${app.name}-${app.version}.jar" forceOverwrite="yes"/>
+        <move file="${dist}/${app.name}-${app.version}.jar.MD5" tofile="${dist}/${app.name}-${app.version}.jar.md5"/>
+        <exec executable="gpg">
+            <arg value="--output"/>
+            <arg value="${dist}/${app.name}-${app.version}.jar.md5.sig"/>
+            <arg value="-abs"/>
+            <arg value="${dist}/${app.name}-${app.version}.jar.md5"/>
+        </exec>
+    </target>
+
+    <target name="clean" description="clean up">
+        <delete dir="${build}" />
+        <delete dir="${dist}" />
+    </target>
+
+    <macrodef name="assertDirAvailable">
+        <attribute name="dir" />
+        <sequential>
+            <fail message="Please create dir @{dir} containing the depenencies:${line.separator}${line.separator} >> BiVeS-Core (download latest fat from http://bin.sems.uni-rostock.de/)">
+                <condition>
+                    <not>
+                        <available file="@{dir}" type="dir" />
+                    </not>
+                </condition>
+            </fail>
+        </sequential>
+    </macrodef>
+</project>
