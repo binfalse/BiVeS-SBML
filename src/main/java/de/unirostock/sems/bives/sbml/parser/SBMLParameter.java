@@ -46,35 +46,35 @@ public class SBMLParameter
 		super (documentNode, sbmlModel);
 		
 
-		if (documentNode.getAttribute ("value") != null)
+		if (documentNode.getAttributeValue ("value") != null)
 		{
 			try
 			{
-				value = Double.parseDouble (documentNode.getAttribute ("value"));
+				value = Double.parseDouble (documentNode.getAttributeValue ("value"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("value of parameter "+id+" of unexpected format: " + documentNode.getAttribute ("value"));
+				throw new BivesSBMLParseException ("value of parameter "+id+" of unexpected format: " + documentNode.getAttributeValue ("value"));
 			}
 		}
 		
-		if (documentNode.getAttribute ("units") != null)
+		if (documentNode.getAttributeValue ("units") != null)
 		{
-			String tmp = documentNode.getAttribute ("units");
+			String tmp = documentNode.getAttributeValue ("units");
 			units = sbmlModel.getUnitDefinition (tmp);
 			if (units == null)
 				throw new BivesSBMLParseException ("units attribute in parameter "+id+" not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("constant") != null)
+		if (documentNode.getAttributeValue ("constant") != null)
 		{
 			try
 			{
-				constant = Boolean.parseBoolean (documentNode.getAttribute ("constant"));
+				constant = Boolean.parseBoolean (documentNode.getAttributeValue ("constant"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("constant of parameter "+id+" of unexpected format: " + documentNode.getAttribute ("constant"));
+				throw new BivesSBMLParseException ("constant of parameter "+id+" of unexpected format: " + documentNode.getAttributeValue ("constant"));
 			}
 		}
 		else

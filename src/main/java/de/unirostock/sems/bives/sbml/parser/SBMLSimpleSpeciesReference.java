@@ -4,6 +4,7 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
+import de.unirostock.sems.bives.ds.ModelDocument;
 import de.unirostock.sems.bives.ds.ontology.SBOTerm;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -40,11 +41,13 @@ extends SBMLSBase
 	{
 		super (documentNode, sbmlModel);
 
-		id = documentNode.getAttribute ("id");
-		name = documentNode.getAttribute ("name");
+		id = documentNode.getAttributeValue ("id");
+		name = documentNode.getAttributeValue ("name");
 		
+		if (id != null)
+			sbmlModel.registerSpeciesReference (id, this);
 		
-		String tmp = documentNode.getAttribute ("species");
+		String tmp = documentNode.getAttributeValue ("species");
 		species = sbmlModel.getSpecies (tmp);
 		if (species == null)
 			throw new BivesSBMLParseException ("species reference "+tmp+" is not a valid species.");

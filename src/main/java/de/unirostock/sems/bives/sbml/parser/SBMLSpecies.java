@@ -64,7 +64,7 @@ public class SBMLSpecies
 	{
 		super (documentNode, sbmlModel);
 		
-		String tmp = documentNode.getAttribute ("compartment");
+		String tmp = documentNode.getAttributeValue ("compartment");
 		compartment = sbmlModel.getCompartment (tmp);
 		if (compartment == null)
 			throw new BivesSBMLParseException ("no valid compartment for species "+id+" defined: " + tmp);
@@ -72,7 +72,7 @@ public class SBMLSpecies
 		initialAmount = null;
 		initialConcentration = null;
 
-		tmp = documentNode.getAttribute ("speciesType");
+		tmp = documentNode.getAttributeValue ("speciesType");
 		if (tmp != null)
 		{
 			speciesType = sbmlModel.getSpeciesType (tmp);
@@ -80,101 +80,101 @@ public class SBMLSpecies
 				throw new BivesSBMLParseException ("no valid speciesType for species "+id+" defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("charge") != null)
+		if (documentNode.getAttributeValue ("charge") != null)
 		{
 			try
 			{
-				charge = Integer.parseInt (documentNode.getAttribute ("charge"));
+				charge = Integer.parseInt (documentNode.getAttributeValue ("charge"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("charge of species "+id+" of unexpected format: " + documentNode.getAttribute ("charge"));
+				throw new BivesSBMLParseException ("charge of species "+id+" of unexpected format: " + documentNode.getAttributeValue ("charge"));
 			}
 		}
 		
-		if (documentNode.getAttribute ("initialAmount") != null)
+		if (documentNode.getAttributeValue ("initialAmount") != null)
 		{
 			try
 			{
-				initialAmount = Double.parseDouble (documentNode.getAttribute ("initialAmount"));
+				initialAmount = Double.parseDouble (documentNode.getAttributeValue ("initialAmount"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("initialAmount of species "+id+" of unexpected format: " + documentNode.getAttribute ("initialAmount"));
+				throw new BivesSBMLParseException ("initialAmount of species "+id+" of unexpected format: " + documentNode.getAttributeValue ("initialAmount"));
 			}
 		}
 		
-		if (documentNode.getAttribute ("initialConcentration") != null)
+		if (documentNode.getAttributeValue ("initialConcentration") != null)
 		{
 			try
 			{
-				initialConcentration = Double.parseDouble (documentNode.getAttribute ("initialConcentration"));
+				initialConcentration = Double.parseDouble (documentNode.getAttributeValue ("initialConcentration"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("initialConcentration of species "+id+" of unexpected format: " + documentNode.getAttribute ("initialConcentration"));
+				throw new BivesSBMLParseException ("initialConcentration of species "+id+" of unexpected format: " + documentNode.getAttributeValue ("initialConcentration"));
 			}
 		}
 		
 		if (initialAmount != null && initialConcentration != null)
 			throw new BivesSBMLParseException ("initialAmount AND initialConcentration of species "+id+" defined. ");
 		
-		if (documentNode.getAttribute ("substanceUnits") != null)
+		if (documentNode.getAttributeValue ("substanceUnits") != null)
 		{
-			tmp = documentNode.getAttribute ("substanceUnits");
+			tmp = documentNode.getAttributeValue ("substanceUnits");
 			substanceUnits = sbmlModel.getUnitDefinition (tmp);
 			if (substanceUnits == null)
 				throw new BivesSBMLParseException ("substanceUnits attribute in species "+id+" not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("hasOnlySubstanceUnits") != null)
+		if (documentNode.getAttributeValue ("hasOnlySubstanceUnits") != null)
 		{
 			try
 			{
-				hasOnlySubstanceUnits = Boolean.parseBoolean (documentNode.getAttribute ("hasOnlySubstanceUnits"));
+				hasOnlySubstanceUnits = Boolean.parseBoolean (documentNode.getAttributeValue ("hasOnlySubstanceUnits"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("hasOnlySubstanceUnits of species "+id+" of unexpected format: " + documentNode.getAttribute ("hasOnlySubstanceUnits"));
+				throw new BivesSBMLParseException ("hasOnlySubstanceUnits of species "+id+" of unexpected format: " + documentNode.getAttributeValue ("hasOnlySubstanceUnits"));
 			}
 		}
 		else
 			hasOnlySubstanceUnits = false; // level <= 2
 
 		
-		if (documentNode.getAttribute ("boundaryCondition") != null)
+		if (documentNode.getAttributeValue ("boundaryCondition") != null)
 		{
 			try
 			{
-				boundaryCondition = Boolean.parseBoolean (documentNode.getAttribute ("boundaryCondition"));
+				boundaryCondition = Boolean.parseBoolean (documentNode.getAttributeValue ("boundaryCondition"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("boundaryCondition of species "+id+" of unexpected format: " + documentNode.getAttribute ("boundaryCondition"));
+				throw new BivesSBMLParseException ("boundaryCondition of species "+id+" of unexpected format: " + documentNode.getAttributeValue ("boundaryCondition"));
 			}
 		}
 		else
 			boundaryCondition = false; // level <= 2
 
 		
-		if (documentNode.getAttribute ("constant") != null)
+		if (documentNode.getAttributeValue ("constant") != null)
 		{
 			try
 			{
-				constant = Boolean.parseBoolean (documentNode.getAttribute ("constant"));
+				constant = Boolean.parseBoolean (documentNode.getAttributeValue ("constant"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("constant attr of species "+id+" of unexpected format: " + documentNode.getAttribute ("constant"));
+				throw new BivesSBMLParseException ("constant attr of species "+id+" of unexpected format: " + documentNode.getAttributeValue ("constant"));
 			}
 		}
 		else
 			constant = false; // level <= 2
 
 		
-		if (documentNode.getAttribute ("conversionFactor") != null)
+		if (documentNode.getAttributeValue ("conversionFactor") != null)
 		{
-			tmp = documentNode.getAttribute ("conversionFactor");
+			tmp = documentNode.getAttributeValue ("conversionFactor");
 			conversionFactor = sbmlModel.getParameter (tmp);
 			if (conversionFactor == null)
 				throw new BivesSBMLParseException ("conversionFactor attribute in species "+id+" not defined: " + tmp);

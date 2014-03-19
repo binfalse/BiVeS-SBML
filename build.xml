@@ -5,7 +5,7 @@
     </description>
 
     <property name="app.name" value="BiVeS-SBML" />
-    <property name="app.version" value="1.2.5" />
+    <property name="app.version" value="1.3" />
     <property name="src" location="src/main/java" />
     <property name="build" location="build" />
     <property name="dist" location="dist" />
@@ -26,7 +26,7 @@
     </target>
 
     <target name="compile" depends="init" description="compile the source">
-        <javac srcdir="${src}" destdir="${build}">
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
             <classpath refid="compile.classpath" />
         </javac>
     </target>
@@ -34,18 +34,18 @@
     <target name="dist" depends="compile" description="generate the distribution">
         <jar jarfile="${dist}/${app.name}-${app.version}.jar" basedir="${build}" />
         <jar jarfile="${dist}/${app.name}-${app.version}-fat.jar" basedir="${build}">
-            <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
+            <zipgroupfileset dir="lib" includes="*.jar" excludes="" />
         </jar>
     </target>
 
     <target name="sign" depends="dist" description="sign a dist">
-        <checksum file="${dist}/${app.name}-${app.version}.jar" forceOverwrite="yes"/>
-        <move file="${dist}/${app.name}-${app.version}.jar.MD5" tofile="${dist}/${app.name}-${app.version}.jar.md5"/>
+        <checksum file="${dist}/${app.name}-${app.version}.jar" forceOverwrite="yes" />
+        <move file="${dist}/${app.name}-${app.version}.jar.MD5" tofile="${dist}/${app.name}-${app.version}.jar.md5" />
         <exec executable="gpg">
-            <arg value="--output"/>
-            <arg value="${dist}/${app.name}-${app.version}.jar.md5.sig"/>
-            <arg value="-abs"/>
-            <arg value="${dist}/${app.name}-${app.version}.jar.md5"/>
+            <arg value="--output" />
+            <arg value="${dist}/${app.name}-${app.version}.jar.md5.sig" />
+            <arg value="-abs" />
+            <arg value="${dist}/${app.name}-${app.version}.jar.md5" />
         </exec>
     </target>
 
@@ -57,7 +57,7 @@
     <macrodef name="assertDirAvailable">
         <attribute name="dir" />
         <sequential>
-            <fail message="Please create dir @{dir} containing the depenencies:${line.separator}${line.separator} >> BiVeS-Core (download latest fat from http://bin.sems.uni-rostock.de/)">
+            <fail message="Please create dir @{dir} containing the depenencies:${line.separator}${line.separator} &gt;&gt; BiVeS-Core (download latest fat from http://bin.sems.uni-rostock.de/)">
                 <condition>
                     <not>
                         <available file="@{dir}" type="dir" />

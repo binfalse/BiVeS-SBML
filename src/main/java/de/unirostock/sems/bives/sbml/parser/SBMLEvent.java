@@ -62,18 +62,18 @@ public class SBMLEvent
 	{
 		super (documentNode, sbmlModel);
 		
-		id = documentNode.getAttribute ("id");
-		name = documentNode.getAttribute ("name");
+		id = documentNode.getAttributeValue ("id");
+		name = documentNode.getAttributeValue ("name");
 
-		if (documentNode.getAttribute ("useValuesFromTriggerTime") != null)
+		if (documentNode.getAttributeValue ("useValuesFromTriggerTime") != null)
 		{
 			try
 			{
-				useValuesFromTriggerTime = Boolean.parseBoolean (documentNode.getAttribute ("useValuesFromTriggerTime"));
+				useValuesFromTriggerTime = Boolean.parseBoolean (documentNode.getAttributeValue ("useValuesFromTriggerTime"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("useValuesFromTriggerTime of event "+id+" of unexpected format: " + documentNode.getAttribute ("useValuesFromTriggerTime"));
+				throw new BivesSBMLParseException ("useValuesFromTriggerTime of event "+id+" of unexpected format: " + documentNode.getAttributeValue ("useValuesFromTriggerTime"));
 			}
 		}
 		else

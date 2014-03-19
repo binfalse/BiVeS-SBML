@@ -45,15 +45,15 @@ public class SBMLSpeciesReference
 	{
 		super (documentNode, sbmlModel);
 		
-		if (documentNode.getAttribute ("stoichiometry") != null)
+		if (documentNode.getAttributeValue ("stoichiometry") != null)
 		{
 			try
 			{
-				stoichiometry = Double.parseDouble (documentNode.getAttribute ("stoichiometry"));
+				stoichiometry = Double.parseDouble (documentNode.getAttributeValue ("stoichiometry"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("stoichiometry of species reference "+id+" of unexpected format: " + documentNode.getAttribute ("stoichiometry"));
+				throw new BivesSBMLParseException ("stoichiometry of species reference "+id+" of unexpected format: " + documentNode.getAttributeValue ("stoichiometry"));
 			}
 		}
 		else // level <= 2
@@ -73,15 +73,15 @@ public class SBMLSpeciesReference
 				stoichiometry = 1.;
 		}
 		
-		if (documentNode.getAttribute ("constant") != null)
+		if (documentNode.getAttributeValue ("constant") != null)
 		{
 			try
 			{
-				constant = Boolean.parseBoolean (documentNode.getAttribute ("constant"));
+				constant = Boolean.parseBoolean (documentNode.getAttributeValue ("constant"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("constant of species reference "+id+" of unexpected format: " + documentNode.getAttribute ("constant"));
+				throw new BivesSBMLParseException ("constant of species reference "+id+" of unexpected format: " + documentNode.getAttributeValue ("constant"));
 			}
 		}
 		else

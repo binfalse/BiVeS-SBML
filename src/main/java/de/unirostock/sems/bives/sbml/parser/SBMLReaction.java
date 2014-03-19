@@ -70,35 +70,35 @@ public class SBMLReaction
 	{
 		super (documentNode, sbmlModel);
 		
-		if (documentNode.getAttribute ("reversible") != null)
+		if (documentNode.getAttributeValue ("reversible") != null)
 		{
 			try
 			{
-				reversible = Boolean.parseBoolean (documentNode.getAttribute ("reversible"));
+				reversible = Boolean.parseBoolean (documentNode.getAttributeValue ("reversible"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("reversible attr of reaction "+id+" of unexpected format: " + documentNode.getAttribute ("reversible"));
+				throw new BivesSBMLParseException ("reversible attr of reaction "+id+" of unexpected format: " + documentNode.getAttributeValue ("reversible"));
 			}
 		}
 		else
 			reversible = true; // level <= 2
 		
-		if (documentNode.getAttribute ("fast") != null)
+		if (documentNode.getAttributeValue ("fast") != null)
 		{
 			try
 			{
-				fast = Boolean.parseBoolean (documentNode.getAttribute ("fast"));
+				fast = Boolean.parseBoolean (documentNode.getAttributeValue ("fast"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("fast attr of reaction "+id+" of unexpected format: " + documentNode.getAttribute ("fast"));
+				throw new BivesSBMLParseException ("fast attr of reaction "+id+" of unexpected format: " + documentNode.getAttributeValue ("fast"));
 			}
 		}
 		else
 			fast = false; // level <= 2
 
-		String tmp = documentNode.getAttribute ("compartment");
+		String tmp = documentNode.getAttributeValue ("compartment");
 		if (tmp != null)
 		{
 			compartment = sbmlModel.getCompartment (tmp);

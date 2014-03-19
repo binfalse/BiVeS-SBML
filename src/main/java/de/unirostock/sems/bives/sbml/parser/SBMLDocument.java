@@ -8,6 +8,7 @@ import java.util.List;
 
 import de.unirostock.sems.bives.ds.ModelDocument;
 import de.unirostock.sems.bives.exception.BivesDocumentConsistencyException;
+import de.unirostock.sems.bives.exception.BivesFlattenException;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
 import de.unirostock.sems.xmlutils.ds.TreeDocument;
@@ -92,20 +93,26 @@ extends ModelDocument
 			throw new BivesSBMLParseException ("sbml document doesn't start with sbml tag.");
 		try
 		{
-			level = Integer.parseInt (root.getAttribute ("level"));
+			level = Integer.parseInt (root.getAttributeValue ("level"));
 		}
 		catch (Exception e)
 		{
-			throw new BivesSBMLParseException ("unexpected format of SBML level definition: " + root.getAttribute ("level"));
+			throw new BivesSBMLParseException ("unexpected format of SBML level definition: " + root.getAttributeValue ("level"));
 		}
 		
 		try
 		{
-			version = Integer.parseInt (root.getAttribute ("version"));
+			version = Integer.parseInt (root.getAttributeValue ("version"));
 		}
 		catch (Exception e)
 		{
-			throw new BivesSBMLParseException ("unexpected format of SBML version definition: " + root.getAttribute ("version"));
+			throw new BivesSBMLParseException ("unexpected format of SBML version definition: " + root.getAttributeValue ("version"));
 		}
+	}
+
+	@Override
+	public void flatten () throws Exception
+	{
+		throw new BivesFlattenException ("not supported yet.");
 	}
 }

@@ -166,60 +166,60 @@ public class SBMLModel
 	 */
 	private void parseModelRoot (DocumentNode modelRoot) throws BivesSBMLParseException
 	{
-		id = documentNode.getAttribute ("id");
-		name = documentNode.getAttribute ("name");
+		id = documentNode.getAttributeValue ("id");
+		name = documentNode.getAttributeValue ("name");
 		
-		if (documentNode.getAttribute ("substanceUnits") != null)
+		if (documentNode.getAttributeValue ("substanceUnits") != null)
 		{
-			String tmp = documentNode.getAttribute ("substanceUnits");
+			String tmp = documentNode.getAttributeValue ("substanceUnits");
 			substanceUnits = sbmlModel.getUnitDefinition (tmp);
 			if (substanceUnits == null)
 				throw new BivesSBMLParseException ("substanceUnits attribute in model root not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("timeUnits") != null)
+		if (documentNode.getAttributeValue ("timeUnits") != null)
 		{
-			String tmp = documentNode.getAttribute ("timeUnits");
+			String tmp = documentNode.getAttributeValue ("timeUnits");
 			timeUnits = sbmlModel.getUnitDefinition (tmp);
 			if (timeUnits == null)
 				throw new BivesSBMLParseException ("timeUnits attribute in model root not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("volumeUnits") != null)
+		if (documentNode.getAttributeValue ("volumeUnits") != null)
 		{
-			String tmp = documentNode.getAttribute ("volumeUnits");
+			String tmp = documentNode.getAttributeValue ("volumeUnits");
 			volumeUnits = sbmlModel.getUnitDefinition (tmp);
 			if (volumeUnits == null)
 				throw new BivesSBMLParseException ("volumeUnits attribute in model root not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("areaUnits") != null)
+		if (documentNode.getAttributeValue ("areaUnits") != null)
 		{
-			String tmp = documentNode.getAttribute ("areaUnits");
+			String tmp = documentNode.getAttributeValue ("areaUnits");
 			areaUnits = sbmlModel.getUnitDefinition (tmp);
 			if (areaUnits == null)
 				throw new BivesSBMLParseException ("areaUnits attribute in model root not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("lengthUnits") != null)
+		if (documentNode.getAttributeValue ("lengthUnits") != null)
 		{
-			String tmp = documentNode.getAttribute ("lengthUnits");
+			String tmp = documentNode.getAttributeValue ("lengthUnits");
 			lengthUnits = sbmlModel.getUnitDefinition (tmp);
 			if (lengthUnits == null)
 				throw new BivesSBMLParseException ("lengthUnits attribute in model root not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("extentUnits") != null)
+		if (documentNode.getAttributeValue ("extentUnits") != null)
 		{
-			String tmp = documentNode.getAttribute ("extentUnits");
+			String tmp = documentNode.getAttributeValue ("extentUnits");
 			extentUnits = sbmlModel.getUnitDefinition (tmp);
 			if (extentUnits == null)
 				throw new BivesSBMLParseException ("extentUnits attribute in model root not defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("conversionFactor") != null)
+		if (documentNode.getAttributeValue ("conversionFactor") != null)
 		{
-			String tmp = documentNode.getAttribute ("conversionFactor");
+			String tmp = documentNode.getAttributeValue ("conversionFactor");
 			conversionFactor = sbmlModel.getParameter (tmp);
 			if (conversionFactor == null)
 				throw new BivesSBMLParseException ("conversionFactor attribute in model root not defined: " + tmp);
@@ -815,6 +815,18 @@ public class SBMLModel
 	public SBMLDocument getDocument ()
 	{
 		return document;
+	}
+	
+	public SBMLSBase resolveSymbole (String symbol)
+	{
+		SBMLSBase entity = sbmlModel.getCompartment (symbol);
+		if (entity == null)
+			entity = sbmlModel.getSpecies (symbol);
+		if (entity == null)
+			entity = sbmlModel.getParameter (symbol);
+		if (entity == null)
+			entity = sbmlModel.getSpeciesReference (symbol);
+		return entity;
 	}
 	
 	/**

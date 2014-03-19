@@ -52,7 +52,7 @@ public class SBMLEventAssignment
 			throw new BivesSBMLParseException ("event trigger has "+maths.size ()+" math elements. (expected exactly one element)");
 		math = new MathML ((DocumentNode) maths.get (0));
 		
-		variable = resolveVariable (documentNode.getAttribute ("variable"));
+		variable = resolveVariable (documentNode.getAttributeValue ("variable"));
 	}
 
 	
@@ -65,11 +65,7 @@ public class SBMLEventAssignment
 	 */
 	protected final SBMLSBase resolveVariable (String ref) throws BivesSBMLParseException
 	{
-		SBMLSBase var = sbmlModel.getCompartment (ref);
-		if (var == null)
-			var = sbmlModel.getSpecies (ref);
-		if (var == null)
-			var = sbmlModel.getParameter (ref);
+		SBMLSBase var = sbmlModel.resolveSymbole (ref);
 		if (var == null)
 			throw new BivesSBMLParseException ("variable "+ref+" of rule unmappable.");
 		return var;

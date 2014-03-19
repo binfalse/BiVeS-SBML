@@ -36,11 +36,11 @@ public class SBMLAssignmentRule
 	{
 		super (documentNode, sbmlModel);
 		type = SBMLRule.ASSIGNMENT_RULE;
-		if (documentNode.getAttribute ("variable") == null)
+		if (documentNode.getAttributeValue ("variable") == null)
 			throw new BivesSBMLParseException ("rate rule doesn't define variable");
-		variable = resolveVariable (documentNode.getAttribute ("variable"));
+		variable = resolveVariable (documentNode.getAttributeValue ("variable"));
 		if (variable == null)
-			throw new BivesSBMLParseException ("cannot map varibale in rate rule: " + documentNode.getAttribute ("variable"));
+			throw new BivesSBMLParseException ("cannot map varibale in rate rule: " + documentNode.getAttributeValue ("variable"));
 	}
 	
 	/**

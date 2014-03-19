@@ -76,13 +76,7 @@ public abstract class SBMLRule
 	 */
 	protected final SBMLSBase resolveVariable (String ref) throws BivesSBMLParseException
 	{
-		SBMLSBase var = sbmlModel.getCompartment (ref);
-		if (var == null)
-			var = sbmlModel.getSpecies (ref);
-		if (var == null)
-			var = sbmlModel.getParameter (ref);
-		if (var == null)
-			var = sbmlModel.getSpeciesReference (ref);
+		SBMLSBase var = sbmlModel.resolveSymbole (ref);
 		if (var == null)
 			throw new BivesSBMLParseException ("variable "+ref+" of rule unmappable.");
 		return var;

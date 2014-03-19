@@ -53,50 +53,50 @@ public class SBMLUnit
 	{
 		super (documentNode, sbmlModel);
 		
-		String kindStr = documentNode.getAttribute ("kind");
+		String kindStr = documentNode.getAttributeValue ("kind");
 		kind = sbmlModel.getUnitDefinition (kindStr);
 		
 		if (kind == null || !kind.isBaseUnit ())
 			throw new BivesDocumentConsistencyException ("Unit kind attribute not defined or not base unit: " + kindStr);
 
 
-		if (documentNode.getAttribute ("multiplier") != null)
+		if (documentNode.getAttributeValue ("multiplier") != null)
 		{
 			try
 			{
-				multiplier = Double.parseDouble (documentNode.getAttribute ("multiplier"));
+				multiplier = Double.parseDouble (documentNode.getAttributeValue ("multiplier"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("multiplier of unexpected format: " + documentNode.getAttribute ("multiplier"));
+				throw new BivesSBMLParseException ("multiplier of unexpected format: " + documentNode.getAttributeValue ("multiplier"));
 			}
 		}
 		else
 			multiplier = 1; // level <= 2
 
-		if (documentNode.getAttribute ("scale") != null)
+		if (documentNode.getAttributeValue ("scale") != null)
 		{
 			try
 			{
-				scale = Integer.parseInt (documentNode.getAttribute ("scale"));
+				scale = Integer.parseInt (documentNode.getAttributeValue ("scale"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("scale of unexpected format: " + documentNode.getAttribute ("scale"));
+				throw new BivesSBMLParseException ("scale of unexpected format: " + documentNode.getAttributeValue ("scale"));
 			}
 		}
 		else
 			scale = 0; // level <= 2
 		
-		if (documentNode.getAttribute ("exponent") != null)
+		if (documentNode.getAttributeValue ("exponent") != null)
 		{
 			try
 			{
-				exponent = Double.parseDouble (documentNode.getAttribute ("exponent"));
+				exponent = Double.parseDouble (documentNode.getAttributeValue ("exponent"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("exponent of unexpected format: " + documentNode.getAttribute ("exponent"));
+				throw new BivesSBMLParseException ("exponent of unexpected format: " + documentNode.getAttributeValue ("exponent"));
 			}
 		}
 		else

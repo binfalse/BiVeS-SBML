@@ -48,7 +48,7 @@ public class SBMLCompartment
 	{
 		super (documentNode, sbmlModel);
 
-		String tmp = documentNode.getAttribute ("compartmentType");
+		String tmp = documentNode.getAttributeValue ("compartmentType");
 		if (tmp != null)
 		{
 			compartmentType = sbmlModel.getCompartmentType (tmp);
@@ -56,48 +56,48 @@ public class SBMLCompartment
 				throw new BivesSBMLParseException ("no valid compartmentType for species "+id+" defined: " + tmp);
 		}
 		
-		if (documentNode.getAttribute ("spatialDimensions") != null)
+		if (documentNode.getAttributeValue ("spatialDimensions") != null)
 		{
 			try
 			{
-				spatialDimensions = Double.parseDouble (documentNode.getAttribute ("spatialDimensions"));
+				spatialDimensions = Double.parseDouble (documentNode.getAttributeValue ("spatialDimensions"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("spatialDimensions in compartment "+id+" of unexpected format: " + documentNode.getAttribute ("spatialDimensions"));
+				throw new BivesSBMLParseException ("spatialDimensions in compartment "+id+" of unexpected format: " + documentNode.getAttributeValue ("spatialDimensions"));
 			}
 		}
 		
-		if (documentNode.getAttribute ("size") != null)
+		if (documentNode.getAttributeValue ("size") != null)
 		{
 			try
 			{
-				size = Double.parseDouble (documentNode.getAttribute ("size"));
+				size = Double.parseDouble (documentNode.getAttributeValue ("size"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("size in compartment "+id+" of unexpected format: " + documentNode.getAttribute ("size"));
+				throw new BivesSBMLParseException ("size in compartment "+id+" of unexpected format: " + documentNode.getAttributeValue ("size"));
 			}
 		}
 		
-		if (documentNode.getAttribute ("units") != null)
+		if (documentNode.getAttributeValue ("units") != null)
 		{
-			String unitStr = documentNode.getAttribute ("units");
+			String unitStr = documentNode.getAttributeValue ("units");
 			units = sbmlModel.getUnitDefinition (unitStr);
 			
 			if (units == null)
 				throw new BivesSBMLParseException ("Unit attribute in compartment "+id+" not defined: " + unitStr);
 		}
 		
-		if (documentNode.getAttribute ("constant") != null)
+		if (documentNode.getAttributeValue ("constant") != null)
 		{
 			try
 			{
-				constant = Boolean.parseBoolean (documentNode.getAttribute ("constant"));
+				constant = Boolean.parseBoolean (documentNode.getAttributeValue ("constant"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("constant attr in compartment "+id+" of unexpected format: " + documentNode.getAttribute ("constant"));
+				throw new BivesSBMLParseException ("constant attr in compartment "+id+" of unexpected format: " + documentNode.getAttributeValue ("constant"));
 			}
 		}
 		else

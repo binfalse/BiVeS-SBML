@@ -45,14 +45,8 @@ public class SBMLInitialAssignment
 	{
 		super (documentNode, sbmlModel);
 		
-		String tmp = documentNode.getAttribute ("symbol");
-		symbol = sbmlModel.getCompartment (tmp);
-		if (symbol == null)
-			symbol = sbmlModel.getSpecies (tmp);
-		if (symbol == null)
-			symbol = sbmlModel.getParameter (tmp);
-		if (symbol == null)
-			symbol = sbmlModel.getSpeciesReference (tmp);
+		String tmp = documentNode.getAttributeValue ("symbol");
+		symbol = sbmlModel.resolveSymbole (tmp);
 		if (symbol == null)
 			throw new BivesSBMLParseException ("symbol "+tmp+" of initial assignment unmappable.");
 		

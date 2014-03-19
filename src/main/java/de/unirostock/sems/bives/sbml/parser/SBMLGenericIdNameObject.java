@@ -36,11 +36,11 @@ extends SBMLSBase
 		
 		if (documentNode != null)
 		{
-			id = documentNode.getAttribute ("id");
+			id = documentNode.getAttributeValue ("id");
 			if (id == null || id.length () < 1)
 				throw new BivesSBMLParseException ("node doesn't provide a valid id: " + documentNode.getXPath ());
 			
-			name = documentNode.getAttribute ("name");
+			name = documentNode.getAttributeValue ("name");
 		}
 	}
 	

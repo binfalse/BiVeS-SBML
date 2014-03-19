@@ -51,9 +51,9 @@ public abstract class SBMLSBase
 
 		if (documentNode != null)
 		{
-			metaid = documentNode.getAttribute ("metaid");
-			if (documentNode.getAttribute ("sboTerm") != null)
-				sboTerm = new SBOTerm (documentNode.getAttribute ("sboTerm"));
+			metaid = documentNode.getAttributeValue ("metaid");
+			if (documentNode.getAttributeValue ("sboTerm") != null)
+				sboTerm = new SBOTerm (documentNode.getAttributeValue ("sboTerm"));
 			
 			List<TreeNode> nodeList = documentNode.getChildrenWithTag ("notes");
 			if (nodeList.size () > 1)

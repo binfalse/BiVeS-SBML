@@ -52,29 +52,29 @@ public class SBMLEventTrigger
 		math = new MathML ((DocumentNode) maths.get (0));
 		
 
-		if (documentNode.getAttribute ("initialValue") != null)
+		if (documentNode.getAttributeValue ("initialValue") != null)
 		{
 			try
 			{
-				initialValue = Boolean.parseBoolean (documentNode.getAttribute ("initialValue"));
+				initialValue = Boolean.parseBoolean (documentNode.getAttributeValue ("initialValue"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("initialValue of event trigger of unexpected format: " + documentNode.getAttribute ("initialValue"));
+				throw new BivesSBMLParseException ("initialValue of event trigger of unexpected format: " + documentNode.getAttributeValue ("initialValue"));
 			}
 		}
 		else
 			initialValue = null; // level <= 2
 		
-		if (documentNode.getAttribute ("persistent") != null)
+		if (documentNode.getAttributeValue ("persistent") != null)
 		{
 			try
 			{
-				persistent = Boolean.parseBoolean (documentNode.getAttribute ("persistent"));
+				persistent = Boolean.parseBoolean (documentNode.getAttributeValue ("persistent"));
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("persistent of event trigger of unexpected format: " + documentNode.getAttribute ("persistent"));
+				throw new BivesSBMLParseException ("persistent of event trigger of unexpected format: " + documentNode.getAttributeValue ("persistent"));
 			}
 		}
 		else
