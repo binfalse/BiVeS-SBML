@@ -214,6 +214,7 @@ extends GraphProducer
 			{
 				reaction = crn.getReaction (c.getPartnerOf (rNode));
 				reaction.setDocB (rNode);
+				reaction.setLabelB (r.getNameOrId ());
 				crn.setReaction (rNode, reaction);
 			}
 			if (r.getCompartment () != null)
