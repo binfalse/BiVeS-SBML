@@ -5,7 +5,6 @@ package de.unirostock.sems.bives.sbml.api;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import org.jdom2.JDOMException;
 
@@ -16,8 +15,6 @@ import de.unirostock.sems.bives.ds.graph.GraphTranslatorGraphML;
 import de.unirostock.sems.bives.ds.graph.GraphTranslatorJson;
 import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.exception.BivesDocumentConsistencyException;
-import de.unirostock.sems.bives.exception.BivesImportException;
-import de.unirostock.sems.bives.exception.BivesLogicalException;
 import de.unirostock.sems.bives.markup.Typesetting;
 import de.unirostock.sems.bives.markup.TypesettingHTML;
 import de.unirostock.sems.bives.markup.TypesettingMarkDown;

@@ -156,7 +156,7 @@ extends GraphProducer
 	protected void processCrnB () throws BivesUnsupportedException
 	{
 		SBMLModel modelB = sbmlDocB.getModel ();
-		LOGGER.info ("searching for compartments in A");
+		LOGGER.info ("searching for compartments in B");
 		HashMap<String, SBMLCompartment> compartments = modelB.getCompartments ();
 		for (SBMLCompartment c : compartments.values ())
 		{
