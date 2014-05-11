@@ -105,7 +105,7 @@ public class SBMLSingle extends Single
 	 * @see de.unirostock.sems.bives.api.Single#getCRNGraphML()
 	 */
 	@Override
-	public String getCRNGraphML()
+	public String getReactionsGraphML()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
@@ -116,7 +116,7 @@ public class SBMLSingle extends Single
 	 * @see de.unirostock.sems.bives.api.Single#getCRNGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
 	 */
 	@Override
-	public Object getCRNGraph (GraphTranslator gt) throws Exception
+	public Object getReactionsGraph (GraphTranslator gt) throws Exception
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
@@ -128,7 +128,7 @@ public class SBMLSingle extends Single
 	 * @see de.unirostock.sems.bives.api.Single#getCRNDotGraph()
 	 */
 	@Override
-	public String getCRNDotGraph ()
+	public String getReactionsDotGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
@@ -139,7 +139,7 @@ public class SBMLSingle extends Single
 	 * @see de.unirostock.sems.bives.api.Single#getCRNJsonGraph()
 	 */
 	@Override
-	public String getCRNJsonGraph ()
+	public String getReactionsJsonGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);

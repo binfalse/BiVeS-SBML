@@ -9,9 +9,9 @@ import java.util.List;
 import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.algorithm.GraphProducer;
-import de.unirostock.sems.bives.ds.crn.CRNCompartment;
-import de.unirostock.sems.bives.ds.crn.CRNReaction;
-import de.unirostock.sems.bives.ds.crn.CRNSubstance;
+import de.unirostock.sems.bives.ds.rn.ReactionNetworkCompartment;
+import de.unirostock.sems.bives.ds.rn.ReactionNetworkReaction;
+import de.unirostock.sems.bives.ds.rn.ReactionNetworkSubstance;
 import de.unirostock.sems.bives.exception.BivesUnsupportedException;
 import de.unirostock.sems.bives.sbml.parser.SBMLCompartment;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
@@ -111,18 +111,18 @@ extends GraphProducer
 		LOGGER.info ("searching for compartments in A");
 		HashMap<String, SBMLCompartment> compartments = modelA.getCompartments ();
 		for (SBMLCompartment c : compartments.values ())
-			crn.setCompartment (c.getDocumentNode (), new CRNCompartment (crn, c.getNameOrId (), null, c.getDocumentNode (), null));
+			crn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (crn, c.getNameOrId (), null, c.getDocumentNode (), null));
 		
 		LOGGER.info ("searching for species in A");
 		HashMap<String, SBMLSpecies> species = modelA.getSpecies ();
 		for (SBMLSpecies s : species.values ())
-			crn.setSubstance (s.getDocumentNode (), new CRNSubstance (crn, s.getNameOrId (), null, s.getDocumentNode (), null, crn.getCompartment (s.getCompartment ().getDocumentNode ()), null));
+			crn.setSubstance (s.getDocumentNode (), new ReactionNetworkSubstance (crn, s.getNameOrId (), null, s.getDocumentNode (), null, crn.getCompartment (s.getCompartment ().getDocumentNode ()), null));
 		
 		LOGGER.info ("searching for reactions in A");
 		HashMap<String, SBMLReaction> reactions = modelA.getReactions ();
 		for (SBMLReaction r : reactions.values ())
 		{
-			CRNReaction reaction = new CRNReaction (crn, r.getNameOrId (), null, r.getDocumentNode (), null, null, null, r.isReversible ());
+			ReactionNetworkReaction reaction = new ReactionNetworkReaction (crn, r.getNameOrId (), null, r.getDocumentNode (), null, null, null, r.isReversible ());
 			if (r.getCompartment () != null)
 				reaction.setCompartmentA (crn.getCompartment (r.getCompartment ().getDocumentNode ()));
 			crn.setReaction (r.getDocumentNode (), reaction);
@@ -165,11 +165,11 @@ extends GraphProducer
 			if (con == null)
 			{
 				// no equivalent in doc a
-				crn.setCompartment (c.getDocumentNode (), new CRNCompartment (crn, c.getNameOrId (), null, c.getDocumentNode (), null));
+				crn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (crn, c.getNameOrId (), null, c.getDocumentNode (), null));
 			}
 			else
 			{
-				CRNCompartment comp = crn.getCompartment (con.getPartnerOf (cDoc));
+				ReactionNetworkCompartment comp = crn.getCompartment (con.getPartnerOf (cDoc));
 				comp.setDocB (cDoc);
 				comp.setLabelB (c.getNameOrId ());
 				crn.setCompartment (cDoc, comp);
@@ -185,11 +185,11 @@ extends GraphProducer
 			if (c == null)
 			{
 				// no equivalent in doc a
-				crn.setSubstance (sDoc, new CRNSubstance (crn, null, s.getNameOrId (), null, sDoc, null, crn.getCompartment (s.getCompartment ().getDocumentNode ())));
+				crn.setSubstance (sDoc, new ReactionNetworkSubstance (crn, null, s.getNameOrId (), null, sDoc, null, crn.getCompartment (s.getCompartment ().getDocumentNode ())));
 			}
 			else
 			{
-				CRNSubstance subst = crn.getSubstance (c.getPartnerOf (sDoc));
+				ReactionNetworkSubstance subst = crn.getSubstance (c.getPartnerOf (sDoc));
 				subst.setDocB (sDoc);
 				subst.setLabelB (s.getNameOrId ());
 				subst.setCompartmentB (crn.getCompartment (s.getCompartment ().getDocumentNode ()));
@@ -203,11 +203,11 @@ extends GraphProducer
 		{
 			DocumentNode rNode = r.getDocumentNode ();
 			Connection c = conMgmt.getConnectionForNode (rNode);
-			CRNReaction reaction = null;
+			ReactionNetworkReaction reaction = null;
 			if (c == null)
 			{
 				// no equivalent in doc a
-				reaction = new CRNReaction (crn, null, r.getNameOrId (), null, r.getDocumentNode (), null, null, r.isReversible ());
+				reaction = new ReactionNetworkReaction (crn, null, r.getNameOrId (), null, r.getDocumentNode (), null, null, r.isReversible ());
 				crn.setReaction (rNode, reaction);
 			}
 			else

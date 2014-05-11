@@ -137,7 +137,7 @@ public class SBMLDiff extends Diff
 	 * @see de.unirostock.sems.bives.api.Diff#getCRNGraphML()
 	 */
 	@Override
-	public String getCRNGraphML()
+	public String getReactionsGraphML()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
@@ -215,7 +215,7 @@ public class SBMLDiff extends Diff
 	 * @see de.unirostock.sems.bives.api.Diff#getCRNGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
 	 */
 	@Override
-	public Object getCRNGraph (GraphTranslator gt) throws Exception
+	public Object getReactionsGraph (GraphTranslator gt) throws Exception
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
@@ -227,7 +227,7 @@ public class SBMLDiff extends Diff
 	 * @see de.unirostock.sems.bives.api.Diff#getCRNDotGraph()
 	 */
 	@Override
-	public String getCRNDotGraph ()
+	public String getReactionsDotGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
@@ -238,7 +238,7 @@ public class SBMLDiff extends Diff
 	 * @see de.unirostock.sems.bives.api.Diff#getCRNJsonGraph()
 	 */
 	@Override
-	public String getCRNJsonGraph ()
+	public String getReactionsJsonGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
