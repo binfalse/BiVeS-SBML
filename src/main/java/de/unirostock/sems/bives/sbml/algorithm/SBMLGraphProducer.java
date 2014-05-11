@@ -68,26 +68,26 @@ extends GraphProducer
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.algorithm.GraphProducer#produceCRN()
+	 * @see de.unirostock.sems.bives.algorithm.GraphProducer#produceReactionNetwork()
 	 */
 	@Override
-	protected void produceCRN ()
+	protected void produceReactionNetwork ()
 	{
 		try
 		{
-			processCrnA ();
+			processRnA ();
 			if (single)
-				crn.setSingleDocument ();
+				rn.setSingleDocument ();
 			else
-				processCrnB ();
+				processRnB ();
 		}
 		catch (BivesUnsupportedException e)
 		{
 			LOGGER.error (e, "something bad happened");
 		}
 		
-		if (crn.getSubstances ().size () < 1)
-			crn = null;
+		if (rn.getSubstances ().size () < 1)
+			rn = null;
 	}
 
 	/* (non-Javadoc)
@@ -101,59 +101,59 @@ extends GraphProducer
 	}
 	
 	/**
-	 * Process Chemical Reaction Network of the original document.
+	 * Process Reaction Network of the original document.
 	 *
 	 * @throws BivesUnsupportedException the bives unsupported exception
 	 */
-	protected void processCrnA () throws BivesUnsupportedException
+	protected void processRnA () throws BivesUnsupportedException
 	{
 		SBMLModel modelA = sbmlDocA.getModel ();
 		LOGGER.info ("searching for compartments in A");
 		HashMap<String, SBMLCompartment> compartments = modelA.getCompartments ();
 		for (SBMLCompartment c : compartments.values ())
-			crn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (crn, c.getNameOrId (), null, c.getDocumentNode (), null));
+			rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null));
 		
 		LOGGER.info ("searching for species in A");
 		HashMap<String, SBMLSpecies> species = modelA.getSpecies ();
 		for (SBMLSpecies s : species.values ())
-			crn.setSubstance (s.getDocumentNode (), new ReactionNetworkSubstance (crn, s.getNameOrId (), null, s.getDocumentNode (), null, crn.getCompartment (s.getCompartment ().getDocumentNode ()), null));
+			rn.setSubstance (s.getDocumentNode (), new ReactionNetworkSubstance (rn, s.getNameOrId (), null, s.getDocumentNode (), null, rn.getCompartment (s.getCompartment ().getDocumentNode ()), null));
 		
 		LOGGER.info ("searching for reactions in A");
 		HashMap<String, SBMLReaction> reactions = modelA.getReactions ();
 		for (SBMLReaction r : reactions.values ())
 		{
-			ReactionNetworkReaction reaction = new ReactionNetworkReaction (crn, r.getNameOrId (), null, r.getDocumentNode (), null, null, null, r.isReversible ());
+			ReactionNetworkReaction reaction = new ReactionNetworkReaction (rn, r.getNameOrId (), null, r.getDocumentNode (), null, null, null, r.isReversible ());
 			if (r.getCompartment () != null)
-				reaction.setCompartmentA (crn.getCompartment (r.getCompartment ().getDocumentNode ()));
-			crn.setReaction (r.getDocumentNode (), reaction);
+				reaction.setCompartmentA (rn.getCompartment (r.getCompartment ().getDocumentNode ()));
+			rn.setReaction (r.getDocumentNode (), reaction);
 			
 			List<SBMLSpeciesReference> sRefs = r.getReactants ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addInputA (crn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addInputA (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
 			}
 			
 			sRefs = r.getProducts ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addOutputA (crn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addOutputA (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
 			}
 			
 			List<SBMLSimpleSpeciesReference> ssRefs = r.getModifiers ();
 			for (SBMLSimpleSpeciesReference sRef : ssRefs)
 			{
 				SBMLSpecies spec = sRef.getSpecies ();
-					reaction.addModA (crn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm ());
+					reaction.addModA (rn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm ());
 			}
 		}
 	}
 	
 	/**
-	 * Process Chemical Reaction Network of the modified document.
+	 * Process Reaction Network of the modified document.
 	 *
 	 * @throws BivesUnsupportedException the bives unsupported exception
 	 */
-	protected void processCrnB () throws BivesUnsupportedException
+	protected void processRnB () throws BivesUnsupportedException
 	{
 		SBMLModel modelB = sbmlDocB.getModel ();
 		LOGGER.info ("searching for compartments in B");
@@ -165,14 +165,14 @@ extends GraphProducer
 			if (con == null)
 			{
 				// no equivalent in doc a
-				crn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (crn, c.getNameOrId (), null, c.getDocumentNode (), null));
+				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null));
 			}
 			else
 			{
-				ReactionNetworkCompartment comp = crn.getCompartment (con.getPartnerOf (cDoc));
+				ReactionNetworkCompartment comp = rn.getCompartment (con.getPartnerOf (cDoc));
 				comp.setDocB (cDoc);
 				comp.setLabelB (c.getNameOrId ());
-				crn.setCompartment (cDoc, comp);
+				rn.setCompartment (cDoc, comp);
 			}
 		}
 		
@@ -185,15 +185,15 @@ extends GraphProducer
 			if (c == null)
 			{
 				// no equivalent in doc a
-				crn.setSubstance (sDoc, new ReactionNetworkSubstance (crn, null, s.getNameOrId (), null, sDoc, null, crn.getCompartment (s.getCompartment ().getDocumentNode ())));
+				rn.setSubstance (sDoc, new ReactionNetworkSubstance (rn, null, s.getNameOrId (), null, sDoc, null, rn.getCompartment (s.getCompartment ().getDocumentNode ())));
 			}
 			else
 			{
-				ReactionNetworkSubstance subst = crn.getSubstance (c.getPartnerOf (sDoc));
+				ReactionNetworkSubstance subst = rn.getSubstance (c.getPartnerOf (sDoc));
 				subst.setDocB (sDoc);
 				subst.setLabelB (s.getNameOrId ());
-				subst.setCompartmentB (crn.getCompartment (s.getCompartment ().getDocumentNode ()));
-				crn.setSubstance (sDoc, subst);
+				subst.setCompartmentB (rn.getCompartment (s.getCompartment ().getDocumentNode ()));
+				rn.setSubstance (sDoc, subst);
 			}
 		}
 		
@@ -207,29 +207,29 @@ extends GraphProducer
 			if (c == null)
 			{
 				// no equivalent in doc a
-				reaction = new ReactionNetworkReaction (crn, null, r.getNameOrId (), null, r.getDocumentNode (), null, null, r.isReversible ());
-				crn.setReaction (rNode, reaction);
+				reaction = new ReactionNetworkReaction (rn, null, r.getNameOrId (), null, r.getDocumentNode (), null, null, r.isReversible ());
+				rn.setReaction (rNode, reaction);
 			}
 			else
 			{
-				reaction = crn.getReaction (c.getPartnerOf (rNode));
+				reaction = rn.getReaction (c.getPartnerOf (rNode));
 				reaction.setDocB (rNode);
 				reaction.setLabelB (r.getNameOrId ());
-				crn.setReaction (rNode, reaction);
+				rn.setReaction (rNode, reaction);
 			}
 			if (r.getCompartment () != null)
-				reaction.setCompartmentB (crn.getCompartment (r.getCompartment ().getDocumentNode ()));
+				reaction.setCompartmentB (rn.getCompartment (r.getCompartment ().getDocumentNode ()));
 				
 			List<SBMLSpeciesReference> sRefs = r.getReactants ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addInputB (crn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addInputB (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
 			}
 			
 			sRefs = r.getProducts ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addOutputB (crn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addOutputB (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
 			}
 			
 			List<SBMLSimpleSpeciesReference> ssRefs = r.getModifiers ();
@@ -237,7 +237,7 @@ extends GraphProducer
 			{
 				SBMLSpecies spec = sRef.getSpecies ();
 				//if (spec.getSBOTerm () == null)
-					reaction.addModB (crn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm ());
+					reaction.addModB (rn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm ());
 			}
 		}
 	}

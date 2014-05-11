@@ -102,48 +102,48 @@ public class SBMLSingle extends Single
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Single#getCRNGraphML()
+	 * @see de.unirostock.sems.bives.api.Single#getReactionsGraphML()
 	 */
 	@Override
 	public String getReactionsGraphML()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
-		return new GraphTranslatorGraphML ().translate (graphProducer.getCRN ());
+		return new GraphTranslatorGraphML ().translate (graphProducer.getReactionNetwork ());
 	}
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Single#getCRNGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
+	 * @see de.unirostock.sems.bives.api.Single#getReactionsGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
 	 */
 	@Override
 	public Object getReactionsGraph (GraphTranslator gt) throws Exception
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
-		return gt.translate (graphProducer.getCRN ());
+		return gt.translate (graphProducer.getReactionNetwork ());
 	}
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Single#getCRNDotGraph()
+	 * @see de.unirostock.sems.bives.api.Single#getReactionsDotGraph()
 	 */
 	@Override
 	public String getReactionsDotGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
-		return new GraphTranslatorDot ().translate (graphProducer.getCRN ());
+		return new GraphTranslatorDot ().translate (graphProducer.getReactionNetwork ());
 	}
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Single#getCRNJsonGraph()
+	 * @see de.unirostock.sems.bives.api.Single#getReactionsJsonGraph()
 	 */
 	@Override
 	public String getReactionsJsonGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (doc);
-		return new GraphTranslatorJson ().translate (graphProducer.getCRN ());
+		return new GraphTranslatorJson ().translate (graphProducer.getReactionNetwork ());
 	}
 
 	/* (non-Javadoc)

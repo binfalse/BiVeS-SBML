@@ -134,14 +134,14 @@ public class SBMLDiff extends Diff
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Diff#getCRNGraphML()
+	 * @see de.unirostock.sems.bives.api.Diff#getReactionsGraphML()
 	 */
 	@Override
 	public String getReactionsGraphML()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
-		return new GraphTranslatorGraphML ().translate (graphProducer.getCRN ());
+		return new GraphTranslatorGraphML ().translate (graphProducer.getReactionNetwork ());
 	}
 
 
@@ -212,37 +212,37 @@ public class SBMLDiff extends Diff
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Diff#getCRNGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
+	 * @see de.unirostock.sems.bives.api.Diff#getReactionsGraph(de.unirostock.sems.bives.ds.graph.GraphTranslator)
 	 */
 	@Override
 	public Object getReactionsGraph (GraphTranslator gt) throws Exception
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
-		return gt.translate (graphProducer.getCRN ());
+		return gt.translate (graphProducer.getReactionNetwork ());
 	}
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Diff#getCRNDotGraph()
+	 * @see de.unirostock.sems.bives.api.Diff#getReactionsDotGraph()
 	 */
 	@Override
 	public String getReactionsDotGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
-		return new GraphTranslatorDot ().translate (graphProducer.getCRN ());
+		return new GraphTranslatorDot ().translate (graphProducer.getReactionNetwork ());
 	}
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Diff#getCRNJsonGraph()
+	 * @see de.unirostock.sems.bives.api.Diff#getReactionsJsonGraph()
 	 */
 	@Override
 	public String getReactionsJsonGraph ()
 	{
 		if (graphProducer == null)
 			graphProducer = new SBMLGraphProducer (connections, doc1, doc2);
-		return new GraphTranslatorJson ().translate (graphProducer.getCRN ());
+		return new GraphTranslatorJson ().translate (graphProducer.getReactionNetwork ());
 	}
 
 	/* (non-Javadoc)

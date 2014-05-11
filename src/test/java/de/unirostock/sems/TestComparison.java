@@ -57,7 +57,7 @@ public class TestComparison
 		try
 		{
 			//LOGGER.setMinLevel (LOGGER.DEBUG);
-			JSONObject graph = (JSONObject) (new JSONParser ()).parse (differ.getCRNJsonGraph());
+			JSONObject graph = (JSONObject) (new JSONParser ()).parse (differ.getReactionsJsonGraph());
 			JSONArray edges = (JSONArray) ((JSONObject) graph.get ("elements")).get ("edges");
 			JSONArray nodes = (JSONArray) ((JSONObject) graph.get ("elements")).get ("nodes");
 			//System.out.println (nodes);
