@@ -76,11 +76,8 @@ public class SBMLSingle extends Single
 	 * @throws XmlDocumentParseException the xml document parse exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws JDOMException the jDOM exception
-	 * @throws BivesCellMLParseException the bives cell ml parse exception
+	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 * @throws BivesDocumentConsistencyException the bives document consistency exception
-	 * @throws BivesLogicalException the bives logical exception
-	 * @throws BivesImportException the bives import exception
-	 * @throws URISyntaxException the uRI syntax exception
 	 */
 	public SBMLSingle (TreeDocument td) throws XmlDocumentParseException, IOException, JDOMException, BivesSBMLParseException, BivesDocumentConsistencyException
 	{

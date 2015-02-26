@@ -59,6 +59,17 @@ public class SBMLKineticLaw
 				listOfLocalParameters.put (p.getID (), p);
 			}
 		}
+		
+		nodes = documentNode.getChildrenWithTag ("listOfParameters");
+		for (int i = 0; i < nodes.size (); i++)
+		{
+			List<TreeNode> paras = ((DocumentNode) nodes.get (i)).getChildrenWithTag ("parameter");
+			for (int j = 0; j < paras.size (); j++)
+			{
+				SBMLParameter p = new SBMLParameter ((DocumentNode) paras.get (j), sbmlModel);
+				listOfLocalParameters.put (p.getID (), p);
+			}
+		}
 	}
 	
 	/**

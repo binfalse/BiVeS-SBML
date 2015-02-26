@@ -102,6 +102,9 @@ public class SBMLDiff extends Diff
 	
 	/**
 	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the original document
+	 * @param b the modified document
 	 */
 	public SBMLDiff (SBMLDocument a, SBMLDocument b)
 	{

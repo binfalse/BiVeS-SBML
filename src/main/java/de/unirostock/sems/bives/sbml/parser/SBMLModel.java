@@ -817,7 +817,26 @@ public class SBMLModel
 		return document;
 	}
 	
+	/**
+	 * Resolve certain symbol.
+	 *
+	 * @param symbol the symbol
+	 * @return the SBMLS base
+	 * @deprecated as of version 1.3.6, replaced by
+	 *             {@link #resolveSymbol(String)}
+	 */
 	public SBMLSBase resolveSymbole (String symbol)
+	{
+		return this.resolveSymbol (symbol);
+	}
+	
+	/**
+	 * Resolve certain symbol.
+	 *
+	 * @param symbol the symbol
+	 * @return the SBMLS base
+	 */
+	public SBMLSBase resolveSymbol (String symbol)
 	{
 		SBMLSBase entity = sbmlModel.getCompartment (symbol);
 		if (entity == null)

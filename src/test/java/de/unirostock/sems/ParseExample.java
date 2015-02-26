@@ -34,7 +34,7 @@ public class ParseExample
 		// get the document
 		SBMLDocument doc = validator.getDocument ();
 		
-		
+		System.out.println (doc.getLevel ());
 		
 		
 	}

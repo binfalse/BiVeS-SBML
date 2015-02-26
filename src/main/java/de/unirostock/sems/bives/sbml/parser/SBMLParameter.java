@@ -107,7 +107,10 @@ public class SBMLParameter
 	 */
 	public String markup ()
 	{
-		return getNameAndId () + "=" + value + " " + units.getName () + (constant ? " [const]" : "");
+		String u = "[no units]";
+		if (units != null)
+			u = units.getName ();
+		return getNameAndId () + "=" + value + " " + u + (constant ? " [const]" : "");
 	}
 
 	/* (non-Javadoc)
@@ -121,7 +124,8 @@ public class SBMLParameter
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return null;
 		
-		String idA = a.getNameAndId (), idB = b.getNameAndId ();
+		String idA = a.getNameAndId ();
+		String idB = b.getNameAndId ();
 		MarkupElement me = null;
 		if (idA.equals (idB))
 			me = new MarkupElement (idA);

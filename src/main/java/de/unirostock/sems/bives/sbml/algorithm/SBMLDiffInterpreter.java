@@ -4,12 +4,11 @@
 package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.HashMap;
-
 import java.util.List;
 
 import de.binfalse.bflog.LOGGER;
-import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.algorithm.Interpreter;
+import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.markup.MarkupDocument;
 import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.markup.MarkupSection;
@@ -258,7 +257,7 @@ public class SBMLDiffInterpreter
 			{
 				MarkupElement me = parameter.reportModification (conMgmt, parameter, (SBMLParameter) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
-				msec.addValue (me);
+					msec.addValue (me);
 			}
 		}
 		LOGGER.info ("searching for parameters in B");
@@ -430,7 +429,7 @@ public class SBMLDiffInterpreter
 			{
 				MarkupElement me = reaction.reportModification (conMgmt, reaction, (SBMLReaction) modelB.getFromNode (con.getPartnerOf (dn)));
 				if (me != null && me.getValues ().size () > 0)
-				msec.addValue (me);
+					msec.addValue (me);
 			}
 		}
 		LOGGER.info ("searching for reactions in B");
