@@ -120,6 +120,8 @@ public class TestParser
 		
 		node = model;
 		assertEquals ("expected to see 5 types of ontologylinks for the model node", 5, node.getOntologyLinks ().size ());
+		//System.out.println (node.getOntologyLinks ());
+		//System.out.println (model.getOntologyMappings ());
 	}
 	
 	

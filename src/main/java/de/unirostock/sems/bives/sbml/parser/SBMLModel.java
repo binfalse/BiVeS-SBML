@@ -3,12 +3,14 @@
  */
 package de.unirostock.sems.bives.sbml.parser;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import de.binfalse.bflog.LOGGER;
+import de.binfalse.bfutils.GeneralTools;
 import de.unirostock.sems.bives.exception.BivesDocumentConsistencyException;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
@@ -30,7 +32,7 @@ public class SBMLModel
 	/** The node mapper. */
 	private HashMap<TreeNode, SBMLSBase> nodeMapper;
 
-	/** The node mapper. */
+	/** The meta_id mapper. */
 	private HashMap<String, SBMLSBase> metaIdMapper;
 	
 	/** The list of function definitions. */
@@ -138,7 +140,49 @@ public class SBMLModel
 		
 		for (DocumentNode rdf : sbmlDocument.getTreeDocument ().getNodesByTag ("RDF"))
 			SBMLMeta.extractOntologyLinks (rdf, this);
+		
 	}
+	
+	
+	/**
+	 * Gets the ontology mappings which group entities by there pointers into ontologies.
+	 *
+	 * @return the ontology mappings
+	 */
+	public HashMap<String, List<SBMLSBase>> getOntologyMappings ()
+	{
+		HashMap<String, List<SBMLSBase>> ontomap = new HashMap<String, List<SBMLSBase>> ();
+		for (SBMLSBase sbase : metaIdMapper.values ())
+		{
+			HashMap<String, List<String>> links = sbase.getOntologyLinks ();
+			if (links.size () > 0)
+			{
+				Object [] keys = links.keySet ().toArray ();
+				Arrays.sort (keys);
+				
+				StringBuilder sb = new StringBuilder ();
+				for (Object key : keys)
+				{
+					sb.append ("{").append (key).append ("=[");
+					List<String> ontolinks = links.get (key);
+					Collections.sort (ontolinks);
+					for (String link : ontolinks)
+						sb.append (link).append (",");
+				}
+				String id = sb.toString ();
+				List<SBMLSBase> sbases = ontomap.get (id);
+				if (sbases == null)
+				{
+					sbases = new ArrayList<SBMLSBase> ();
+					ontomap.put (id, sbases);
+				}
+				sbases.add (sbase);
+			}
+		}
+		return ontomap;
+	}
+	
+	
 	
 	/**
 	 * Parses the tree.

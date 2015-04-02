@@ -53,13 +53,14 @@ public class SBMLMeta
 				String qualifier = child.getTagName ();
 				
 				if (
-					qualifier.equals ("is") ||
-					qualifier.equals ("isDerivedFrom") ||
-					qualifier.equals ("isDescribedBy") ||
 					qualifier.equals ("encodes") ||
 					qualifier.equals ("hasPart") ||
 					qualifier.equals ("hasProperty") ||
+					qualifier.equals ("hasTaxon") ||
 					qualifier.equals ("hasVersion") ||
+					qualifier.equals ("is") ||
+					qualifier.equals ("isDerivedFrom") ||
+					qualifier.equals ("isDescribedBy") ||
 					qualifier.equals ("isEncodedBy") ||
 					qualifier.equals ("isHomologTo") ||
 					qualifier.equals ("isPartOf") ||
