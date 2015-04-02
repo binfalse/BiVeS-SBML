@@ -29,6 +29,9 @@ public class SBMLModel
 
 	/** The node mapper. */
 	private HashMap<TreeNode, SBMLSBase> nodeMapper;
+
+	/** The node mapper. */
+	private HashMap<String, SBMLSBase> metaIdMapper;
 	
 	/** The list of function definitions. */
 	private HashMap<String, SBMLFunctionDefinition> listOfFunctionDefinitions;
@@ -111,7 +114,10 @@ public class SBMLModel
 		sbmlModel = this;
 		this.document = sbmlDocument;
 		
-		nodeMapper = new HashMap<TreeNode, SBMLSBase> ();
+		if (nodeMapper == null)
+			nodeMapper = new HashMap<TreeNode, SBMLSBase> ();
+		if (metaIdMapper == null)
+			metaIdMapper = new HashMap<String, SBMLSBase> ();
 		
 		listOfFunctionDefinitions = new  HashMap<String, SBMLFunctionDefinition> ();
 		listOfUnitDefinitions = new  HashMap<String, SBMLUnitDefinition> ();
@@ -127,8 +133,11 @@ public class SBMLModel
 		listOfEvents = new  ArrayList<SBMLEvent> ();
 		listOfSpeciesReferences = new  HashMap<String, SBMLSimpleSpeciesReference> ();
 		
+		
 		parseTree ();
 		
+		for (DocumentNode rdf : sbmlDocument.getTreeDocument ().getNodesByTag ("RDF"))
+			SBMLMeta.extractOntologyLinks (rdf, this);
 	}
 	
 	/**
@@ -793,7 +802,18 @@ public class SBMLModel
 	 */
 	public void mapNode (DocumentNode node, SBMLSBase sbase)
 	{
+		if (nodeMapper == null)
+			nodeMapper = new HashMap<TreeNode, SBMLSBase> ();
 		nodeMapper.put (node, sbase);
+		
+		if (metaIdMapper == null)
+			metaIdMapper = new HashMap<String, SBMLSBase> ();
+		String metaId = sbase.getMetaId ();
+		if (metaId != null)
+		{
+			
+			metaIdMapper.put (metaId, sbase);
+		}
 	}
 	
 	/**
@@ -805,6 +825,17 @@ public class SBMLModel
 	public SBMLSBase getFromNode (TreeNode node)
 	{
 		return nodeMapper.get (node);
+	}
+	
+	/**
+	 * Gets an entity given its meta id.
+	 *
+	 * @param metaId the meta id
+	 * @return the entity registered for this meta id
+	 */
+	public SBMLSBase getFromMetaId (String metaId)
+	{
+		return metaIdMapper.get (metaId);
 	}
 	
 	/**

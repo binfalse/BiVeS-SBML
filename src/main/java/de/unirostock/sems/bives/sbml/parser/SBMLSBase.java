@@ -4,6 +4,8 @@
 package de.unirostock.sems.bives.sbml.parser;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.unirostock.sems.bives.ds.Xhtml;
@@ -35,6 +37,10 @@ public abstract class SBMLSBase
 	/** The annotation. */
 	private DocumentNode annotation; // optional
 	
+	
+	/** The ontology links. */
+	private HashMap<String, List<String>> ontologyLinks; // optional
+	
 	/**
 	 * Instantiates a new SBMLS base.
 	 *
@@ -45,13 +51,19 @@ public abstract class SBMLSBase
 	public SBMLSBase(DocumentNode documentNode, SBMLModel sbmlModel) throws BivesSBMLParseException
 	{
 		super (documentNode, sbmlModel);
+
+		if (documentNode != null)
+			metaid = documentNode.getAttributeValue ("metaid");
+		
+		
+		if (sbmlModel == null && documentNode.getTagName ().equals ("model") && documentNode.getLevel () == 1)
+			sbmlModel = (SBMLModel) this;
 		
 		if (sbmlModel != null)
 			sbmlModel.mapNode (documentNode, this);
 
 		if (documentNode != null)
 		{
-			metaid = documentNode.getAttributeValue ("metaid");
 			if (documentNode.getAttributeValue ("sboTerm") != null)
 				sboTerm = new SBOTerm (documentNode.getAttributeValue ("sboTerm"));
 			
@@ -67,6 +79,7 @@ public abstract class SBMLSBase
 					notes.addXhtml (n);
 			}
 			
+			ontologyLinks = new HashMap<String, List<String>> ();
 			nodeList = documentNode.getChildrenWithTag ("annotation");
 			if (nodeList.size () > 1)
 				throw new BivesSBMLParseException ("SBase with "+nodeList.size ()+" annotations. (expected max one annotation)");
@@ -74,6 +87,34 @@ public abstract class SBMLSBase
 				annotation = (DocumentNode) nodeList.get (0);
 		}
 	}
+	
+	/**
+	 * Gets the links that point to an ontology.
+	 *
+	 * @return the ontology links
+	 */
+	public HashMap<String, List<String>> getOntologyLinks ()
+	{
+		return ontologyLinks;
+	}
+	
+	/**
+	 * Adds an link into an ontology.
+	 *
+	 * @param qualifier the qualifier
+	 * @param link the link
+	 */
+	public void addOntologyLink (String qualifier, String link)
+	{
+		List<String> linklist = ontologyLinks.get (qualifier);
+		if (linklist == null)
+		{
+			linklist = new ArrayList<String> ();
+			ontologyLinks.put (qualifier, linklist);
+		}
+		linklist.add (link);
+	}
+	
 	
 	/**
 	 * Gets the SBO term.
