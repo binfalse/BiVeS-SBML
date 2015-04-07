@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import org.jdom2.JDOMException;
 
+import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.api.Diff;
 import de.unirostock.sems.bives.ds.graph.GraphTranslator;
 import de.unirostock.sems.bives.ds.graph.GraphTranslatorDot;
@@ -125,6 +126,13 @@ public class SBMLDiff extends Diff
 		SBMLConnector con = new SBMLConnector (doc1, doc2);
 		con.findConnections ();
 		connections = con.getConnections();
+		
+		if (LOGGER.isDebugEnabled ())
+		{
+			LOGGER.debug ("sbml mapping done.");
+			LOGGER.debug (connections.toString ());
+			LOGGER.debug ("evaluating trees.");
+		}
 		
 		treeA.getRoot ().resetModifications ();
 		treeA.getRoot ().evaluate (connections);

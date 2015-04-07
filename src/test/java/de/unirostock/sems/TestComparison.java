@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import de.binfalse.bflog.LOGGER;
+import de.unirostock.sems.bives.ds.Patch;
 import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLValidator;
 import de.unirostock.sems.bives.sbml.api.SBMLDiff;
@@ -109,7 +110,44 @@ public class TestComparison
 			e.printStackTrace ();
 			fail ("error parsing json graph: " + e);
 		}
+	}
+	
+
+	/**
+	 * Test ontology mapping.
+	 */
+	@Test
+	public void testOntologyMapping ()
+	{
+		String v1 = "test/test-onto1";
+		String v2 = "test/test-onto2";
 		
+		SBMLValidator val = new SBMLValidator ();
 		
+		assertTrue ("model version 1 is unexpectingly not valid", val.validate(new File (v1)));
+		SBMLDocument version1 = val.getDocument();
+		
+		assertTrue ("model version 2 is unexpectingly not valid", val.validate(new File (v2)));
+		SBMLDocument version2 = val.getDocument();
+		
+		SBMLDiff differ = new SBMLDiff (version1, version2);
+		try
+		{
+			differ.mapTrees();
+		}
+		catch (BivesConnectionException e)
+		{
+			LOGGER.error (e, "couldn't map trees");
+			fail ("couldn't map trees");
+		}
+		
+		// TODO
+		System.out.println (XmlTools.prettyPrintDocument (differ.getPatch ().getDocument ()));
+		
+		Patch p = differ.getPatch ();
+		assertEquals ("expected to see only 6 inserts", 6, p.getNumInserts ());
+		assertEquals ("expected to see exactly 6 updates", 6, p.getNumUpdates ());
+		
+		LOGGER.setMinLevel (LOGGER.WARN);
 	}
 }

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" metaid="metaid_0000001" version="1">
+	<model id="Novak1993_M_phase_control" name="Novak1993_M_phase_control" metaid="metaid_0000002">
+		<listOfCompartments>
+			<compartment id="cytoplasm" name="cytoplasm" metaid="metaid_0000037" size="1"/>
+		</listOfCompartments>
+    <listOfSpecies>
+      <species id="UbE_not" initialConcentration="7" name="ubiquitin conjugating enzyme12" metaid="metaid_000005255" compartment="cytoplasm">
+        <annotation2>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqmodel="http://biomodels.net/model-qualifiers/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+						<rdf:Description rdf:about="#metaid_000005255">
+							<bqbiol:isVersionOfDisabled>
+								<rdf:Bag>
+									<rdf:li rdf:resource="stuff"/>
+								</rdf:Bag>
+							</bqbiol:isVersionOfDisabled>
+              <bqbiol:isVersionOf>
+								<rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/obo.go/GO:0031371"/>
+                </rdf:Bag>
+              </bqbiol:isVersionOf>
+						</rdf:Description>
+						<dc:creator>
+							<rdf:Bag>
+								<rdf:li rdf:parseType="Resource">
+									<vCard:N rdf:parseType="Resource">
+										<vCard:Family>scharm</vCard:Family>
+										<vCard:Given>martin</vCard:Given>
+									</vCard:N>
+									<vCard:EMAIL>modified_model@binfalse.de</vCard:EMAIL>
+									<vCard:ORG rdf:parseType="Resource">
+										<vCard:Orgname>binfalse.de</vCard:Orgname>
+									</vCard:ORG>
+								</rdf:li>
+							</rdf:Bag>
+						</dc:creator>
+						<dcterms:created rdf:parseType="Resource">
+							<dcterms:W3CDTF>2015-04-03T08:42:03Z</dcterms:W3CDTF>
+						</dcterms:created>
+						<dcterms:modified rdf:parseType="Resource">
+							<dcterms:W3CDTF>2015-10-27T10:13:48Z</dcterms:W3CDTF>
+						</dcterms:modified>
+          </rdf:RDF>
+        </annotation2>
+      </species>
+    </listOfSpecies>
+  </model>
+</sbml>

@@ -4,7 +4,6 @@
 package de.unirostock.sems.bives.sbml.algorithm;
 
 import java.util.HashMap;
-
 import java.util.List;
 
 import de.unirostock.sems.bives.algorithm.Connector;
@@ -94,8 +93,31 @@ public class SBMLConnectorPreprocessor
 	{
 		SBMLModel modelA = sbmlDocA.getModel ();
 		SBMLModel modelB = sbmlDocB.getModel ();
+		
+		// connect the nodes that have the same annotations
+		{// gc: please delete those structures...
+			HashMap<String, List<SBMLSBase>> ontoMapA = modelA.getOntologyMappings ();
+			if (ontoMapA != null && ontoMapA.size () > 0)
+			{
+				HashMap<String, List<SBMLSBase>> ontoMapB = modelB.getOntologyMappings ();
+				for (String id : ontoMapB.keySet ())
+				{
+					List<SBMLSBase> aBases = ontoMapA.get (id);
+					if (aBases != null && aBases.size () == 1)
+					{
+						List<SBMLSBase> bBases = ontoMapB.get (id);
+						if (bBases.size () == 1)
+						{
+							// map these two nodes! :)
+							nodeAssign (aBases.get (0), bBases.get (0));
+						}
+					}
+				}
+			}
+		}
+		
 
-		// ractions
+		// reactions
 		HashMap<String, SBMLReaction> reactionsA = modelA.getReactions ();
 		HashMap<String, SBMLReaction> reactionsB = modelB.getReactions ();
 		for (String id : reactionsA.keySet ())
@@ -167,4 +189,11 @@ public class SBMLConnectorPreprocessor
 		}
 	}
 	
+	private boolean nodeAssign (SBMLSBase sA, SBMLSBase sB) throws BivesConnectionException
+	{
+		if (sA == null || sB == null)
+			return false;
+		
+		return nodeAssign (sA.getDocumentNode (), sB.getDocumentNode ());
+	}
 }
