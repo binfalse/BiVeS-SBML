@@ -141,8 +141,7 @@ public class TestComparison
 			fail ("couldn't map trees");
 		}
 		
-		// TODO
-		System.out.println (XmlTools.prettyPrintDocument (differ.getPatch ().getDocument ()));
+		// System.out.println (XmlTools.prettyPrintDocument (differ.getPatch ().getDocument ()));
 		
 		Patch p = differ.getPatch ();
 		assertEquals ("expected to see only 6 inserts", 6, p.getNumInserts ());
