@@ -74,9 +74,9 @@ public abstract class SBMLSBase
 			{
 				notes = new Xhtml  ();
 				DocumentNode root = (DocumentNode) nodeList.get (0);
-				List<TreeNode> kids = root.getChildren ();
-				for (TreeNode n : kids)
-					notes.addXhtml (n);
+				/*List<TreeNode> kids = root.getChildren ();
+				for (TreeNode n : kids)*/
+					notes.setXhtml (root);
 			}
 			
 			ontologyLinks = new HashMap<String, List<String>> ();

@@ -58,9 +58,7 @@ public class SBMLConstraint
 		{
 			message = new Xhtml ();
 			DocumentNode root = (DocumentNode) nodes.get (0);
-			List<TreeNode> kids = root.getChildren ();
-			for (TreeNode n : kids)
-				message.addXhtml (n);
+				message.setXhtml (root);
 		}
 		
 	}

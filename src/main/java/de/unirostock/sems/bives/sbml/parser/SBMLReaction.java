@@ -6,6 +6,7 @@ package de.unirostock.sems.bives.sbml.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.algorithm.DiffReporter;
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.markup.MarkupDocument;
@@ -15,6 +16,7 @@ import de.unirostock.sems.bives.tools.BivesTools;
 import de.unirostock.sems.xmlutils.comparison.Connection;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
 import de.unirostock.sems.xmlutils.ds.TreeNode;
+import de.unirostock.sems.xmlutils.tools.DocumentTools;
 
 
 /**
@@ -264,6 +266,34 @@ public class SBMLReaction
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return null;
 		
+		if (a.getID ().equals ("rxn06672"))
+		{
+			System.out.println (a.getID () + " -- " + b.getID ());
+			System.out.println (a.getDocumentNode ().getModification () + " -- " + b.getDocumentNode ().getModification ());
+		}
+		
+		// if the reaction nodes are simply moved..
+		if (a.getDocumentNode ().getModification () == TreeNode.SWAPPEDKID && b.getDocumentNode ().getModification () == TreeNode.SWAPPEDKID)
+			return null;
+		
+		if (a.getID ().equals ("rxn06672"))
+		{
+			System.out.println ("didn't stop");
+			System.out.println ("A:");
+			System.out.println (DocumentTools.printPrettySubDoc (a.getDocumentNode ()));
+			System.out.println ("B:");
+			System.out.println (DocumentTools.printPrettySubDoc (b.getDocumentNode ()));
+			LOGGER.setLevel (LOGGER.DEBUG);
+			a.getDocumentNode ().evaluate (conMgmt);
+			System.out.println (" ------------------------------------------ ");
+			System.out.println (" ------------------------------------------ ");
+			b.getDocumentNode ().evaluate (conMgmt);
+			System.out.println (a.getID () + " -- " + b.getID ());
+			System.out.println (a.getDocumentNode ().getModification () + " -- " + b.getDocumentNode ().getModification ());
+
+			LOGGER.setLevel (LOGGER.WARN);
+		}
+		
 		String idA = a.getNameAndId (), idB = b.getNameAndId ();
 		MarkupElement me = null;
 		if (idA.equals (idB))
@@ -387,6 +417,27 @@ public class SBMLReaction
 			me.addSubElements (me2);
 		}
 			//me.addValue (markupDocument.highlight ("Kinetic Law:") + b.kineticLaw.reportInsert (markupDocument));
+		
+		
+
+		MarkupElement me3 = new MarkupElement ("notes");
+		if (a.getNotes () != null && b.getNotes () != null)
+		{
+			a.getNotes ().reportModification (conMgmt, a.getNotes (), b.getNotes (), me3);
+			if (me3.getValues ().size () > 0)
+				me.addSubElements (me3);
+		}
+		else if (a.getNotes () != null)
+		{
+			a.getNotes ().reportDelete (me3);
+			me.addSubElements (me3);
+		}
+			//me.addValue (markupDocument.highlight ("Kinetic Law:") + a.kineticLaw.reportDelete (markupDocument));
+		else if (b.getNotes () != null)
+		{
+			b.getNotes ().reportInsert (me3);
+			me.addSubElements (me3);
+		}
 		
 		return me;
 	}

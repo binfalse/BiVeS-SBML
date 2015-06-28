@@ -12,6 +12,7 @@ import de.unirostock.sems.bives.algorithm.general.IdConnector;
 import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.sbml.parser.SBMLAssignmentRule;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
+import de.unirostock.sems.bives.sbml.parser.SBMLKineticLaw;
 import de.unirostock.sems.bives.sbml.parser.SBMLListOf;
 import de.unirostock.sems.bives.sbml.parser.SBMLModel;
 import de.unirostock.sems.bives.sbml.parser.SBMLRateRule;
@@ -152,6 +153,11 @@ public class SBMLConnectorPreprocessor
 			loB = rB.getListOfModifiersNode ();
 			if (loA != null && loB != null)
 				conMgmt.addConnection (new NodeConnection (loA.getDocumentNode (), loB.getDocumentNode ()));
+			
+			/*SBMLKineticLaw klA = rA.getKineticLaw ();
+			SBMLKineticLaw klB = rB.getKineticLaw ();
+			if (klA != null && klB != null)
+				conMgmt.addConnection (new NodeConnection (klA.getDocumentNode (), klB.getDocumentNode ()));*/
 		}
 		
 		
@@ -187,6 +193,7 @@ public class SBMLConnectorPreprocessor
 					conMgmt.addConnection (new NodeConnection (a.getDocumentNode (), rule.getDocumentNode ()));
 			}
 		}
+		
 	}
 	
 	private boolean nodeAssign (SBMLSBase sA, SBMLSBase sB) throws BivesConnectionException
