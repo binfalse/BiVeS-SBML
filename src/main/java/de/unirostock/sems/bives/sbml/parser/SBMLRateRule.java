@@ -83,7 +83,7 @@ public class SBMLRateRule
 	@Override
 	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (MarkupDocument.insert ("RateRule for "+SBMLModel.getSidName (variable)));
+		MarkupElement me = new MarkupElement (MarkupDocument.insert ("inserted RateRule for "+SBMLModel.getSidName (variable)));
 		BivesTools.genMathMarkupStats (null, math.getDocumentNode (), me);
 		//me.addValue (markupDocument.insert ("inserted"));
 		return me;
@@ -95,7 +95,7 @@ public class SBMLRateRule
 	@Override
 	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (MarkupDocument.delete ("RateRule for "+SBMLModel.getSidName (variable)));
+		MarkupElement me = new MarkupElement (MarkupDocument.delete ("deleted RateRule for "+SBMLModel.getSidName (variable)));
 		BivesTools.genMathMarkupStats (math.getDocumentNode (), null, me);
 		//me.addValue (markupDocument.delete ("deleted"));
 		return me;

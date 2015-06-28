@@ -448,9 +448,6 @@ public class SBMLReaction
 	@Override
 	public MarkupElement reportInsert ()
 	{
-
-		
-		
 		MarkupElement me = new MarkupElement (MarkupDocument.insert (getNameAndId ()));
 		report (me, true);
 		return me;
@@ -475,6 +472,10 @@ public class SBMLReaction
 	 */
 	public void report (MarkupElement me, boolean insert)
 	{
+		if (insert)
+			me.addValue (MarkupDocument.insert ("inserted"));
+		else
+			me.addValue (MarkupDocument.delete ("deleted"));
 		
 		StringBuilder ret = new StringBuilder ();
 		StringBuilder sub = new StringBuilder ();

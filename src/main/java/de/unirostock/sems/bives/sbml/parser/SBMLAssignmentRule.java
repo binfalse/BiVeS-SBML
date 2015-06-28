@@ -83,7 +83,7 @@ public class SBMLAssignmentRule
 	@Override
 	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (MarkupDocument.insert ("AssignmentRule for "+SBMLModel.getSidName (variable)));
+		MarkupElement me = new MarkupElement (MarkupDocument.insert ("inserted AssignmentRule for "+SBMLModel.getSidName (variable)));
 		BivesTools.genMathMarkupStats (null, math.getDocumentNode (), me);
 		//me.addValue (markupDocument.insert ("inserted"));
 		return me;
@@ -95,7 +95,7 @@ public class SBMLAssignmentRule
 	@Override
 	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (MarkupDocument.delete ("AssignmentRule for "+SBMLModel.getSidName (variable)));
+		MarkupElement me = new MarkupElement (MarkupDocument.delete ("deleted AssignmentRule for "+SBMLModel.getSidName (variable)));
 		BivesTools.genMathMarkupStats (math.getDocumentNode (), null, me);
 		//me.addValue (markupDocument.delete ("deleted"));
 		return me;

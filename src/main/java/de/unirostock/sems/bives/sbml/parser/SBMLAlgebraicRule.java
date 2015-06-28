@@ -60,7 +60,7 @@ public class SBMLAlgebraicRule
 	@Override
 	public MarkupElement reportInsert ()
 	{
-		MarkupElement me = new MarkupElement (MarkupDocument.insert ("AlgebraicRule"));
+		MarkupElement me = new MarkupElement (MarkupDocument.insert ("inserted AlgebraicRule"));
 		BivesTools.genAttributeMarkupStats (null, documentNode, me);
 		//me.addValue (markupDocument.insert ("inserted"));
 		return me;
@@ -72,7 +72,7 @@ public class SBMLAlgebraicRule
 	@Override
 	public MarkupElement reportDelete ()
 	{
-		MarkupElement me = new MarkupElement (MarkupDocument.delete ("AlgebraicRule"));
+		MarkupElement me = new MarkupElement (MarkupDocument.delete ("deleted AlgebraicRule"));
 		BivesTools.genAttributeMarkupStats (documentNode, null, me);
 		//me.addValue (markupDocument.delete ("deleted"));
 		return me;
