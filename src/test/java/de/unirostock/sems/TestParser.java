@@ -73,6 +73,7 @@ public class TestParser
 					if (validator.validate (kid))
 					{
 						processed++;
+						
 					}
 					else
 					{
@@ -82,7 +83,7 @@ public class TestParser
 				}
 			}
 		}
-		
+		assertTrue ("checked just a small number of files...", processed > 1000);
 		assertEquals ("there where some errors", 0, fail);
 		assertTrue ("found no file", 0 < processed);
 		
