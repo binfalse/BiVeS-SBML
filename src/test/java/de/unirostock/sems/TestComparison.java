@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import de.binfalse.bflog.LOGGER;
+import de.unirostock.sems.bives.api.Diff;
 import de.unirostock.sems.bives.ds.Patch;
 import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLValidator;
@@ -56,7 +57,7 @@ public class TestComparison
 		SBMLDocument version2 = val.getDocument();
 		
 		SBMLDiff differ = new SBMLDiff (version1, version2);
-		differ.mapTrees();
+		differ.mapTrees(Diff.ALLOW_DIFFERENT_IDS, Diff.CARE_ABOUT_NAMES, Diff.STRICTER_NAMES);
 		
 		try
 		{
@@ -97,7 +98,7 @@ public class TestComparison
 		SBMLDocument version2 = val.getDocument();
 		
 		SBMLDiff differ = new SBMLDiff (version1, version2);
-		differ.mapTrees();
+		differ.mapTrees(Diff.ALLOW_DIFFERENT_IDS, Diff.CARE_ABOUT_NAMES, Diff.STRICTER_NAMES);
 		
 		try
 		{
@@ -133,7 +134,7 @@ public class TestComparison
 		SBMLDiff differ = new SBMLDiff (version1, version2);
 		try
 		{
-			differ.mapTrees();
+			differ.mapTrees(Diff.ALLOW_DIFFERENT_IDS, Diff.CARE_ABOUT_NAMES, Diff.STRICTER_NAMES);
 		}
 		catch (BivesConnectionException e)
 		{

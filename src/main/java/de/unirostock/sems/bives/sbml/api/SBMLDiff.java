@@ -121,9 +121,9 @@ public class SBMLDiff extends Diff
 	 * @see de.unirostock.sems.bives.api.Diff#mapTrees()
 	 */
 	@Override
-	public boolean mapTrees() throws BivesConnectionException
+	public boolean mapTrees(boolean allowDifferentIds, boolean careAboutNames, boolean stricterNames) throws BivesConnectionException
 	{
-		SBMLConnector con = new SBMLConnector (doc1, doc2);
+		SBMLConnector con = new SBMLConnector (doc1, doc2, allowDifferentIds, careAboutNames, stricterNames);
 		con.findConnections ();
 		connections = con.getConnections();
 		

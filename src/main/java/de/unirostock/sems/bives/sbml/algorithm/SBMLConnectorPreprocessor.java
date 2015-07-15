@@ -41,6 +41,24 @@ public class SBMLConnectorPreprocessor
 	 *
 	 * @param sbmlDocA the original document
 	 * @param sbmlDocB the modified document
+	 * @param allowDifferentIds may mapped entities have different ids? see {@link de.unirostock.sems.bives.api.Diff#ALLOW_DIFFERENT_IDS}
+	 * @param careAboutNames should we care about names? see {@link de.unirostock.sems.bives.api.Diff#CARE_ABOUT_NAMES}
+	 * @param stricterNames should we handle the names very strictly? see {@link de.unirostock.sems.bives.api.Diff#STRICTER_NAMES}
+	 */
+	public SBMLConnectorPreprocessor (SBMLDocument sbmlDocA, SBMLDocument sbmlDocB, boolean allowDifferentIds, boolean careAboutNames, boolean stricterNames)
+	{
+		super (sbmlDocA.getTreeDocument (), sbmlDocB.getTreeDocument (), allowDifferentIds, careAboutNames, stricterNames);
+		this.sbmlDocA = sbmlDocA;
+		this.sbmlDocB = sbmlDocB;
+	}
+
+	/**
+	 * Instantiates a new sBML connector preprocessor.
+	 *
+	 * Uses default values for the mapping, see {@link de.unirostock.sems.bives.api.Diff#ALLOW_DIFFERENT_IDS}, {@link de.unirostock.sems.bives.api.Diff#CARE_ABOUT_NAMES}, and {@link de.unirostock.sems.bives.api.Diff#STRICTER_NAMES}.
+	 * 
+	 * @param sbmlDocA the original document
+	 * @param sbmlDocB the modified document
 	 */
 	public SBMLConnectorPreprocessor (SBMLDocument sbmlDocA, SBMLDocument sbmlDocB)
 	{
@@ -52,6 +70,22 @@ public class SBMLConnectorPreprocessor
 	/**
 	 * Instantiates a new sBML connector preprocessor.
 	 *
+	 * @param preprocessor the preprocessor
+	 * @param allowDifferentIds may mapped entities have different ids? see {@link de.unirostock.sems.bives.api.Diff#ALLOW_DIFFERENT_IDS}
+	 * @param careAboutNames should we care about names? see {@link de.unirostock.sems.bives.api.Diff#CARE_ABOUT_NAMES}
+	 * @param stricterNames should we handle the names very strictly? see {@link de.unirostock.sems.bives.api.Diff#STRICTER_NAMES}
+	 */
+	public SBMLConnectorPreprocessor (Connector preprocessor, boolean allowDifferentIds, boolean careAboutNames, boolean stricterNames)
+	{
+		super (preprocessor.getDocA (), preprocessor.getDocB (), allowDifferentIds, careAboutNames, stricterNames);
+		this.preprocessor = preprocessor;
+	}
+	
+	/**
+	 * Instantiates a new sBML connector preprocessor.
+	 *
+	 * Uses default values for the mapping, see {@link de.unirostock.sems.bives.api.Diff#ALLOW_DIFFERENT_IDS}, {@link de.unirostock.sems.bives.api.Diff#CARE_ABOUT_NAMES}, and {@link de.unirostock.sems.bives.api.Diff#STRICTER_NAMES}.
+	 * 
 	 * @param preprocessor the preprocessor
 	 */
 	public SBMLConnectorPreprocessor (Connector preprocessor)
