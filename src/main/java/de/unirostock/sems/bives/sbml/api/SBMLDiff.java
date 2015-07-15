@@ -118,7 +118,7 @@ public class SBMLDiff extends Diff
 
 
 	/* (non-Javadoc)
-	 * @see de.unirostock.sems.bives.api.Diff#mapTrees()
+	 * @see de.unirostock.sems.bives.api.Diff#mapTrees(boolean, boolean, boolean)
 	 */
 	@Override
 	public boolean mapTrees(boolean allowDifferentIds, boolean careAboutNames, boolean stricterNames) throws BivesConnectionException
