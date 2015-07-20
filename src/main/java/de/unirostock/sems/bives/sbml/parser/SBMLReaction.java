@@ -266,17 +266,17 @@ public class SBMLReaction
 		if (a.getDocumentNode ().getModification () == 0 && b.getDocumentNode ().getModification () == 0)
 			return null;
 		
-		if (a.getID ().equals ("rxn06672"))
+		/*if (a.getID ().equals ("rxn06672"))
 		{
 			System.out.println (a.getID () + " -- " + b.getID ());
 			System.out.println (a.getDocumentNode ().getModification () + " -- " + b.getDocumentNode ().getModification ());
-		}
+		}*/
 		
 		// if the reaction nodes are simply moved..
 		if (a.getDocumentNode ().getModification () == TreeNode.SWAPPEDKID && b.getDocumentNode ().getModification () == TreeNode.SWAPPEDKID)
 			return null;
 		
-		if (a.getID ().equals ("rxn06672"))
+		/*if (a.getID ().equals ("rxn06672"))
 		{
 			System.out.println ("didn't stop");
 			System.out.println ("A:");
@@ -292,7 +292,7 @@ public class SBMLReaction
 			System.out.println (a.getDocumentNode ().getModification () + " -- " + b.getDocumentNode ().getModification ());
 
 			LOGGER.setLevel (LOGGER.WARN);
-		}
+		}*/
 		
 		String idA = a.getNameAndId (), idB = b.getNameAndId ();
 		MarkupElement me = null;
