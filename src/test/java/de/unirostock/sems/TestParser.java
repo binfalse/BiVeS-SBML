@@ -124,7 +124,21 @@ public class TestParser
 		//System.out.println (node.getOntologyLinks ());
 		//System.out.println (model.getOntologyMappings ());
 	}
-	
-	
+
+
+	/**
+	 * Test for predefined units.
+	 */
+	@Test
+	public void testPredefinedUnits ()
+	{
+		File testFile = new File ("test/BIOMD0000000173.xml_2012-05-20");
+		SBMLValidator validator = new SBMLValidator ();
+		if (!validator.validate (testFile))
+		{
+			validator.getError ().printStackTrace ();
+			fail ("failed to validate " + testFile + ": " + validator.getError ());
+		}
+	}
 	
 }

@@ -573,6 +573,15 @@ public class SBMLModel
 			if (units.size () != 0)
 				throw new BivesDocumentConsistencyException ("inconsistencies for "+units.size ()+" units, problems: " + problems);
 		}
+		
+		
+		for (int i = 0; i < SBMLUnit.PREDEFINED_UNITS.length; i++)
+		{
+			SBMLUnitDefinition ud = new SBMLUnitDefinition (SBMLUnit.PREDEFINED_UNITS[i], this);
+			String id = ud.getID ();
+			if (listOfUnitDefinitions.get (id) == null)
+				listOfUnitDefinitions.put (ud.getID (), ud);
+		}
 	}
 
 	/**

@@ -24,9 +24,12 @@ public class SBMLUnit
 	extends SBMLSBase
 	implements Markup
 {
-	
+
 	/** those are BASE_UNITS. */
-	public final static String [] BASE_UNITS = new String [] {"substance", "volume", "area", "length", "ampere", "farad", "joule", "lux", "radian", "volt", "avogadro", "gram", "katal", "metre", "second", "watt", "becquerel", "gray", "kelvin", "mole", "siemens", "weber", "candela", "henry", "kilogram", "newton", "sievert", "coulomb", "hertz", "litre", "ohm", "steradian", "dimensionless", "item", "lumen", "pascal", "tesla"};
+	public final static String [] BASE_UNITS = new String [] {"ampere", "farad", "joule", "lux", "radian", "volt", "avogadro", "gram", "katal", "metre", "second", "watt", "becquerel", "gray", "kelvin", "mole", "siemens", "weber", "candela", "henry", "kilogram", "newton", "sievert", "coulomb", "hertz", "litre", "ohm", "steradian", "dimensionless", "item", "lumen", "pascal", "tesla"};
+
+	/** those are predefined units. */
+	public final static String [] PREDEFINED_UNITS = new String [] {"substance", "volume", "area", "length", "time"};
 	
 	/** The unit this unit is based on. */
 	private SBMLUnitDefinition kind;
