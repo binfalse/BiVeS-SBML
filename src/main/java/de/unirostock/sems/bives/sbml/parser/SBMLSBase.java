@@ -82,7 +82,7 @@ public abstract class SBMLSBase
 			ontologyLinks = new HashMap<String, List<String>> ();
 			nodeList = documentNode.getChildrenWithTag ("annotation");
 			if (nodeList.size () > 1)
-				throw new BivesSBMLParseException ("SBase with "+nodeList.size ()+" annotations. (expected max one annotation)");
+				throw new BivesSBMLParseException ("SBase with " + nodeList.size () + " annotations. (expected max one annotation)");
 			if (nodeList.size () == 1)
 				annotation = (DocumentNode) nodeList.get (0);
 		}
