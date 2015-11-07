@@ -15,9 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -25,10 +22,10 @@ import org.junit.runners.JUnit4;
 import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.api.Diff;
 import de.unirostock.sems.bives.ds.Patch;
-import de.unirostock.sems.bives.exception.BivesConnectionException;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLValidator;
 import de.unirostock.sems.bives.sbml.api.SBMLDiff;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
+import de.unirostock.sems.xmlutils.ds.DocumentNode;
 import de.unirostock.sems.xmlutils.ds.TreeDocument;
 import de.unirostock.sems.xmlutils.exception.XmlDocumentParseException;
 import de.unirostock.sems.xmlutils.tools.DocumentTools;
@@ -85,6 +82,51 @@ public class TestAnnotations
 	 * Test species name differs.
 	 */
 	@Test
+	public void  testSpeciesDel ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			// update model -> change name of a variable
+			((DocumentNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/listOfSpecies[1]")).rmChild ((DocumentNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/listOfSpecies[1]/species[5]"));
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 5, 0, 0,
+				true, false, false, false,
+				false, false, false, false,
+				false, false, true, true,
+				true, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
 	public void  testSpeciesNameDiffers ()
 	{
 		try
@@ -107,6 +149,153 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
+	public void  testSpeciesIdDiffers ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			// update model -> change name of a variable
+			doc2.getTreeDocument ().getNodeById ("E").setAttribute ("id", "e");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 0, 1, 0,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, true, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
+	public void  testSpeciesMathDiffers ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			// update model -> change name of a variable
+			doc2.getTreeDocument ().getNodeById ("E").setAttribute ("initialConcentration", "23");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 0, 1, 0,
+				true, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				true, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
+	public void  testSpeciesMathDiffers2 ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			// update model -> change name of a variable
+			doc2.getTreeDocument ().getNodeById ("E").rmAttribute ("initialConcentration");
+			doc2.getTreeDocument ().getNodeById ("E").setAttribute ("initialAmount", "23");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 1, 1, 0, 0,
+				true, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				true, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+			
 		}
 		catch (Exception e)
 		{

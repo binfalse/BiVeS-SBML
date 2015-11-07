@@ -171,12 +171,18 @@ public class SBMLDiffAnnotator
 				String attr = diffNode.getAttributeValue ("name");
 				if (attr.equals ("id"))
 					change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
-				if (attr.equals ("name"))
+				else if (attr.equals ("name"))
 					change.appliesTo (ComodiXmlEntity.getEntityName ());
 				else
 				{
-					if (attr.equals ("initial_value") || attr.equals ("units"))
+					if (attr.equals ("initialConcentration") || 
+						attr.equals ("initialAmount") || 
+						attr.equals ("substanceUnits") || 
+						attr.equals ("constant") || 
+						attr.equals ("hasOnlySubstanceUnits"))
 						change.affects (ComodiTarget.getMathematicalModel ());
+					else if (attr.equals ("sboTerm"))
+						change.affects (ComodiTarget.getReactionNetwork ());
 					change.affects (ComodiTarget.getSpeciesDefinition ());
 				}
 			}
