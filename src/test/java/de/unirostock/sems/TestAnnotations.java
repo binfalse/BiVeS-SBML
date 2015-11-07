@@ -26,6 +26,7 @@ import de.unirostock.sems.bives.sbml.algorithm.SBMLValidator;
 import de.unirostock.sems.bives.sbml.api.SBMLDiff;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
+import de.unirostock.sems.xmlutils.ds.TextNode;
 import de.unirostock.sems.xmlutils.ds.TreeDocument;
 import de.unirostock.sems.xmlutils.exception.XmlDocumentParseException;
 import de.unirostock.sems.xmlutils.tools.DocumentTools;
@@ -82,6 +83,95 @@ public class TestAnnotations
 	 * Test species name differs.
 	 */
 	@Test
+	public void  testFunctionDel ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			((DocumentNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]")).rmChild ((DocumentNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/listOfFunctionDefinitions[1]"));
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 15, 0, 3,
+				false, true, false, false,
+				false, false, false, false,
+				false, false, true, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
+	public void  testFunctionDiffers ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			// update model -> change name of a variable
+			((TextNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/listOfFunctionDefinitions[1]/functionDefinition[1]/math[1]/lambda[1]/apply[1]/cn[1]/text()[1]")).setText ("5");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 1, 1, 0, 0,
+				false, true, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
 	public void  testSpeciesDel ()
 	{
 		try
@@ -97,11 +187,11 @@ public class TestAnnotations
 			checkDiff (differ);
 
 //			System.out.println (differ.getDiff ());
-			simpleCheckAnnotations (differ, 0, 5, 0, 0,
+			simpleCheckAnnotations (differ, 0, 5, 0, 1,
 				true, false, false, false,
 				false, false, false, false,
 				false, false, true, true,
-				true, false, false, false,
+				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false);
 			
@@ -236,7 +326,7 @@ public class TestAnnotations
 				true, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				true, false, false, false,
+				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false);
 			
@@ -283,7 +373,7 @@ public class TestAnnotations
 				true, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				true, false, false, false,
+				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false);
 			

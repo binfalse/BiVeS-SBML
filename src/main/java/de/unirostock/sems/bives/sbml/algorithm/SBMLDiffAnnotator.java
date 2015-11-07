@@ -131,9 +131,15 @@ public class SBMLDiffAnnotator
 	{
 		super.annotatePatch (rootId, changeFac);
 	}
-	
 
-	/** The XPATH to a variable. */
+
+	/** The XPATH to a function definition. */
+	private Pattern	functionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfFunctionDefinitions\\[\\d+\\]/functionDefinition\\[\\d+\\]");
+	/** The XPATH to a machineReadable. */
+	private Pattern	annotationPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]");
+	/** The XPATH to a function definition. */
+	private Pattern	descriptionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*notes\\[\\d+\\]");
+	/** The XPATH to a species. */
 	private Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
 	
 	/**
@@ -161,41 +167,59 @@ public class SBMLDiffAnnotator
 		// the xpath in one of the documents, no matter if old or new doc
 		String xPath = diffNode.getAttributeValue ("newPath") == null ? diffNode
 			.getAttributeValue ("oldPath") : diffNode.getAttributeValue ("newPath");
-		
 
-		if (speciesPath.matcher (xPath).find ()
-			&& defNode.getTagName ().equals ("species"))
-		{
-			if (diffNode.getName ().equals ("attribute"))
+			
+			boolean isAnnotation = annotationPath.matcher (xPath).find () || descriptionPath.matcher (xPath).find ();
+
+			if (speciesPath.matcher (xPath).find () && !isAnnotation)
 			{
-				String attr = diffNode.getAttributeValue ("name");
-				if (attr.equals ("id"))
-					change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
-				else if (attr.equals ("name"))
-					change.appliesTo (ComodiXmlEntity.getEntityName ());
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+					{
+						if (attr.equals ("initialConcentration") || 
+							attr.equals ("initialAmount") || 
+							attr.equals ("substanceUnits") || 
+							attr.equals ("constant") || 
+							attr.equals ("hasOnlySubstanceUnits"))
+							change.affects (ComodiTarget.getSpeciesDefinition ());
+						else if (attr.equals ("sboTerm"))
+							change.affects (ComodiTarget.getReactionNetwork ());
+					}
+				}
 				else
 				{
-					if (attr.equals ("initialConcentration") || 
-						attr.equals ("initialAmount") || 
-						attr.equals ("substanceUnits") || 
-						attr.equals ("constant") || 
-						attr.equals ("hasOnlySubstanceUnits"))
-						change.affects (ComodiTarget.getMathematicalModel ());
-					else if (attr.equals ("sboTerm"))
-						change.affects (ComodiTarget.getReactionNetwork ());
-					change.affects (ComodiTarget.getSpeciesDefinition ());
+					if (!permutation)
+						change.affects (ComodiTarget.getSpeciesDefinition ());
 				}
 			}
-			else
-			{
-				if (!diffNode.getParentElement ().getName ().equals ("move"))
-					change.affects (ComodiTarget.getSpeciesDefinition ());
+
+			
+			
+			
+			
+			if (functionPath.matcher (xPath).find () && !isAnnotation)
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+						change.affects (ComodiTarget.getFunctionDefinition ());
+				}
 				else
-					change.affects (ComodiTarget.getSpeciesDefinition ());
-			}
-		}
+					change.affects (ComodiTarget.getFunctionDefinition ());
 		
 		
+			
+			
 		return change;
 	}
 }
