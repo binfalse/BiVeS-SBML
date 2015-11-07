@@ -82,10 +82,10 @@ public class TestAnnotations
 	
 	
 	/**
-	 * 
+	 * Test species name differs.
 	 */
 	@Test
-	public void  testVariableNameDiffers ()
+	public void  testSpeciesNameDiffers ()
 	{
 		try
 		{
@@ -99,8 +99,14 @@ public class TestAnnotations
 			differ.mapTrees ();
 			checkDiff (differ);
 
-			System.out.println (differ.getDiff ());
-			simpleCheckAnnotations (differ, 0, 0, 1, 0, false, false, false, false, false, true, false, false, false, false, false, false, false);
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 0, 1, 0,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, true,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false);
 		}
 		catch (Exception e)
 		{
@@ -112,7 +118,7 @@ public class TestAnnotations
 	
 	
 	/**
-	 * 
+	 * Test models equal.
 	 */
 	@Test
 	public void  testModelsEqual ()
@@ -132,7 +138,7 @@ public class TestAnnotations
 			Document patchDoc = patch.getDocument (false);
 			TreeDocument myPatchDoc = new TreeDocument (patchDoc, null);
 
-			simpleCheckAnnotations (differ, 0, 0, 0, 0, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			simpleCheckAnnotations (differ, 0, 0, 0, 0, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 			assertNotNull ("diff shouldn't be null", diff);
 			assertEquals ("didn't expect any changes", 5, myPatchDoc.getNumNodes ());
 			assertTrue ("didn't expect any changes but some annotations", 5 < new TreeDocument (patch.getDocument (true), null).getNumNodes ());
@@ -155,17 +161,28 @@ public class TestAnnotations
 	 * @param del the del
 	 * @param up the up
 	 * @param mov the mov
-	 * @param changeVariableDef the change variable def
-	 * @param changeComponentDef the change component def
-	 * @param changeMathModel the change math model
-	 * @param changeSpec the change spec
-	 * @param changeModelName the change model name
+	 * @param changeSpeciesDef the change species def
+	 * @param changeFunctionDefinition the change function definition
+	 * @param changeEventDefinition the change event definition
+	 * @param changeRules the change rules
+	 * @param changeMetaIdentifier the change meta identifier
+	 * @param changePerson the change person
+	 * @param changeContributor the change contributor
+	 * @param changeDate the change date
+	 * @param changeCreationDate the change creation date
+	 * @param changeModificationDate the change modification date
 	 * @param changeEntityIdentifier the change entity identifier
+	 * @param changeEntityName the change entity name
+	 * @param changeMathModel the change math model
+	 * @param changeSpecLevel the change spec level
+	 * @param changeSpecVersion the change spec version
+	 * @param changeModelName the change model name
 	 * @param changeReactionNetwork the change reaction network
 	 * @param changeReactionReversibility the change reaction reversibility
+	 * @param changeReactionDefinition the change reaction definition
 	 * @param changeUnits the change units
-	 * @param changeVariableConnection the change variable connection
-	 * @param changeComponentHierarchy the change component hierarchy
+	 * @param changeKinetics the change kinetics
+	 * @param changeParameterDefinition the change component hierarchy
 	 * @param changeAnnotation the change annotation
 	 * @param changeTextualDescription the change textual description
 	 * @throws XmlDocumentParseException the xml document parse exception
@@ -175,11 +192,12 @@ public class TestAnnotations
 	private void simpleCheckAnnotations (
 		SBMLDiff differ,
 		int ins, int del, int up, int mov,
-		boolean changeVariableDef, boolean changeComponentDef, boolean changeMathModel,
-		boolean changeSpec, boolean changeModelName, boolean changeEntityIdentifier,
-		boolean changeReactionNetwork, boolean changeReactionReversibility,
-		boolean changeUnits, boolean changeVariableConnection, boolean changeComponentHierarchy,
-		boolean changeAnnotation, boolean changeTextualDescription
+		boolean changeSpeciesDef, boolean changeFunctionDefinition, boolean changeEventDefinition, boolean changeRules,
+		boolean changeMetaIdentifier, boolean changePerson, boolean changeContributor, boolean changeDate,
+		boolean changeCreationDate, boolean changeModificationDate,	boolean changeEntityIdentifier, boolean changeEntityName,
+		boolean changeMathModel, boolean changeSpecLevel, boolean changeSpecVersion, boolean changeModelName,
+		boolean changeReactionNetwork, boolean changeReactionReversibility, boolean changeReactionDefinition, boolean changeUnits,
+		boolean changeKinetics, boolean changeParameterDefinition, boolean changeAnnotation, boolean changeTextualDescription
 		) throws XmlDocumentParseException, IOException, JDOMException
 	{
 		// stolen from my logger :)
@@ -200,20 +218,32 @@ public class TestAnnotations
 		assertEquals (pre + "expected exactly " + up + " up", up, patch.getNumUpdates ());
 		assertEquals (pre + "expected exactly " + mov + " mov", mov, patch.getNumMoves ());
 		assertTrue (pre + "there should be some annotation, even if there weren't any changes", annotationsDoc.getNumNodes () > 5);
-		assertEquals (pre + "occurence of http://purl.org/net/comodi#VariableDefinition", changeVariableDef, annotations.contains ("http://purl.org/net/comodi#VariableDefinition"));
-		assertEquals (pre + "occurence of http://purl.org/net/comodi#ComponentDefinition", changeComponentDef, annotations.contains ("http://purl.org/net/comodi#ComponentDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#SpeciesDefinition", changeSpeciesDef, annotations.contains ("http://purl.org/net/comodi#SpeciesDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#EntityName", changeEntityName, annotations.contains ("http://purl.org/net/comodi#EntityName"));
 		assertEquals (pre + "occurence of http://purl.org/net/comodi#MathematicalModel", changeMathModel, annotations.contains ("http://purl.org/net/comodi#MathematicalModel"));
-		assertEquals (pre + "occurence of http://purl.org/net/comodi#CellmlSpecification", changeSpec, annotations.contains ("http://purl.org/net/comodi#CellmlSpecification"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#SbmlLevel", changeSpecLevel, annotations.contains ("http://purl.org/net/comodi#SbmlLevel"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#SbmlVersion", changeSpecVersion, annotations.contains ("http://purl.org/net/comodi#SbmlVersioon"));
 		assertEquals (pre + "occurence of http://purl.org/net/comodi#ModelName", changeModelName, annotations.contains ("http://purl.org/net/comodi#ModelName"));
-		assertEquals ("occurence of http://purl.org/net/comodi#EntityIdentifier", changeEntityIdentifier, annotations.contains ("http://purl.org/net/comodi#EntityIdentifier"));
-		assertEquals ("occurence of http://purl.org/net/comodi#ReactionNetwork", changeReactionNetwork, annotations.contains ("http://purl.org/net/comodi#ReactionNetwork"));
-		assertEquals ("occurence of http://purl.org/net/comodi#ReactionReversibility", changeReactionReversibility, annotations.contains ("http://purl.org/net/comodi#ReactionReversibility"));
-		assertEquals ("occurence of http://purl.org/net/comodi#UnitDefinition", changeUnits, annotations.contains ("http://purl.org/net/comodi#UnitDefinition"));
-		assertEquals ("occurence of http://purl.org/net/comodi#VariableConnections", changeVariableConnection, annotations.contains ("http://purl.org/net/comodi#VariableConnections"));
-		assertEquals ("occurence of http://purl.org/net/comodi#ComponentHierarchy", changeComponentHierarchy, annotations.contains ("http://purl.org/net/comodi#ComponentHierarchy"));
-		assertEquals ("occurence of http://purl.org/net/comodi#Annotation", changeAnnotation, annotations.contains ("http://purl.org/net/comodi#Annotation"));
-		assertEquals ("occurence of http://purl.org/net/comodi#TextualDescription", changeTextualDescription, annotations.contains ("http://purl.org/net/comodi#TextualDescription"));
-//	assertEquals ("occurence of http://purl.org/net/comodi#", , annotations.contains ("http://purl.org/net/comodi#"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#EntityIdentifier", changeEntityIdentifier, annotations.contains ("http://purl.org/net/comodi#EntityIdentifier"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#ReactionNetwork", changeReactionNetwork, annotations.contains ("http://purl.org/net/comodi#ReactionNetwork"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#ReactionReversibility", changeReactionReversibility, annotations.contains ("http://purl.org/net/comodi#ReactionReversibility"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#UnitDefinition", changeUnits, annotations.contains ("http://purl.org/net/comodi#UnitDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#Kinetics", changeKinetics, annotations.contains ("http://purl.org/net/comodi#Kinetics"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#ParameterDefinition", changeParameterDefinition, annotations.contains ("http://purl.org/net/comodi#ParameterDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#Annotation", changeAnnotation, annotations.contains ("http://purl.org/net/comodi#Annotation"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#TextualDescription", changeTextualDescription, annotations.contains ("http://purl.org/net/comodi#TextualDescription"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#FunctionDefinition", changeFunctionDefinition, annotations.contains ("http://purl.org/net/comodi#FunctionDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#EventDefinition", changeEventDefinition, annotations.contains ("http://purl.org/net/comodi#EventDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#Rules", changeRules, annotations.contains ("http://purl.org/net/comodi#Rules"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#ReactionDefinition", changeReactionDefinition, annotations.contains ("http://purl.org/net/comodi#ReactionDefinition"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#MetaIdentifier", changeMetaIdentifier, annotations.contains ("http://purl.org/net/comodi#MetaIdentifier"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#Person", changePerson, annotations.contains ("http://purl.org/net/comodi#Person"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#Contributor", changeContributor, annotations.contains ("http://purl.org/net/comodi#Contributor"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#Date", changeDate, annotations.contains ("http://purl.org/net/comodi#Date"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#CreationDate", changeCreationDate, annotations.contains ("http://purl.org/net/comodi#CreationDate"));
+		assertEquals (pre + "occurence of http://purl.org/net/comodi#ModificationDate", changeModificationDate, annotations.contains ("http://purl.org/net/comodi#ModificationDate"));
+//		assertEquals (pre + "occurence of http://purl.org/net/comodi#", change, annotations.contains ("http://purl.org/net/comodi#"));
+//	assertEquals (pre + "occurence of http://purl.org/net/comodi#", , annotations.contains ("http://purl.org/net/comodi#"));
 	}
 
 	/**

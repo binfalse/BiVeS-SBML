@@ -3,12 +3,15 @@
  */
 package de.unirostock.sems.bives.sbml.algorithm;
 
+import java.util.regex.Pattern;
+
 import org.jdom2.Element;
 
 import de.unirostock.sems.bives.algorithm.general.DefaultDiffAnnotator;
 import de.unirostock.sems.comodi.Change;
 import de.unirostock.sems.comodi.ChangeFactory;
 import de.unirostock.sems.comodi.branches.ComodiTarget;
+import de.unirostock.sems.comodi.branches.ComodiXmlEntity;
 import de.unirostock.sems.xmlutils.ds.TextNode;
 import de.unirostock.sems.xmlutils.ds.TreeNode;
 
@@ -129,6 +132,9 @@ public class SBMLDiffAnnotator
 		super.annotatePatch (rootId, changeFac);
 	}
 	
+
+	/** The XPATH to a variable. */
+	private Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
 	
 	/**
 	 * Annotate the target of a change. Recognises the effected parts of the
@@ -149,6 +155,41 @@ public class SBMLDiffAnnotator
 	private Change annotateTarget (Change change, TreeNode nodeA, TreeNode nodeB,
 		Element diffNode, boolean permutation)
 	{
+		// as nodeA or nodeB might be null, but we don't care at some points, we
+		// just need one of them which is definietely not 0...
+		TreeNode defNode = nodeA == null ? nodeB : nodeA;
+		// the xpath in one of the documents, no matter if old or new doc
+		String xPath = diffNode.getAttributeValue ("newPath") == null ? diffNode
+			.getAttributeValue ("oldPath") : diffNode.getAttributeValue ("newPath");
+		
+
+		if (speciesPath.matcher (xPath).find ()
+			&& defNode.getTagName ().equals ("species"))
+		{
+			if (diffNode.getName ().equals ("attribute"))
+			{
+				String attr = diffNode.getAttributeValue ("name");
+				if (attr.equals ("id"))
+					change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+				if (attr.equals ("name"))
+					change.appliesTo (ComodiXmlEntity.getEntityName ());
+				else
+				{
+					if (attr.equals ("initial_value") || attr.equals ("units"))
+						change.affects (ComodiTarget.getMathematicalModel ());
+					change.affects (ComodiTarget.getSpeciesDefinition ());
+				}
+			}
+			else
+			{
+				if (!diffNode.getParentElement ().getName ().equals ("move"))
+					change.affects (ComodiTarget.getSpeciesDefinition ());
+				else
+					change.affects (ComodiTarget.getSpeciesDefinition ());
+			}
+		}
+		
+		
 		return change;
 	}
 }
