@@ -99,7 +99,7 @@ public class TestAnnotations
 			differ.mapTrees ();
 			checkDiff (differ);
 
-//			System.out.println (differ.getDiff ());
+			System.out.println (differ.getDiff ());
 			simpleCheckAnnotations (differ, 0, 0, 1, 0, false, false, false, false, false, true, false, false, false, false, false, false, false);
 		}
 		catch (Exception e)
