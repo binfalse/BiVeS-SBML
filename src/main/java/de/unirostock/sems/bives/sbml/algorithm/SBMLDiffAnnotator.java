@@ -173,6 +173,20 @@ public class SBMLDiffAnnotator
 			.getAttributeValue ("oldPath") : diffNode.getAttributeValue ("newPath");
 
 			
+			// different cellml spec?
+			if (defNode.getXPath ().equals ("/sbml[1]")
+				&& nodeA != null
+				&& nodeB != null
+				&& diffNode.getName ().equals ("attribute"))
+			{
+				String attr = diffNode.getAttributeValue ("name");
+				if (attr.equals ("level"))
+					change.affects (ComodiTarget.getSbmlLevel ());
+				if (attr.equals ("version"))
+					change.affects (ComodiTarget.getSbmlVersion ());
+			}
+			
+			
 			boolean isAnnotation = annotationPath.matcher (xPath).find () || descriptionPath.matcher (xPath).find ();
 
 			if (speciesPath.matcher (xPath).find () && !isAnnotation)
