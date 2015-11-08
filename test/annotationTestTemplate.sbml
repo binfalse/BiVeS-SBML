@@ -125,6 +125,17 @@ xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
 				<listOfModifiers>
 					<modifierSpeciesReference species="D" sboTerm="SBO:0000459"/>
 				</listOfModifiers>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/> <ci> k </ci> <ci> S2 </ci> <ci> X0 </ci> <ci> c1 </ci>
+</apply>
+</math>
+<listOfLocalParameters>
+<localParameter id="k" value="0.1"/>
+</listOfLocalParameters>
+</kineticLaw>
+
 			</reaction>
 		</listOfReactions>
 		</model>

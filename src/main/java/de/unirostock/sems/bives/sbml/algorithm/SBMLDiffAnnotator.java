@@ -146,6 +146,12 @@ public class SBMLDiffAnnotator
 	/** The XPATH to a species. */
 	private Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
 
+
+	/** The XPATH to a reaction. */
+	private Pattern	reactionsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]");
+	/** The XPATH to a reaction. */
+	private Pattern	kineticsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\]");
+	
 	/** The XPATH to a machine readable annotation. */
 	private Pattern	creationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*created\\[\\d+\\]");
 	/** The XPATH to a machine readable annotation. */
@@ -239,7 +245,7 @@ public class SBMLDiffAnnotator
 			
 			
 			
-			if (eventPath.matcher (xPath).find () && !isAnnotation)
+			else if (eventPath.matcher (xPath).find () && !isAnnotation)
 				if (diffNode.getName ().equals ("attribute"))
 				{
 					String attr = diffNode.getAttributeValue ("name");
@@ -257,7 +263,7 @@ public class SBMLDiffAnnotator
 			
 			
 			
-			if (functionPath.matcher (xPath).find () && !isAnnotation)
+			else if (functionPath.matcher (xPath).find () && !isAnnotation)
 				if (diffNode.getName ().equals ("attribute"))
 				{
 					String attr = diffNode.getAttributeValue ("name");
@@ -275,7 +281,7 @@ public class SBMLDiffAnnotator
 			
 			
 			
-			if (rulePath.matcher (xPath).find () && !isAnnotation)
+			else if (rulePath.matcher (xPath).find () && !isAnnotation)
 				if (diffNode.getName ().equals ("attribute"))
 				{
 					String attr = diffNode.getAttributeValue ("name");
@@ -293,7 +299,7 @@ public class SBMLDiffAnnotator
 			
 			
 			
-			if (functionPath.matcher (xPath).find () && !isAnnotation)
+			else if (functionPath.matcher (xPath).find () && !isAnnotation)
 				if (diffNode.getName ().equals ("attribute"))
 				{
 					String attr = diffNode.getAttributeValue ("name");
@@ -306,6 +312,21 @@ public class SBMLDiffAnnotator
 				}
 				else
 					change.affects (ComodiTarget.getFunctionDefinition ());
+			
+			
+			
+			else if (reactionsPath.matcher (xPath).find () && !isAnnotation)
+			{
+				if (kineticsPath.matcher (xPath).find ())
+					change.affects (ComodiTarget.getKinetics ());
+				else if (defNode.getTagName ().equals ("reaction") && defNode.getParent ().getTagName ().equals ("listOfReactions"))
+					change.affects (ComodiTarget.getReactionReversibility ());
+				else
+					change.affects (ComodiTarget.getReactionNetwork ());
+			}
+			
+			
+			
 			
 			
 			
