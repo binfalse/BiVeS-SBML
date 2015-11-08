@@ -12,6 +12,22 @@ xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
 </math>
 </functionDefinition>
 </listOfFunctionDefinitions>
+<listOfEvents>
+<event useValuesFromTriggerTime="true">
+<trigger initialValue="false" persistent="true">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply> <leq/> <ci> P_1 </ci> <ci> P_2 </ci> </apply>
+</math>
+</trigger>
+<listOfEventAssignments>
+<eventAssignment variable="A">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci> k2reset </ci>
+</math>
+</eventAssignment>
+</listOfEventAssignments>
+</event>
+</listOfEvents>
 		<listOfCompartments>
 			<compartment id="compartment" name="compartment" size="1"/>
 		</listOfCompartments>

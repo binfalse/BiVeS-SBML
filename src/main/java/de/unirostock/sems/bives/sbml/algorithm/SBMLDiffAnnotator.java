@@ -135,6 +135,8 @@ public class SBMLDiffAnnotator
 
 	/** The XPATH to a function definition. */
 	private Pattern	functionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfFunctionDefinitions\\[\\d+\\]/functionDefinition\\[\\d+\\]");
+	/** The XPATH to a function definition. */
+	private Pattern	eventPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfEvents\\[\\d+\\]/event\\[\\d+\\]");
 	/** The XPATH to a machineReadable. */
 	private Pattern	annotationPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]");
 	/** The XPATH to a function definition. */
@@ -198,6 +200,24 @@ public class SBMLDiffAnnotator
 						change.affects (ComodiTarget.getSpeciesDefinition ());
 				}
 			}
+
+			
+			
+			
+			
+			if (eventPath.matcher (xPath).find () && !isAnnotation)
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+						change.affects (ComodiTarget.getEventDefinition ());
+				}
+				else
+					change.affects (ComodiTarget.getEventDefinition ());
 
 			
 			
