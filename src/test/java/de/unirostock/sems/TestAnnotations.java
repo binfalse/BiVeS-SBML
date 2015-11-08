@@ -259,6 +259,50 @@ public class TestAnnotations
 	 * Test species name differs.
 	 */
 	@Test
+	public void  testDescriptionChange ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			((TextNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/notes[1]/body[1]/p[1]/text()[1]")).setText ("note");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 0, 1, 0,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, true);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
 	public void  testSpecChange1 ()
 	{
 		try

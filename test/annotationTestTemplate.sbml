@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
 	<model name="TestModel_for_IB2013">
+<notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <p>not</p>
+            </body>    </notes>
 <annotation>
 <rdf:RDF
 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -102,7 +106,7 @@ xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
 			<compartment id="compartment" name="compartment" size="1"/>
 		</listOfCompartments>
 		<listOfSpecies>
-			<species id="A" name="RB/E2F" compartment="compartment" initialConcentration="100"/>
+			<species id="A" metaid="A" name="RB/E2F" compartment="compartment" initialConcentration="100"/>
 			<species id="B" name="RB-Hypo" compartment="compartment" initialConcentration="0"/>
 			<species id="C" name="free E3F" compartment="compartment" initialConcentration="0"/>
 			<species id="D" name="cycE/cdk2" compartment="compartment" initialConcentration="0"/>

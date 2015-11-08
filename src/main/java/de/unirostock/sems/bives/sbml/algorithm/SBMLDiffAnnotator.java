@@ -311,14 +311,21 @@ public class SBMLDiffAnnotator
 			
 			if (isAnnotation)
 			{
-				if (creatorPath.matcher (xPath).find () || contributorPath.matcher (xPath).find ())
-					change.affects (ComodiTarget.getContributor ());
-				else if (creationDatePath.matcher (xPath).find ())
-					change.affects (ComodiTarget.getCreationDate ());
-				else if (modificationDatePath.matcher (xPath).find ())
-					change.affects (ComodiTarget.getModificationDate ());
-				else
-					change.affects (ComodiTarget.getAnnotation ());
+				if (annotationPath.matcher (xPath).find ())
+				{
+					if (creatorPath.matcher (xPath).find () || contributorPath.matcher (xPath).find ())
+						change.affects (ComodiTarget.getContributor ());
+					else if (creationDatePath.matcher (xPath).find ())
+						change.affects (ComodiTarget.getCreationDate ());
+					else if (modificationDatePath.matcher (xPath).find ())
+						change.affects (ComodiTarget.getModificationDate ());
+					else
+						change.affects (ComodiTarget.getAnnotation ());
+				}
+				else if (descriptionPath.matcher (xPath).find ())
+				{
+					change.affects (ComodiTarget.getTextualDescription ());
+				}
 			}
 			
 			
