@@ -149,8 +149,11 @@ public class SBMLDiffAnnotator
 
 	/** The XPATH to a reaction. */
 	private Pattern	reactionsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]");
-	/** The XPATH to a reaction. */
+	/** The XPATH to a kinetic law. */
 	private Pattern	kineticsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\]");
+
+	/** The XPATH to a parameter. */
+	private Pattern	parameterPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\](/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\])?/listOf(Local)?Parameters\\[\\d+\\]/(localP|p)arameter\\[\\d+\\]");
 	
 	/** The XPATH to a machine readable annotation. */
 	private Pattern	creationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*created\\[\\d+\\]");
@@ -211,9 +214,29 @@ public class SBMLDiffAnnotator
 			
 			
 			boolean isAnnotation = annotationPath.matcher (xPath).find () || descriptionPath.matcher (xPath).find ();
+
 			
 			
-			if (speciesPath.matcher (xPath).find () && !isAnnotation)
+			if (parameterPath.matcher (xPath).find () && !isAnnotation)
+			{
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+						change.affects (ComodiTarget.getParameterDefinition ());
+				}
+				else
+					if (!permutation)
+						change.affects (ComodiTarget.getParameterDefinition ());
+			}
+			
+			
+			
+			else if (speciesPath.matcher (xPath).find () && !isAnnotation)
 			{
 				if (diffNode.getName ().equals ("attribute"))
 				{
@@ -314,19 +337,34 @@ public class SBMLDiffAnnotator
 					change.affects (ComodiTarget.getFunctionDefinition ());
 			
 			
-			
 			else if (reactionsPath.matcher (xPath).find () && !isAnnotation)
 			{
-				if (kineticsPath.matcher (xPath).find ())
-					change.affects (ComodiTarget.getKinetics ());
-				else if (defNode.getTagName ().equals ("reaction") && defNode.getParent ().getTagName ().equals ("listOfReactions"))
-					change.affects (ComodiTarget.getReactionReversibility ());
-				else
-					change.affects (ComodiTarget.getReactionNetwork ());
+				boolean go = true; // getting tired..
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+					{
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+						go = false;
+					}
+					else if (attr.equals ("name"))
+					{
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+						go = false;
+					}
+				}
+				
+				if (go)
+				{
+					if (kineticsPath.matcher (xPath).find ())
+						change.affects (ComodiTarget.getKinetics ());
+					else if (defNode.getTagName ().equals ("reaction") && defNode.getParent ().getTagName ().equals ("listOfReactions"))
+						change.affects (ComodiTarget.getReactionReversibility ());
+					else
+						change.affects (ComodiTarget.getReactionNetwork ());
+				}
 			}
-			
-			
-			
 			
 			
 			

@@ -113,6 +113,10 @@ xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
 			<species id="E" name="unused" compartment="compartment" initialConcentration="0"/>
 			<species id="x" name="unused2" compartment="compartment" initialConcentration="0"/>
 		</listOfSpecies>
+<listOfParameters>
+<parameter id="tau2" value="3e-2" constant="true"/>
+<parameter id="Km1" value="10.7" constant="true"/>
+</listOfParameters>
 		<listOfReactions>
 			<reaction id="r" name="r">
 				<listOfReactants>
