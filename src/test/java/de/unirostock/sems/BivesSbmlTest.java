@@ -13,7 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ TestComparison.class, TestParser.class, TestTobias.class })
+@SuiteClasses({ TestComparison.class, TestParser.class, TestTobias.class, TestAnnotations.class })
 public class BivesSbmlTest
 {
 	

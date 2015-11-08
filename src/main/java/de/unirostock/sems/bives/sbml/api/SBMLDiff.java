@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.jdom2.JDOMException;
 
 import de.binfalse.bflog.LOGGER;
+import de.unirostock.sems.bives.algorithm.DiffAnnotator;
 import de.unirostock.sems.bives.api.Diff;
 import de.unirostock.sems.bives.ds.graph.GraphTranslator;
 import de.unirostock.sems.bives.ds.graph.GraphTranslatorDot;
@@ -21,6 +22,7 @@ import de.unirostock.sems.bives.markup.TypesettingHTML;
 import de.unirostock.sems.bives.markup.TypesettingMarkDown;
 import de.unirostock.sems.bives.markup.TypesettingReStructuredText;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLConnector;
+import de.unirostock.sems.bives.sbml.algorithm.SBMLDiffAnnotator;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLDiffInterpreter;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLGraphProducer;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
@@ -61,9 +63,73 @@ public class SBMLDiff extends Diff
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws JDOMException the jDOM exception
 	 */
+	public SBMLDiff (File a, File b, DiffAnnotator diffAnnotator) throws BivesSBMLParseException, BivesDocumentConsistencyException, XmlDocumentParseException, IOException, JDOMException
+	{
+		super (a, b, diffAnnotator);
+		doc1 = new SBMLDocument (treeA);
+		doc2 = new SBMLDocument (treeB);
+	}
+	
+	/**
+	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the XML code representing the original SBML model
+	 * @param b the XML code representing the modified SBML model
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws JDOMException the jDOM exception
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 */
+	public SBMLDiff (String a, String b, DiffAnnotator diffAnnotator) throws XmlDocumentParseException, IOException, JDOMException, BivesSBMLParseException, BivesDocumentConsistencyException
+	{
+		super (a, b, diffAnnotator);
+		doc1 = new SBMLDocument (treeA);
+		doc2 = new SBMLDocument (treeB);
+	}
+
+	/**
+	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the tree document representing the original model
+	 * @param b the tree document representing the modified model
+	 * @throws BivesDocumentConsistencyException 
+	 * @throws BivesSBMLParseException 
+	 */
+	public SBMLDiff (TreeDocument a, TreeDocument b, DiffAnnotator diffAnnotator) throws BivesSBMLParseException, BivesDocumentConsistencyException
+	{
+		super(a, b, diffAnnotator);
+		doc1 = new SBMLDocument (treeA);
+		doc2 = new SBMLDocument (treeB);
+	}
+	
+	/**
+	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the original document
+	 * @param b the modified document
+	 */
+	public SBMLDiff (SBMLDocument a, SBMLDocument b, DiffAnnotator diffAnnotator)
+	{
+		super (a.getTreeDocument (), b.getTreeDocument (), diffAnnotator);
+		doc1 = a;
+		doc2 = b;
+	}
+	
+	/**
+	 * Instantiates a new SBML differ.
+	 *
+	 * @param a the file containing the original SBML model
+	 * @param b the file containing the modified SBML model
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
+	 * @throws XmlDocumentParseException the xml document parse exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws JDOMException the jDOM exception
+	 */
 	public SBMLDiff (File a, File b) throws BivesSBMLParseException, BivesDocumentConsistencyException, XmlDocumentParseException, IOException, JDOMException
 	{
-		super (a, b);
+		super (a, b, new SBMLDiffAnnotator ());
 		doc1 = new SBMLDocument (treeA);
 		doc2 = new SBMLDocument (treeB);
 	}
@@ -81,7 +147,7 @@ public class SBMLDiff extends Diff
 	 */
 	public SBMLDiff (String a, String b) throws XmlDocumentParseException, IOException, JDOMException, BivesSBMLParseException, BivesDocumentConsistencyException
 	{
-		super (a, b);
+		super (a, b, new SBMLDiffAnnotator ());
 		doc1 = new SBMLDocument (treeA);
 		doc2 = new SBMLDocument (treeB);
 	}
@@ -96,7 +162,7 @@ public class SBMLDiff extends Diff
 	 */
 	public SBMLDiff (TreeDocument a, TreeDocument b) throws BivesSBMLParseException, BivesDocumentConsistencyException
 	{
-		super(a, b);
+		super(a, b, new SBMLDiffAnnotator ());
 		doc1 = new SBMLDocument (treeA);
 		doc2 = new SBMLDocument (treeB);
 	}
@@ -109,7 +175,7 @@ public class SBMLDiff extends Diff
 	 */
 	public SBMLDiff (SBMLDocument a, SBMLDocument b)
 	{
-		super (a.getTreeDocument (), b.getTreeDocument ());
+		super (a.getTreeDocument (), b.getTreeDocument (), new SBMLDiffAnnotator ());
 		doc1 = a;
 		doc2 = b;
 	}

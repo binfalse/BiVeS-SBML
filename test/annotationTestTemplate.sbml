@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+	<model name="TestModel_for_IB2013">
+<notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <p>not</p>
+            </body>    </notes>
+<annotation>
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:dcterms="http://purl.org/dc/terms/"
+xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#"
+xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"
+xmlns:bqmodel="http://biomodels.net/model-qualifiers/"
+>
+<rdf:Description rdf:about="#A">
+<dc:creator>
+<rdf:Bag>
+<rdf:li rdf:parseType="Resource">
+<vCard:N rdf:parseType="Resource">
+<vCard:Family>Shapiro</vCard:Family>
+<vCard:Given>Bruce</vCard:Given>
+</vCard:N>
+<vCard:EMAIL>bshapiro@jpl.nasa.gov</vCard:EMAIL>
+<vCard:ORG rdf:parseType="Resource">
+<vCard:Orgname>NASA Jet Propulsion Laboratory</vCard:Orgname>
+</vCard:ORG>
+</rdf:li>
+</rdf:Bag>
+</dc:creator>
+<dcterms:created rdf:parseType="Resource">
+<dcterms:W3CDTF>2005-02-06T23:39:40+00:00</dcterms:W3CDTF>
+</dcterms:created>
+<dcterms:modified rdf:parseType="Resource">
+<dcterms:W3CDTF>2005-09-13T13:24:56+00:00</dcterms:W3CDTF>
+</dcterms:modified>
+<bqmodel:is>
+<rdf:Bag>
+<rdf:li rdf:resource="urn:miriam:biomodels.db:BIOMD0000000003"/>
+</rdf:Bag>
+</bqmodel:is>
+<bqmodel:isDescribedBy>
+<rdf:Bag>
+<rdf:li rdf:resource="urn:miriam:pubmed:1833774"/>
+</rdf:Bag>
+</bqmodel:isDescribedBy>
+<bqbiol:isVersionOf>
+<rdf:Bag>
+<rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04110"/>
+<rdf:li rdf:resource="urn:miriam:reactome:REACT_152"/>
+</rdf:Bag>
+</bqbiol:isVersionOf>
+</rdf:Description>
+</rdf:RDF>
+</annotation>
+<listOfFunctionDefinitions>
+<functionDefinition id="pow3">
+<math xmlns="http://www.w3.org/1998/Math/MathML"
+xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+<lambda>
+<bvar><ci> x </ci></bvar>
+<apply> <power/> <ci> x </ci> <cn sbml:units="dimensionless"> 3 </cn> </apply>
+</lambda>
+</math>
+</functionDefinition>
+</listOfFunctionDefinitions>
+<listOfEvents>
+<event useValuesFromTriggerTime="true">
+<trigger initialValue="false" persistent="true">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply> <leq/> <ci> P_1 </ci> <ci> P_2 </ci> </apply>
+</math>
+</trigger>
+<listOfEventAssignments>
+<eventAssignment variable="A">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci> k2reset </ci>
+</math>
+</eventAssignment>
+</listOfEventAssignments>
+</event>
+</listOfEvents>
+<listOfRules>
+<assignmentRule variable="C">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply> <divide/> <ci> k3 </ci> <ci> k2 </ci> </apply>
+</math>
+</assignmentRule>
+<assignmentRule variable="B">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<divide/>
+<apply> <times/> <ci> k </ci> <ci> x </ci> </apply>
+<apply> <plus/> <cn> 1 </cn> <ci> k2 </ci> </apply>
+</apply>
+</math>
+</assignmentRule>
+<assignmentRule variable="A">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply> <times/> <cn> 0.10 </cn> <ci> x </ci> </apply>
+</math>
+</assignmentRule>
+</listOfRules>
+<listOfUnitDefinitions>
+<unitDefinition id="foot">
+<listOfUnits>
+<unit kind="metre" multiplier="0.3048" scale="0" exponent="1"/>
+</listOfUnits>
+</unitDefinition>
+</listOfUnitDefinitions>
+		<listOfCompartments>
+			<compartment id="compartment" name="compartment" size="1"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="A" metaid="A" name="RB/E2F" compartment="compartment" initialConcentration="100"/>
+			<species id="B" name="RB-Hypo" compartment="compartment" initialConcentration="0"/>
+			<species id="C" name="free E3F" compartment="compartment" initialConcentration="0"/>
+			<species id="D" name="cycE/cdk2" compartment="compartment" initialConcentration="0"/>
+			<species id="E" name="unused" compartment="compartment" initialConcentration="0"/>
+			<species id="x" name="unused2" compartment="compartment" initialConcentration="0"/>
+		</listOfSpecies>
+<listOfParameters>
+<parameter id="tau2" value="3e-2" constant="true"/>
+<parameter id="Km1" value="10.7" constant="true"/>
+</listOfParameters>
+		<listOfReactions>
+			<reaction id="r" name="r">
+				<listOfReactants>
+					<speciesReference species="A"/>
+				</listOfReactants>
+				<listOfProducts>
+					<speciesReference species="C"/>
+					<speciesReference species="B"/>
+				</listOfProducts>
+				<listOfModifiers>
+					<modifierSpeciesReference species="D" sboTerm="SBO:0000459"/>
+				</listOfModifiers>
+<kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/> <ci> k </ci> <ci> S2 </ci> <ci> X0 </ci> <ci> c1 </ci>
+</apply>
+</math>
+<listOfLocalParameters>
+<localParameter id="k" value="0.1"/>
+</listOfLocalParameters>
+</kineticLaw>
+
+			</reaction>
+		</listOfReactions>
+		</model>
+</sbml>

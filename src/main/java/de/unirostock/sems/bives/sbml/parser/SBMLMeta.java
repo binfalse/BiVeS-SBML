@@ -42,7 +42,7 @@ public class SBMLMeta
 			SBMLSBase describedNode = model.getFromMetaId (about.substring (1));
 			if (describedNode == null)
 			{
-				LOGGER.error ("node reffed in 'about' attribute in rdf:description element does exist? ", descr.getXPath (), " about: ", about.substring (1));
+				LOGGER.error ("node reffed in 'about' attribute in rdf:description element does not exist? ", descr.getXPath (), " about: ", about.substring (1));
 				continue;
 			}
 			
