@@ -102,6 +102,13 @@ xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
 </math>
 </assignmentRule>
 </listOfRules>
+<listOfUnitDefinitions>
+<unitDefinition id="foot">
+<listOfUnits>
+<unit kind="metre" multiplier="0.3048" scale="0" exponent="1"/>
+</listOfUnits>
+</unitDefinition>
+</listOfUnitDefinitions>
 		<listOfCompartments>
 			<compartment id="compartment" name="compartment" size="1"/>
 		</listOfCompartments>

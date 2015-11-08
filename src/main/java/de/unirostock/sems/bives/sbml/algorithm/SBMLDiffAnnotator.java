@@ -152,6 +152,10 @@ public class SBMLDiffAnnotator
 	/** The XPATH to a kinetic law. */
 	private Pattern	kineticsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\]");
 
+
+	/** The XPATH to a reaction. */
+	private Pattern	unitsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfUnitDefinitions\\[\\d+\\]/unitDefinition\\[\\d+\\]");
+	
 	/** The XPATH to a parameter. */
 	private Pattern	parameterPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\](/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\])?/listOf(Local)?Parameters\\[\\d+\\]/(localP|p)arameter\\[\\d+\\]");
 	
@@ -317,6 +321,24 @@ public class SBMLDiffAnnotator
 				}
 				else
 					change.affects (ComodiTarget.getRules ());
+
+			
+			
+			
+			
+			else if (unitsPath.matcher (xPath).find () && !isAnnotation)
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+						change.affects (ComodiTarget.getUnitDefinition ());
+				}
+				else
+					change.affects (ComodiTarget.getUnitDefinition ());
 
 			
 			

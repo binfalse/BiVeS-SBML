@@ -83,6 +83,50 @@ public class TestAnnotations
 	 * Test species name differs.
 	 */
 	@Test
+	public void  testUnitChange ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			doc2.getTreeDocument ().getNodesByTag ("unit").get (0).setAttribute ("scale", "1337");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff ());
+			simpleCheckAnnotations (differ, 0, 0, 1, 0,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, true,
+				false, false, false, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
 	public void  testParameterChange ()
 	{
 		try
@@ -716,7 +760,7 @@ public class TestAnnotations
 			checkDiff (differ);
 
 //			System.out.println (differ.getDiff ());
-			simpleCheckAnnotations (differ, 0, 36, 0, 4,
+			simpleCheckAnnotations (differ, 0, 36, 0, 5,
 				false, false, false, true,
 				false, false, false, false,
 				false, false, false, false,
@@ -805,7 +849,7 @@ public class TestAnnotations
 			checkDiff (differ);
 
 //			System.out.println (differ.getDiff ());
-			simpleCheckAnnotations (differ, 0, 19, 0, 5,
+			simpleCheckAnnotations (differ, 0, 19, 0, 6,
 				false, false, true, false,
 				false, false, false, false,
 				false, false, false, false,
@@ -894,7 +938,7 @@ public class TestAnnotations
 			checkDiff (differ);
 
 //			System.out.println (differ.getDiff ());
-			simpleCheckAnnotations (differ, 0, 15, 0, 6,
+			simpleCheckAnnotations (differ, 0, 15, 0, 7,
 				false, true, false, false,
 				false, false, false, false,
 				false, false, true, false,
