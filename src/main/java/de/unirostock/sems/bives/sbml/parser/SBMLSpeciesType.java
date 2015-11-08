@@ -13,7 +13,7 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * The Class SBMLSpeciesType representing type of species (level < 3).
+ * The Class SBMLSpeciesType representing type of species (level &lt; 3).
  *
  * @author Martin Scharm
  */

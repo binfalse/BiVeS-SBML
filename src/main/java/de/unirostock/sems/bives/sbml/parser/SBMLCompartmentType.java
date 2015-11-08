@@ -12,7 +12,7 @@ import de.unirostock.sems.xmlutils.ds.DocumentNode;
 
 
 /**
- * The Class SBMLCompartmentType, a grouping construct used to establish a relationship between multiple SBMLCompartments. (only level < 3)
+ * The Class SBMLCompartmentType, a grouping construct used to establish a relationship between multiple SBMLCompartments. (only level &lt; 3)
  *
  * @author Martin Scharm
  */
