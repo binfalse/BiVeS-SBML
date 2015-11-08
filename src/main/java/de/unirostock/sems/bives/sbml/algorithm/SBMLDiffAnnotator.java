@@ -135,11 +135,13 @@ public class SBMLDiffAnnotator
 
 	/** The XPATH to a function definition. */
 	private Pattern	functionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfFunctionDefinitions\\[\\d+\\]/functionDefinition\\[\\d+\\]");
-	/** The XPATH to a function definition. */
+	/** The XPATH to an event definition. */
 	private Pattern	eventPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfEvents\\[\\d+\\]/event\\[\\d+\\]");
-	/** The XPATH to a machineReadable. */
+	/** The XPATH to a rule. */
+	private Pattern	rulePath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfRules\\[\\d+\\]/[^/]*Rule\\[\\d+\\]");
+	/** The XPATH to a machine readable annotation. */
 	private Pattern	annotationPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]");
-	/** The XPATH to a function definition. */
+	/** The XPATH to a human readable annotation. */
 	private Pattern	descriptionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*notes\\[\\d+\\]");
 	/** The XPATH to a species. */
 	private Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
@@ -218,6 +220,42 @@ public class SBMLDiffAnnotator
 				}
 				else
 					change.affects (ComodiTarget.getEventDefinition ());
+
+			
+			
+			
+			
+			if (functionPath.matcher (xPath).find () && !isAnnotation)
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+						change.affects (ComodiTarget.getFunctionDefinition ());
+				}
+				else
+					change.affects (ComodiTarget.getFunctionDefinition ());
+
+			
+			
+			
+			
+			if (rulePath.matcher (xPath).find () && !isAnnotation)
+				if (diffNode.getName ().equals ("attribute"))
+				{
+					String attr = diffNode.getAttributeValue ("name");
+					if (attr.equals ("id") || attr.equals ("metaid"))
+						change.appliesTo (ComodiXmlEntity.getEntityIdentifier ());
+					else if (attr.equals ("name"))
+						change.appliesTo (ComodiXmlEntity.getEntityName ());
+					else
+						change.affects (ComodiTarget.getRules ());
+				}
+				else
+					change.affects (ComodiTarget.getRules ());
 
 			
 			

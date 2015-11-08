@@ -28,6 +28,27 @@ xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
 </listOfEventAssignments>
 </event>
 </listOfEvents>
+<listOfRules>
+<assignmentRule variable="C">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply> <divide/> <ci> k3 </ci> <ci> k2 </ci> </apply>
+</math>
+</assignmentRule>
+<assignmentRule variable="B">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<divide/>
+<apply> <times/> <ci> k </ci> <ci> x </ci> </apply>
+<apply> <plus/> <cn> 1 </cn> <ci> k2 </ci> </apply>
+</apply>
+</math>
+</assignmentRule>
+<assignmentRule variable="A">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply> <times/> <cn> 0.10 </cn> <ci> x </ci> </apply>
+</math>
+</assignmentRule>
+</listOfRules>
 		<listOfCompartments>
 			<compartment id="compartment" name="compartment" size="1"/>
 		</listOfCompartments>
