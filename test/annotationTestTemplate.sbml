@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
 	<model name="TestModel_for_IB2013">
+<annotation>
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:dcterms="http://purl.org/dc/terms/"
+xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#"
+xmlns:bqbiol="http://biomodels.net/biology-qualifiers/"
+xmlns:bqmodel="http://biomodels.net/model-qualifiers/"
+>
+<rdf:Description rdf:about="#A">
+<dc:creator>
+<rdf:Bag>
+<rdf:li rdf:parseType="Resource">
+<vCard:N rdf:parseType="Resource">
+<vCard:Family>Shapiro</vCard:Family>
+<vCard:Given>Bruce</vCard:Given>
+</vCard:N>
+<vCard:EMAIL>bshapiro@jpl.nasa.gov</vCard:EMAIL>
+<vCard:ORG rdf:parseType="Resource">
+<vCard:Orgname>NASA Jet Propulsion Laboratory</vCard:Orgname>
+</vCard:ORG>
+</rdf:li>
+</rdf:Bag>
+</dc:creator>
+<dcterms:created rdf:parseType="Resource">
+<dcterms:W3CDTF>2005-02-06T23:39:40+00:00</dcterms:W3CDTF>
+</dcterms:created>
+<dcterms:modified rdf:parseType="Resource">
+<dcterms:W3CDTF>2005-09-13T13:24:56+00:00</dcterms:W3CDTF>
+</dcterms:modified>
+<bqmodel:is>
+<rdf:Bag>
+<rdf:li rdf:resource="urn:miriam:biomodels.db:BIOMD0000000003"/>
+</rdf:Bag>
+</bqmodel:is>
+<bqmodel:isDescribedBy>
+<rdf:Bag>
+<rdf:li rdf:resource="urn:miriam:pubmed:1833774"/>
+</rdf:Bag>
+</bqmodel:isDescribedBy>
+<bqbiol:isVersionOf>
+<rdf:Bag>
+<rdf:li rdf:resource="urn:miriam:kegg.pathway:hsa04110"/>
+<rdf:li rdf:resource="urn:miriam:reactome:REACT_152"/>
+</rdf:Bag>
+</bqbiol:isVersionOf>
+</rdf:Description>
+</rdf:RDF>
+</annotation>
 <listOfFunctionDefinitions>
 <functionDefinition id="pow3">
 <math xmlns="http://www.w3.org/1998/Math/MathML"

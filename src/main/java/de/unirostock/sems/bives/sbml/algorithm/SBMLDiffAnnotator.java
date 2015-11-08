@@ -145,6 +145,15 @@ public class SBMLDiffAnnotator
 	private Pattern	descriptionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*notes\\[\\d+\\]");
 	/** The XPATH to a species. */
 	private Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
+
+	/** The XPATH to a machine readable annotation. */
+	private Pattern	creationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*created\\[\\d+\\]");
+	/** The XPATH to a machine readable annotation. */
+	private Pattern	modificationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*modified\\[\\d+\\]");
+	/** The XPATH to a machine readable annotation. */
+	private Pattern	contributorPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*contributor\\[\\d+\\]");
+	/** The XPATH to a machine readable annotation. */
+	private Pattern	creatorPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*creator\\[\\d+\\]");
 	
 	/**
 	 * Annotate the target of a change. Recognises the effected parts of the
@@ -196,7 +205,8 @@ public class SBMLDiffAnnotator
 			
 			
 			boolean isAnnotation = annotationPath.matcher (xPath).find () || descriptionPath.matcher (xPath).find ();
-
+			
+			
 			if (speciesPath.matcher (xPath).find () && !isAnnotation)
 			{
 				if (diffNode.getName ().equals ("attribute"))
@@ -296,8 +306,20 @@ public class SBMLDiffAnnotator
 				}
 				else
 					change.affects (ComodiTarget.getFunctionDefinition ());
-		
-		
+			
+			
+			
+			if (isAnnotation)
+			{
+				if (creatorPath.matcher (xPath).find () || contributorPath.matcher (xPath).find ())
+					change.affects (ComodiTarget.getContributor ());
+				else if (creationDatePath.matcher (xPath).find ())
+					change.affects (ComodiTarget.getCreationDate ());
+				else if (modificationDatePath.matcher (xPath).find ())
+					change.affects (ComodiTarget.getModificationDate ());
+				else
+					change.affects (ComodiTarget.getAnnotation ());
+			}
 			
 			
 		return change;
