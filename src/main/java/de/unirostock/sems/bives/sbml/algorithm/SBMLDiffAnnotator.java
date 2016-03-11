@@ -10,6 +10,7 @@ import org.jdom2.Element;
 import de.unirostock.sems.bives.algorithm.general.DefaultDiffAnnotator;
 import de.unirostock.sems.comodi.Change;
 import de.unirostock.sems.comodi.ChangeFactory;
+import de.unirostock.sems.comodi.branches.ComodiReason;
 import de.unirostock.sems.comodi.branches.ComodiTarget;
 import de.unirostock.sems.comodi.branches.ComodiXmlEntity;
 import de.unirostock.sems.xmlutils.ds.TextNode;
@@ -199,10 +200,8 @@ public class SBMLDiffAnnotator
 				&& diffNode.getName ().equals ("attribute"))
 			{
 				String attr = diffNode.getAttributeValue ("name");
-				if (attr.equals ("level"))
-					change.affects (ComodiTarget.getSbmlLevel ());
-				if (attr.equals ("version"))
-					change.affects (ComodiTarget.getSbmlVersion ());
+				if (attr.equals ("level") || attr.equals ("version"))
+					change.hasReason (ComodiReason.getChangedSpecification ());
 			}
 			
 			
@@ -231,11 +230,11 @@ public class SBMLDiffAnnotator
 					else if (attr.equals ("name"))
 						change.appliesTo (ComodiXmlEntity.getEntityName ());
 					else
-						change.affects (ComodiTarget.getParameterDefinition ());
+						change.affects (ComodiTarget.getParameterSetup ());
 				}
 				else
 					if (!permutation)
-						change.affects (ComodiTarget.getParameterDefinition ());
+						change.affects (ComodiTarget.getParameterSetup ());
 			}
 			
 			
@@ -256,15 +255,15 @@ public class SBMLDiffAnnotator
 							attr.equals ("substanceUnits") || 
 							attr.equals ("constant") || 
 							attr.equals ("hasOnlySubstanceUnits"))
-							change.affects (ComodiTarget.getSpeciesDefinition ());
+							change.affects (ComodiTarget.getSpeciesSetup ());
 						else if (attr.equals ("sboTerm"))
-							change.affects (ComodiTarget.getReactionNetwork ());
+							change.affects (ComodiTarget.getReactionNetworkDefinition ());
 					}
 				}
 				else
 				{
 					if (!permutation)
-						change.affects (ComodiTarget.getSpeciesDefinition ());
+						change.affects (ComodiTarget.getSpeciesSetup ());
 				}
 			}
 
@@ -317,10 +316,10 @@ public class SBMLDiffAnnotator
 					else if (attr.equals ("name"))
 						change.appliesTo (ComodiXmlEntity.getEntityName ());
 					else
-						change.affects (ComodiTarget.getRules ());
+						change.affects (ComodiTarget.getRuleDefinition ());
 				}
 				else
-					change.affects (ComodiTarget.getRules ());
+					change.affects (ComodiTarget.getRuleDefinition ());
 
 			
 			
@@ -380,11 +379,11 @@ public class SBMLDiffAnnotator
 				if (go)
 				{
 					if (kineticsPath.matcher (xPath).find ())
-						change.affects (ComodiTarget.getKinetics ());
+						change.affects (ComodiTarget.getKineticsDefinition ());
 					else if (defNode.getTagName ().equals ("reaction") && defNode.getParent ().getTagName ().equals ("listOfReactions"))
-						change.affects (ComodiTarget.getReactionReversibility ());
+						change.affects (ComodiTarget.getReversibilityDefinition ());
 					else
-						change.affects (ComodiTarget.getReactionNetwork ());
+						change.affects (ComodiTarget.getReactionNetworkDefinition ());
 				}
 			}
 			
@@ -401,7 +400,7 @@ public class SBMLDiffAnnotator
 					else if (modificationDatePath.matcher (xPath).find ())
 						change.affects (ComodiTarget.getModificationDate ());
 					else
-						change.affects (ComodiTarget.getAnnotation ());
+						change.affects (ComodiTarget.getModelAnnotation ());
 				}
 				else if (descriptionPath.matcher (xPath).find ())
 				{
