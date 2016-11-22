@@ -483,35 +483,29 @@ public class SBMLDiffAnnotator
 						change.affects (ComodiTarget.getCreationDate ());
 					else if (modificationDatePath.matcher (xPath).find ())
 						change.affects (ComodiTarget.getModificationDate ());
-					else if (ontologyLink.matcher (xPath).find ())
+					else if (ontologyLink.matcher (xPath).find () && diffNode.getName ().equals ("attribute"))
 					{
-						// is that annotation attribute? -> scheme changed?
-						if (diffNode.getName ().equals ("attribute"))
+						String attr = diffNode.getAttributeValue ("name");
+						if (attr.equals ("resource") && nodeA != null && nodeB != null)
 						{
-							String attr = diffNode.getAttributeValue ("name");
-							if (attr.equals ("resource") && nodeA != null && nodeB != null)
+							change.affects (ComodiTarget.getOntologyReference ());
+							String oldValue = diffNode.getAttributeValue ("oldValue");
+							String newValue = diffNode.getAttributeValue ("newValue");
+							if (oldValue != null && newValue != null)
 							{
-								change.affects (ComodiTarget.getOntologyReference ());
-								String oldValue = diffNode.getAttributeValue ("oldValue");
-								String newValue = diffNode.getAttributeValue ("newValue");
-								if (oldValue != null && newValue != null)
+								if ((oldValue.startsWith ("urn:") && !newValue.startsWith ("urn:")) || (!oldValue.startsWith ("urn:") && newValue.startsWith ("urn:")))
 								{
-									if ((oldValue.startsWith ("urn:") && !newValue.startsWith ("urn:")) || (!oldValue.startsWith ("urn:") && newValue.startsWith ("urn:")))
-									{
-										change.affects (ComodiTarget.getIdentifierEncoding ());
-									}
-									if ((oldValue.startsWith ("http:") && !newValue.startsWith ("http:")) || (!oldValue.startsWith ("http:") && newValue.startsWith ("http:")))
-									{
-										change.affects (ComodiTarget.getIdentifierEncoding ());
-									}
-									if ((oldValue.contains ("identifiers.org") && !newValue.contains ("identifiers.org")) || (!oldValue.contains ("identifiers.org") && newValue.contains ("identifiers.org")))
-									{
-										change.affects (ComodiTarget.getIdentifierEncoding ());
-									}
+									change.affects (ComodiTarget.getIdentifierEncoding ());
+								}
+								if ((oldValue.startsWith ("http:") && !newValue.startsWith ("http:")) || (!oldValue.startsWith ("http:") && newValue.startsWith ("http:")))
+								{
+									change.affects (ComodiTarget.getIdentifierEncoding ());
+								}
+								if ((oldValue.contains ("identifiers.org") && !newValue.contains ("identifiers.org")) || (!oldValue.contains ("identifiers.org") && newValue.contains ("identifiers.org")))
+								{
+									change.affects (ComodiTarget.getIdentifierEncoding ());
 								}
 							}
-							else
-								change.affects (ComodiTarget.getModelAnnotation ());
 						}
 						else
 							change.affects (ComodiTarget.getModelAnnotation ());

@@ -161,8 +161,8 @@ public class SBMLDiff extends Diff
 	 *
 	 * @param a the tree document representing the original model
 	 * @param b the tree document representing the modified model
-	 * @throws BivesDocumentConsistencyException 
-	 * @throws BivesSBMLParseException 
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
 	 */
 	public SBMLDiff (TreeDocument a, TreeDocument b) throws BivesSBMLParseException, BivesDocumentConsistencyException
 	{
