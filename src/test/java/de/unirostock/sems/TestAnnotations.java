@@ -4,6 +4,7 @@
 package de.unirostock.sems;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -22,6 +23,7 @@ import org.junit.runners.JUnit4;
 import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.api.Diff;
 import de.unirostock.sems.bives.ds.Patch;
+import de.unirostock.sems.bives.sbml.algorithm.SBMLDiffAnnotator;
 import de.unirostock.sems.bives.sbml.algorithm.SBMLValidator;
 import de.unirostock.sems.bives.sbml.api.SBMLDiff;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
@@ -76,6 +78,29 @@ public class TestAnnotations
 		}
 		return val.getDocument ();
 	}
+
+	/**
+	 * Test XPaths
+	 */
+	@Test
+	public void  testXpaths ()
+	{
+		// participants
+		assertTrue ("reactionsSpeciesReference did not match", SBMLDiffAnnotator.reactionsSpeciesReference.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[1]/listOfReactants[5]/speciesReference[1]").find ());
+		assertTrue ("reactionsSpeciesReference did not match", SBMLDiffAnnotator.reactionsSpeciesReference.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[1]/listOfProducts[1]/speciesReference[33]").find ());
+		assertTrue ("reactionsSpeciesReference did not match", SBMLDiffAnnotator.reactionsModifierSpeciesReference.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[7]/listOfModifiers[1]/modifierSpeciesReference[1]").find ());
+		assertFalse ("reactionsSpeciesReference did not match", SBMLDiffAnnotator.reactionsSpeciesReference.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[7]/annotation[1]/RDF[1]/Description[1]/isVersionOf[1]/Bag[1]").find ());
+		assertFalse ("reactionsSpeciesReference did not match", SBMLDiffAnnotator.reactionsModifierSpeciesReference.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[9]/annotation[1]/RDF[1]/Description[1]/isVersionOf[1]/Bag[1]/li[1]").find ());
+		
+		// ontology link
+		assertTrue ("ontology link doesn't match", SBMLDiffAnnotator.ontologyLink.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[4]/annotation[1]/RDF[1]/Description[1]/relation[1]/Bag[1]/li[1]").find ());
+		assertTrue ("ontology link doesn't match", SBMLDiffAnnotator.ontologyLink.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[4]/annotation[1]/RDF[1]/Description[1]/relation[1]/Bag[1]/li[1]/something[323]").find ());
+		assertFalse ("ontology link matches incorrectly", SBMLDiffAnnotator.ontologyLink.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[12]/annotation[1]/RDF[1]/Description[1]/isVersionOf[1]/Bag[1]").find ());
+		assertTrue ("ontology link doesn't match", SBMLDiffAnnotator.ontologyLink.matcher ("/sbml[1]/model[1]/listOfReactions[1]/reaction[14]/annotation[1]/RDF[1]/Description[1]/isVersionOf[1]/Bag[1]/li[1]").find ());
+		assertTrue ("ontology link doesn't match", SBMLDiffAnnotator.ontologyLink.matcher ("/sbml[1]/model[1]/annotation[1]/RDF[1]/Description[1]/creator[1]/Bag[1]/li[1]/ORG[1]").find ());
+		assertTrue ("ontology link doesn't match", SBMLDiffAnnotator.ontologyLink.matcher ("/sbml[1]/model[1]/listOfSpecies[1]/species[9]/annotation[1]/RDF[1]/Description[1]/hasVersion[2]/Bag[1]/li[2]").find ());
+		
+	}
 	
 	
 	
@@ -103,7 +128,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, true,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -111,7 +136,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -147,7 +172,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, true, false, false);
+				false, true, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -155,7 +180,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -191,7 +216,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, true, false, false);
+				false, true, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -199,7 +224,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -234,8 +259,8 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				true, false, false, false,
-				false, false, false, false);
+				false, false, false, false,
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -243,7 +268,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -279,7 +304,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, true, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -287,7 +312,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -325,7 +350,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				true, false, false, false);
+				true, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -333,7 +358,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -349,13 +374,57 @@ public class TestAnnotations
 	 * Test species name differs.
 	 */
 	@Test
-	public void  testAnnotationChange1 ()
+	public void  testAnnotationChange1a ()
 	{
 		try
 		{
 			SBMLDocument doc1 = getValidTestModel ();
 			SBMLDocument doc2 = getValidTestModel ();
 			((TextNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/annotation[1]/RDF[1]/Description[1]/creator[1]/Bag[1]/li[1]/EMAIL[1]/text()[1]")).setText ("bshapiro@not.nasa.gov");
+			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
+			
+			SBMLDiff differ = new SBMLDiff (doc1, doc2);
+			differ.mapTrees ();
+			checkDiff (differ);
+
+//			System.out.println (differ.getDiff (true));
+			simpleCheckAnnotations (differ, 0, 0, 1, 0,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false,
+				false, false, false, false, true, false);
+			
+			/*
+				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
+				changeMetaIdentifier, changePerson, changeContributor, changeDate,
+				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
+				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
+				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
+			 */
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail ("unexpected exception while diffing models: " + e.getMessage ());
+		}
+	}
+	
+	
+	
+	/**
+	 * Test species name differs.
+	 */
+	@Test
+	public void  testAnnotationChange1b ()
+	{
+		try
+		{
+			SBMLDocument doc1 = getValidTestModel ();
+			SBMLDocument doc2 = getValidTestModel ();
+			((TextNode) doc2.getTreeDocument ().getNodeByPath ("/sbml[1]/model[1]/annotation[1]/RDF[1]/Description[1]/contributor[1]/Bag[1]/li[1]/EMAIL[1]/text()[1]")).setText ("Harish_Dharuri@ipkg.edu");
 			doc2 = getModel (XmlTools.prettyPrintDocument (DocumentTools.getDoc (doc2.getTreeDocument ())));
 			
 			SBMLDiff differ = new SBMLDiff (doc1, doc2);
@@ -369,7 +438,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -377,13 +446,13 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			fail ("unexpected exception while diffing cellml models: " + e.getMessage ());
+			fail ("unexpected exception while diffing models: " + e.getMessage ());
 		}
 	}
 	
@@ -413,7 +482,7 @@ public class TestAnnotations
 				true, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -421,7 +490,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -457,7 +526,7 @@ public class TestAnnotations
 				false, true, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -465,7 +534,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -493,6 +562,8 @@ public class TestAnnotations
 			SBMLDiff differ = new SBMLDiff (doc1, doc2);
 			differ.mapTrees ();
 			checkDiff (differ);
+			
+//			System.out.println (differ.getDiff (true));
 
 //			System.out.println (differ.getDiff ());
 			simpleCheckAnnotations (differ, 2, 2, 0, 0,
@@ -501,7 +572,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, true, false);
+				false, false, true, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -509,7 +580,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -545,7 +616,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, true);
+				false, false, false, true, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -553,7 +624,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -589,7 +660,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, true, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -597,7 +668,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -633,7 +704,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, true, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -641,7 +712,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -677,7 +748,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, true,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -685,7 +756,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -722,7 +793,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, true, true, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -730,7 +801,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -766,7 +837,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -774,7 +845,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -811,7 +882,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -819,7 +890,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -855,7 +926,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -863,7 +934,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -900,7 +971,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -908,7 +979,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -944,7 +1015,7 @@ public class TestAnnotations
 				false, false, true, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -952,7 +1023,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -989,7 +1060,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -997,7 +1068,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -1034,7 +1105,7 @@ public class TestAnnotations
 				false, false, true, true,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -1042,7 +1113,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -1079,7 +1150,7 @@ public class TestAnnotations
 				false, false, false, true,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -1087,7 +1158,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -1124,7 +1195,7 @@ public class TestAnnotations
 				false, false, true, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -1132,7 +1203,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 		}
 		catch (Exception e)
@@ -1169,7 +1240,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -1177,7 +1248,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 			
 		}
@@ -1216,7 +1287,7 @@ public class TestAnnotations
 				false, false, false, false,
 				false, false, false, false,
 				false, false, false, false,
-				false, false, false, false);
+				false, false, false, false, false, false);
 			
 			/*
 				changeSpeciesDef, changeFunctionDefinition, changeEventDefinition, changeRules,
@@ -1224,7 +1295,7 @@ public class TestAnnotations
 				changeCreationDate, changeModificationDate,	changeEntityIdentifier, changeEntityName,
 				changeMathModel, changeSpecLevel, changeSpecVersion, changeModelName,
 				changeReactionNetwork, changeReactionReversibility, changeReactionDefinition, changeUnits,
-				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription
+				changeKinetics, changeParameterDefinition, changeAnnotation, changeTextualDescription, changeCreator, changeOntologyReference
 			 */
 			
 		}
@@ -1258,7 +1329,7 @@ public class TestAnnotations
 			Document patchDoc = patch.getDocument (false);
 			TreeDocument myPatchDoc = new TreeDocument (patchDoc, null);
 
-			simpleCheckAnnotations (differ, 0, 0, 0, 0, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+			simpleCheckAnnotations (differ, 0, 0, 0, 0, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 			assertNotNull ("diff shouldn't be null", diff);
 			assertEquals ("didn't expect any changes", 5, myPatchDoc.getNumNodes ());
 			assertTrue ("didn't expect any changes but some annotations", 5 < new TreeDocument (patch.getDocument (true), null).getNumNodes ());
@@ -1317,7 +1388,7 @@ public class TestAnnotations
 		boolean changeCreationDate, boolean changeModificationDate,	boolean changeEntityIdentifier, boolean changeEntityName,
 		boolean changeMathModel, boolean changeSpecLevel, boolean changeSpecVersion, boolean changeModelName,
 		boolean changeReactionNetwork, boolean changeReactionReversibility, boolean changeReactionDefinition, boolean changeUnits,
-		boolean changeKinetics, boolean changeParameterDefinition, boolean changeAnnotation, boolean changeTextualDescription
+		boolean changeKinetics, boolean changeParameterDefinition, boolean changeAnnotation, boolean changeTextualDescription, boolean changeCreator, boolean changeOntologyReference
 		) throws XmlDocumentParseException, IOException, JDOMException
 	{
 		// stolen from my logger :)
@@ -1360,7 +1431,8 @@ public class TestAnnotations
 		assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#Date", changeDate, annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#Date"));
 		assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#CreationDate", changeCreationDate, annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#CreationDate"));
 		assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#ModificationDate", changeModificationDate, annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#ModificationDate"));
-//		assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#", change, annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#"));
+		assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#Creator", changeCreator, annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#Creator"));
+		assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#OntologyReference", changeOntologyReference, annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#OntologyReference"));
 //	assertEquals (pre + "occurence of http://purl.uni-rostock.de/comodi/comodi#", , annotations.contains ("http://purl.uni-rostock.de/comodi/comodi#"));
 	}
 

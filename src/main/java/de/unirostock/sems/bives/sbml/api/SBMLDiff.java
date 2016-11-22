@@ -57,6 +57,7 @@ public class SBMLDiff extends Diff
 	 *
 	 * @param a the file containing the original SBML model
 	 * @param b the file containing the modified SBML model
+	 * @param diffAnnotator the diff annotator
 	 * @throws BivesSBMLParseException the bives sbml parse exception
 	 * @throws BivesDocumentConsistencyException the bives document consistency exception
 	 * @throws XmlDocumentParseException the xml document parse exception
@@ -75,6 +76,7 @@ public class SBMLDiff extends Diff
 	 *
 	 * @param a the XML code representing the original SBML model
 	 * @param b the XML code representing the modified SBML model
+	 * @param diffAnnotator the diff annotator
 	 * @throws XmlDocumentParseException the xml document parse exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws JDOMException the jDOM exception
@@ -93,8 +95,9 @@ public class SBMLDiff extends Diff
 	 *
 	 * @param a the tree document representing the original model
 	 * @param b the tree document representing the modified model
-	 * @throws BivesDocumentConsistencyException 
-	 * @throws BivesSBMLParseException 
+	 * @param diffAnnotator the diff annotator
+	 * @throws BivesSBMLParseException the bives sbml parse exception
+	 * @throws BivesDocumentConsistencyException the bives document consistency exception
 	 */
 	public SBMLDiff (TreeDocument a, TreeDocument b, DiffAnnotator diffAnnotator) throws BivesSBMLParseException, BivesDocumentConsistencyException
 	{
@@ -108,6 +111,7 @@ public class SBMLDiff extends Diff
 	 *
 	 * @param a the original document
 	 * @param b the modified document
+	 * @param diffAnnotator the diff annotator
 	 */
 	public SBMLDiff (SBMLDocument a, SBMLDocument b, DiffAnnotator diffAnnotator)
 	{

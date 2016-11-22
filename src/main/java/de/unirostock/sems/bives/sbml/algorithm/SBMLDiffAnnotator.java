@@ -135,39 +135,52 @@ public class SBMLDiffAnnotator
 
 
 	/** The XPATH to a function definition. */
-	private Pattern	functionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfFunctionDefinitions\\[\\d+\\]/functionDefinition\\[\\d+\\]");
+	public static final Pattern	functionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfFunctionDefinitions\\[\\d+\\]/functionDefinition\\[\\d+\\]");
 	/** The XPATH to an event definition. */
-	private Pattern	eventPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfEvents\\[\\d+\\]/event\\[\\d+\\]");
+	public static final Pattern	eventPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfEvents\\[\\d+\\]/event\\[\\d+\\]");
 	/** The XPATH to a rule. */
-	private Pattern	rulePath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfRules\\[\\d+\\]/[^/]*Rule\\[\\d+\\]");
+	public static final Pattern	rulePath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfRules\\[\\d+\\]/[^/]*Rule\\[\\d+\\]");
 	/** The XPATH to a machine readable annotation. */
-	private Pattern	annotationPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]");
+	public static final Pattern	annotationPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]");
 	/** The XPATH to a human readable annotation. */
-	private Pattern	descriptionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*notes\\[\\d+\\]");
+	public static final Pattern	descriptionPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*notes\\[\\d+\\]");
 	/** The XPATH to a species. */
-	private Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
+	public static final Pattern	speciesPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfSpecies\\[\\d+\\]/species\\[\\d+\\]$");
 
 
 	/** The XPATH to a reaction. */
-	private Pattern	reactionsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]");
+	public static final Pattern	reactionsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]");
 	/** The XPATH to a kinetic law. */
-	private Pattern	kineticsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\]");
+	public static final Pattern	kineticsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\]");
 
 
 	/** The XPATH to a reaction. */
-	private Pattern	unitsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfUnitDefinitions\\[\\d+\\]/unitDefinition\\[\\d+\\]");
+	public static final Pattern	unitsPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfUnitDefinitions\\[\\d+\\]/unitDefinition\\[\\d+\\]");
 	
 	/** The XPATH to a parameter. */
-	private Pattern	parameterPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\](/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\])?/listOf(Local)?Parameters\\[\\d+\\]/(localP|p)arameter\\[\\d+\\]");
+	public static final Pattern	parameterPath									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\](/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/kineticLaw\\[\\d+\\])?/listOf(Local)?Parameters\\[\\d+\\]/(localP|p)arameter\\[\\d+\\]");
 	
 	/** The XPATH to a machine readable annotation. */
-	private Pattern	creationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*created\\[\\d+\\]");
+	public static final Pattern	creationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*created\\[\\d+\\]");
 	/** The XPATH to a machine readable annotation. */
-	private Pattern	modificationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*modified\\[\\d+\\]");
+	public static final Pattern	modificationDatePath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*modified\\[\\d+\\]");
 	/** The XPATH to a machine readable annotation. */
-	private Pattern	contributorPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*contributor\\[\\d+\\]");
+	public static final Pattern	contributorPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*contributor\\[\\d+\\]");
 	/** The XPATH to a machine readable annotation. */
-	private Pattern	creatorPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*creator\\[\\d+\\]");
+	public static final Pattern	creatorPath									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*annotation\\[\\d+\\]/(.*/)*creator\\[\\d+\\]");
+	
+
+	public static final Pattern	reactionsSpeciesReference									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/(.*/)*speciesReference\\[\\d+\\]");
+	public static final Pattern	reactionsModifierSpeciesReference									= Pattern.compile ("^/sbml\\[\\d+\\]/model\\[\\d+\\]/listOfReactions\\[\\d+\\]/reaction\\[\\d+\\]/(.*/)*modifierSpeciesReference\\[\\d+\\]");
+	
+	public static final Pattern	ontologyLink									= Pattern.compile ("^/sbml\\[\\d+\\]/(.*/)*RDF\\[\\d+\\]/(.*/)*Description\\[\\d+\\]/(.*/)*Bag\\[\\d+\\]/li\\[\\d+\\]");
+
+	
+	
+	
+		
+		
+	
 	
 	/**
 	 * Annotate the target of a change. Recognises the effected parts of the
@@ -374,6 +387,21 @@ public class SBMLDiffAnnotator
 						change.appliesTo (ComodiXmlEntity.getEntityName ());
 						go = false;
 					}
+					else if (attr.equals ("reversible"))
+					{
+						change.affects (ComodiTarget.getReversibilityDefinition ());
+						go = false;
+					}
+					else if ((reactionsSpeciesReference.matcher (xPath).find () || reactionsModifierSpeciesReference.matcher (xPath).find ()) && attr.equals ("sboTerm"))
+					{
+						change.affects (ComodiTarget.getParticipantDefinition ());
+						go = false;
+					}
+					else if (attr.equals ("sboTerm"))
+					{
+						change.affects (ComodiTarget.getReactionDefinition ());
+						go = false;
+					}
 				}
 				
 				if (go)
@@ -381,24 +409,113 @@ public class SBMLDiffAnnotator
 					if (kineticsPath.matcher (xPath).find ())
 						change.affects (ComodiTarget.getKineticsDefinition ());
 					else if (defNode.getTagName ().equals ("reaction") && defNode.getParent ().getTagName ().equals ("listOfReactions"))
-						change.affects (ComodiTarget.getReversibilityDefinition ());
+						change.affects (ComodiTarget.getReactionDefinition ());
+					else if (reactionsSpeciesReference.matcher (xPath).find () || reactionsModifierSpeciesReference.matcher (xPath).find ())
+						change.affects (ComodiTarget.getParticipantDefinition ());
 					else
 						change.affects (ComodiTarget.getReactionNetworkDefinition ());
 				}
 			}
 			
 			
+			if (diffNode.getName ().equals ("attribute") && !isAnnotation && nodeA != null && nodeB != null)
+			{
+				if (diffNode.getAttributeValue ("name").equals ("metaid"))
+				{
+					String oldValue = diffNode.getAttributeValue ("oldValue");
+					String newValue = diffNode.getAttributeValue ("newValue");
+					boolean go = true;
+					
+					int countA = oldValue.length() - oldValue.replace("_", "").length();
+					int countB = newValue.length() - oldValue.replace("_", "").length();
+					if (go && countA != countB)
+					{
+						change.affects (ComodiTarget.getMetaIdEncoding ());
+						go = false;
+					}
+					
+					countA = oldValue.length() - oldValue.replace("#", "").length();
+					countB = newValue.length() - oldValue.replace("#", "").length();
+					if (go && countA != countB)
+					{
+						change.affects (ComodiTarget.getMetaIdEncoding ());
+						go = false;
+					}
+					
+					countA = oldValue.startsWith ("_") ? 1 : 0;
+					countB = newValue.startsWith ("_") ? 1 : 0;
+					if (go && countA != countB)
+					{
+						change.affects (ComodiTarget.getMetaIdEncoding ());
+						go = false;
+					}
+					
+					countA = oldValue.startsWith ("#") ? 1 : 0;
+					countB = newValue.startsWith ("#") ? 1 : 0;
+					if (go && countA != countB)
+					{
+						change.affects (ComodiTarget.getMetaIdEncoding ());
+						go = false;
+					}
+					
+					countA = oldValue.startsWith ("metaid") ? 1 : 0;
+					countB = newValue.startsWith ("metaid") ? 1 : 0;
+					if (go && countA != countB)
+					{
+						change.affects (ComodiTarget.getMetaIdEncoding ());
+						go = false;
+					}
+					
+					
+				}
+			}
+			
 			
 			if (isAnnotation)
 			{
 				if (annotationPath.matcher (xPath).find ())
 				{
-					if (creatorPath.matcher (xPath).find () || contributorPath.matcher (xPath).find ())
+					if (creatorPath.matcher (xPath).find ())
+						change.affects (ComodiTarget.getCreator ());
+					else if (contributorPath.matcher (xPath).find ())
 						change.affects (ComodiTarget.getContributor ());
 					else if (creationDatePath.matcher (xPath).find ())
 						change.affects (ComodiTarget.getCreationDate ());
 					else if (modificationDatePath.matcher (xPath).find ())
 						change.affects (ComodiTarget.getModificationDate ());
+					else if (ontologyLink.matcher (xPath).find ())
+					{
+						// is that annotation attribute? -> scheme changed?
+						if (diffNode.getName ().equals ("attribute"))
+						{
+							String attr = diffNode.getAttributeValue ("name");
+							if (attr.equals ("resource") && nodeA != null && nodeB != null)
+							{
+								change.affects (ComodiTarget.getOntologyReference ());
+								String oldValue = diffNode.getAttributeValue ("oldValue");
+								String newValue = diffNode.getAttributeValue ("newValue");
+								if (oldValue != null && newValue != null)
+								{
+									if ((oldValue.startsWith ("urn:") && !newValue.startsWith ("urn:")) || (!oldValue.startsWith ("urn:") && newValue.startsWith ("urn:")))
+									{
+										change.affects (ComodiTarget.getIdentifierEncoding ());
+									}
+									if ((oldValue.startsWith ("http:") && !newValue.startsWith ("http:")) || (!oldValue.startsWith ("http:") && newValue.startsWith ("http:")))
+									{
+										change.affects (ComodiTarget.getIdentifierEncoding ());
+									}
+									if ((oldValue.contains ("identifiers.org") && !newValue.contains ("identifiers.org")) || (!oldValue.contains ("identifiers.org") && newValue.contains ("identifiers.org")))
+									{
+										change.affects (ComodiTarget.getIdentifierEncoding ());
+									}
+								}
+							}
+							else
+								change.affects (ComodiTarget.getModelAnnotation ());
+						}
+						else
+							change.affects (ComodiTarget.getModelAnnotation ());
+					}
 					else
 						change.affects (ComodiTarget.getModelAnnotation ());
 				}

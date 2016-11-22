@@ -53,6 +53,25 @@ xmlns:bqmodel="http://biomodels.net/model-qualifiers/"
                         </rdf:Bag>
                         
                     </dc:creator>
+
+
+<!-- the following block was copied from BIOMD0000000038 release 2005-07-28 for testing purposes -->
+<dc:contributor rdf:parseType="Resource">
+                        <rdf:Bag>
+                            <rdf:li rdf:parseType="Resource">
+<vCard:N rdf:parseType="Resource">
+<vCard:Family>Dharuri</vCard:Family>
+<vCard:Given>Harish</vCard:Given>
+</vCard:N>
+<vCard:EMAIL>Harish_Dharuri@kgi.edu</vCard:EMAIL>
+<vCard:ORG>
+<vCard:Orgname>Keck Graduate Institute</vCard:Orgname>
+</vCard:ORG>
+</rdf:li>
+</rdf:Bag>
+</dc:contributor>
+
+
                     
                     <dcterms:created rdf:parseType="Resource">
                         
