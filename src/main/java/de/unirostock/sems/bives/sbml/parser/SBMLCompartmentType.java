@@ -51,6 +51,9 @@ public class SBMLCompartmentType
 			me = new MarkupElement (idA);
 		else
 			me = new MarkupElement (MarkupDocument.delete (idA) + " "+MarkupDocument.rightArrow ()+" " + MarkupDocument.insert (idB));
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 		
 		return me;
 	}

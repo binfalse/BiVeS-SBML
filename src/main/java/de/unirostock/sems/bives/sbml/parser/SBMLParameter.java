@@ -133,6 +133,9 @@ public class SBMLParameter
 			me = new MarkupElement (MarkupDocument.delete (idA) + " "+MarkupDocument.rightArrow ()+" " + MarkupDocument.insert (idB));
 		
 		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 		
 		return me;
 	}

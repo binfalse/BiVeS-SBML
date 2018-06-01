@@ -438,6 +438,9 @@ public class SBMLReaction
 			b.getNotes ().reportInsert (me3);
 			me.addSubElements (me3);
 		}
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 		
 		return me;
 	}

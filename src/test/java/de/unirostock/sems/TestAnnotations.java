@@ -1376,6 +1376,8 @@ public class TestAnnotations
 	 * @param changeParameterDefinition the change component hierarchy
 	 * @param changeAnnotation the change annotation
 	 * @param changeTextualDescription the change textual description
+	 * @param changeCreator the change creator
+	 * @param changeOntologyReference the change ontology reference
 	 * @throws XmlDocumentParseException the xml document parse exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws JDOMException the jDOM exception
@@ -1467,6 +1469,7 @@ public class TestAnnotations
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace ();
 			fail ("unexpected exception " + e);
 		}
 	}

@@ -212,6 +212,9 @@ public class SBMLEvent
 					ass.reportInsert (me2);
 			}
 		}
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 		
 		return me;
 	}

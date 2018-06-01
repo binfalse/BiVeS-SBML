@@ -73,6 +73,9 @@ public class SBMLRateRule
 		
 		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
 		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 		
 		return me;
 	}
