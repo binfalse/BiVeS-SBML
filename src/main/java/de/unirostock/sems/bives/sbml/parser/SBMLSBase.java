@@ -10,6 +10,7 @@ import java.util.List;
 
 import de.unirostock.sems.bives.ds.Xhtml;
 import de.unirostock.sems.bives.ds.ontology.SBOTerm;
+import de.unirostock.sems.bives.markup.MarkupElement;
 import de.unirostock.sems.bives.sbml.exception.BivesSBMLParseException;
 import de.unirostock.sems.xmlutils.ds.DocumentNode;
 import de.unirostock.sems.xmlutils.ds.TreeNode;
@@ -86,6 +87,28 @@ public abstract class SBMLSBase
 			if (nodeList.size () == 1)
 				annotation = (DocumentNode) nodeList.get (0);
 		}
+	}
+	
+	
+	/**
+	 * Flags occuring modifcations of the meta information (notes, annotations) to the given MarkupElement.
+	 *
+	 * @param me the MarkupElement that should be flagged
+	 * @return true, if flagged
+	 */
+	public boolean flagMetaModifcations (MarkupElement me)
+	{
+		if (notes != null && notes.getDocumentNode ().getModification () != TreeNode.UNCHANGED)
+		{
+			me.flagInvisibleModification ();
+			return true;
+		}
+		if (annotation != null && annotation.getModification () != TreeNode.UNCHANGED)
+		{
+			me.flagInvisibleModification ();
+			return true;
+		}
+		return false;
 	}
 	
 	/**

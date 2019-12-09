@@ -112,6 +112,10 @@ public class SBMLConstraint
 			me.addValue ("message deleted: " + MarkupDocument.delete (a.message.toString ()));
 		else if (b.message != null)
 			me.addValue ("message inserted: " + MarkupDocument.insert (b.message.toString ()));
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
+		
 		return me;
 	}
 	

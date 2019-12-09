@@ -113,6 +113,9 @@ public class SBMLEventAssignment
 			me.addValue ("was for: " + MarkupDocument.delete (varA) + " but now for: " + MarkupDocument.insert (varB));
 
 		BivesTools.genMathMarkupStats (a.math.getDocumentNode (), b.math.getDocumentNode (), me);
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 	}
 
 	/**

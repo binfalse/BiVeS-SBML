@@ -117,6 +117,9 @@ public class SBMLUnitDefinition
 			me.addValue ("Definition changed from " + MarkupDocument.delete (oldDef) + " to " + MarkupDocument.insert (newDef));
 		
 		BivesTools.genAttributeMarkupStats (a.documentNode, b.documentNode, me);
+
+		if (!a.flagMetaModifcations (me))
+			b.flagMetaModifcations (me);
 		
 		return me;
 	}
