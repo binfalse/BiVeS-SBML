@@ -26,6 +26,25 @@ import de.unirostock.sems.bives.sbml.api.SBMLDiff;
 import de.unirostock.sems.bives.sbml.parser.SBMLDocument;
 import de.unirostock.sems.xmlutils.tools.XmlTools;
 
+
+//import XPath packages
+import java.io.IOException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 /**
  * @author Tom Gebhardt
  *
@@ -67,7 +86,8 @@ public class TestMerge
 			
 			String diff = differ.getDiff ();
 			System.out.println(differ.getDiff());
-			differ.mapTrees(Diff.ALLOW_DIFFERENT_IDS, Diff.CARE_ABOUT_NAMES, Diff.STRICTER_NAMES);
+			
+			
 			//LOGGER.setMinLevel (LOGGER.DEBUG);
 //			JSONObject graph = (JSONObject) (new JSONParser ()).parse (differ.getReactionsJsonGraph());
 //			JSONArray edges = (JSONArray) ((JSONObject) graph.get ("elements")).get ("edges");

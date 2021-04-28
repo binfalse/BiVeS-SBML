@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by JWS2SBML on 2011/04/04 15:53:02-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+	<model name="BSA">
+		<listOfCompartments>
+			<compartment id="compartment1" name="compartment" size="1"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="x" name="unspecEnt" compartment="compartment1" initialConcentration="0"/>
+			<species id="mac" name="macroMolecule" compartment="compartment1" initialConcentration="0" sboTerm="SBO:0000248"/>
+		</listOfSpecies>
+		<listOfReactions>
+
+			<reaction id="v6" name="multiple_links">
+				<listOfReactants>
+					<speciesReference species="mac"/>
+				</listOfReactants>
+				<listOfProducts>
+					<speciesReference species="x"/>
+				</listOfProducts>
+				<listOfModifiers>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000535"/>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000536"/>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000460"/>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000411"/>
+				</listOfModifiers>
+			</reaction>
+		</listOfReactions>
+		</model>
+</sbml>

@@ -153,6 +153,7 @@ public class SBMLDiff extends Diff
 	public SBMLDiff (String a, String b) throws XmlDocumentParseException, IOException, JDOMException, BivesSBMLParseException, BivesDocumentConsistencyException
 	{
 		super (a, b, new SBMLDiffAnnotator ());
+		System.out.println("test");
 		doc1 = new SBMLDocument (treeA);
 		doc2 = new SBMLDocument (treeB);
 	}
