@@ -29,9 +29,11 @@ import de.unirostock.sems.xmlutils.tools.XmlTools;
 
 
 
+
+
 /**
  * @author Martin Scharm
- * 
+ * @author Tom Gebhardt
  */
 @RunWith(JUnit4.class)
 public class TestSbgnGraph
@@ -72,8 +74,10 @@ public class TestSbgnGraph
 		try
 		{
 			//get Files
-			File a = SIMPLE_DOC;
-			File b = SIMPLE_DOC;
+			//File a = SIMPLE_DOC;
+			//File b = SIMPLE_DOC;
+			File a = new File ("test/BIOMD0000000329-v5.xml");
+			File b = new File ("test/BIOMD0000000329-v6.xml");
 
 			SAXBuilder builder = new SAXBuilder();
 			Document d1 = builder.build(a);
@@ -84,12 +88,9 @@ public class TestSbgnGraph
 			SBMLDiff differ = new SBMLDiff (td1, td2);
 			
 			differ.mapTrees(true, false, false);
-			differ.getReactionsSbgnJsonGraph();
+			//differ.getReactionsSbgnJsonGraph();
 			
 			System.out.println(differ.getReactionsSbgnJsonGraph());
-			GraphTranslatorSbgnJson test = new GraphTranslatorSbgnJson ();
-
-			test.getJsonGraph();
 
 		}
 		catch (Exception e) {
