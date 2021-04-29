@@ -165,7 +165,7 @@ extends GraphProducer
 			if (con == null)
 			{
 				// no equivalent in doc a
-				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null));
+				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, null, c.getNameOrId (), c.getDocumentNode (), null));
 			}
 			else
 			{

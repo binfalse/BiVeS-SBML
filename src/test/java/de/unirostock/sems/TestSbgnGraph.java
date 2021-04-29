@@ -89,7 +89,6 @@ public class TestSbgnGraph
 			
 			differ.mapTrees(true, false, false);
 			//differ.getReactionsSbgnJsonGraph();
-			
 			System.out.println(differ.getReactionsSbgnJsonGraph());
 
 		}

@@ -51,7 +51,7 @@
         <dependency>
             <groupId>de.uni-rostock.sbi</groupId>
             <artifactId>BiVeS-Core</artifactId>
-            <version>1.9.1</version>
+            <version>1.9.2</version>
         </dependency>
     </dependencies>
     <distributionManagement>
