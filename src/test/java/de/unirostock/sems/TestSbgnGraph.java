@@ -74,10 +74,10 @@ public class TestSbgnGraph
 		try
 		{
 			//get Files
-			//File a = SIMPLE_DOC;
-			//File b = SIMPLE_DOC;
-			File a = new File ("test/BIOMD0000000329-v5.xml");
-			File b = new File ("test/BIOMD0000000329-v6.xml");
+			File a = SIMPLE_DOC;
+			File b = SIMPLE_DOC;
+			//File a = new File ("test/BIOMD0000000329-v5.xml");
+			//File b = new File ("test/BIOMD0000000329-v6.xml");
 
 			SAXBuilder builder = new SAXBuilder();
 			Document d1 = builder.build(a);
@@ -88,6 +88,8 @@ public class TestSbgnGraph
 			SBMLDiff differ = new SBMLDiff (td1, td2);
 			
 			differ.mapTrees(true, false, false);
+			//differ.getPatch();
+			//System.out.println(differ.getPatch());
 			//differ.getReactionsSbgnJsonGraph();
 			System.out.println(differ.getReactionsSbgnJsonGraph());
 
