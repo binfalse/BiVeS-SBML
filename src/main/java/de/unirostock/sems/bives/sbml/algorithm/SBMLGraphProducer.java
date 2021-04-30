@@ -130,20 +130,20 @@ extends GraphProducer
 			List<SBMLSpeciesReference> sRefs = r.getReactants ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addInputA (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addInputA (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm (), sRef.getDocumentNode().getXPath());
 			}
 			
 			sRefs = r.getProducts ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addOutputA (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addOutputA (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm (), sRef.getDocumentNode().getXPath());
 			}
 			
 			List<SBMLSimpleSpeciesReference> ssRefs = r.getModifiers ();
 			for (SBMLSimpleSpeciesReference sRef : ssRefs)
 			{
 				SBMLSpecies spec = sRef.getSpecies ();
-					reaction.addModA (rn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm ());
+					reaction.addModA (rn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm (), sRef.getDocumentNode().getXPath());
 			}
 		}
 	}
@@ -223,13 +223,13 @@ extends GraphProducer
 			List<SBMLSpeciesReference> sRefs = r.getReactants ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addInputB (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addInputB (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm (), sRef.getDocumentNode().getXPath());
 			}
 			
 			sRefs = r.getProducts ();
 			for (SBMLSpeciesReference sRef : sRefs)
 			{
-				reaction.addOutputB (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm ());
+				reaction.addOutputB (rn.getSubstance (sRef.getSpecies ().getDocumentNode ()), sRef.getSBOTerm (), sRef.getDocumentNode().getXPath());
 			}
 			
 			List<SBMLSimpleSpeciesReference> ssRefs = r.getModifiers ();
@@ -237,7 +237,7 @@ extends GraphProducer
 			{
 				SBMLSpecies spec = sRef.getSpecies ();
 				//if (spec.getSBOTerm () == null)
-					reaction.addModB (rn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm ());
+					reaction.addModB (rn.getSubstance (spec.getDocumentNode ()), sRef.getSBOTerm (), sRef.getDocumentNode().getXPath());
 			}
 		}
 	}
