@@ -93,7 +93,9 @@ public class TestSbgnGraph
 			//differ.getPatch();
 			//System.out.println(differ.getPatch());
 			//differ.getReactionsSbgnJsonGraph();
+			System.out.println("...");
 			System.out.println(differ.getDiff(true));
+			System.out.println("...");
 			System.out.println(differ.getReactionsSbgnJsonGraph());
 
 		}
