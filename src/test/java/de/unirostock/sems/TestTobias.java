@@ -55,20 +55,21 @@ public class TestTobias
 		SBMLDiff differ = new SBMLDiff (version1, version2);
 		try
 		{
+			
 			long startTime = System.currentTimeMillis();
 			differ.mapTrees(true, true, true);
 			long stopTime = System.currentTimeMillis();
-      long elapsedTime = stopTime - startTime;
-      System.out.println("time: " + elapsedTime);
-      
-
-      long seconds = elapsedTime / 1000;
-      long minutes = seconds / 60;
-      seconds %= 60;
-      long hours = minutes / 60;
-      minutes %= 60;
-      hours %= 24;
-      System.out.println("time: " + hours + "h " + minutes + "m " + seconds + "s");
+			long elapsedTime = stopTime - startTime;
+			System.out.println("time: " + elapsedTime);
+			  
+			
+			long seconds = elapsedTime / 1000;
+			long minutes = seconds / 60;
+			seconds %= 60;
+			long hours = minutes / 60;
+			minutes %= 60;
+			hours %= 24;
+			System.out.println("time: " + hours + "h " + minutes + "m " + seconds + "s");
 		}
 		catch (BivesConnectionException e1)
 		{
