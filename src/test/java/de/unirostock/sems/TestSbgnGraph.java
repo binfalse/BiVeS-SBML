@@ -76,10 +76,10 @@ public class TestSbgnGraph
 			//get Files
 			//File a = SIMPLE_DOC;
 			//File b = SIMPLE_DOC;
-			//File a = new File ("test/BIOMD0000000329-v5.xml");
-			//File b = new File ("test/BIOMD0000000329-v6.xml");
-			File a = new File ("test/allGlyphsAndArcs.xml");
-			File b = new File ("test/GlyphsAndArcs_noTypo1.xml");
+			File a = new File ("test/BIOMD0000000329-v5.xml");
+			File b = new File ("test/BIOMD0000000329-v6.xml");
+			//File a = new File ("test/allGlyphsAndArcs.xml");
+			//File b = new File ("test/GlyphsAndArcs_noTypo1.xml");
 
 			SAXBuilder builder = new SAXBuilder();
 			Document d1 = builder.build(a);
@@ -94,13 +94,46 @@ public class TestSbgnGraph
 			//System.out.println(differ.getPatch());
 			//differ.getReactionsSbgnJsonGraph();
 			System.out.println("...");
-			System.out.println(differ.getDiff(true));
+			//System.out.println(differ.getDiff(true));
 			System.out.println("...");
 			System.out.println(differ.getReactionsSbgnJsonGraph());
+			
+			a = new File ("test/allGlyphsAndArcs.xml");
+			b = new File ("test/GlyphsAndArcs_noTypo1.xml");
+			
+			builder = new SAXBuilder();
+			d1 = builder.build(a);
+			d2 = builder.build(b);
+			
+			td1 = new TreeDocument (d1, null);
+			td2 = new TreeDocument (d2, null);
+			differ = new SBMLDiff (td1, td2);
+			
+			differ.mapTrees(true, false, false);
+			
+			System.out.println(differ.getReactionsSbgnJsonGraph());
+			
+			
+			a = SIMPLE_DOC;
+			b = SIMPLE_DOC;
+			
+			builder = new SAXBuilder();
+			d1 = builder.build(a);
+			d2 = builder.build(b);
+			
+			td1 = new TreeDocument (d1, null);
+			td2 = new TreeDocument (d2, null);
+			differ = new SBMLDiff (td1, td2);
+			
+			differ.mapTrees(true, false, false);
+			
+			System.out.println(differ.getReactionsSbgnJsonGraph());
+
 
 		}
 		catch (Exception e) {
 			System.out.println("SBML Error: " + e);
+			fail ("Unexpected exception: " + e);
 		}
 	}
 }
