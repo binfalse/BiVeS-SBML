@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by JWS2SBML on 2011/04/04 15:53:02-->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+	<model name="BSA">
+		<listOfCompartments>
+			<compartment id="compartment1" name="compartment" size="1"/>
+		</listOfCompartments>
+		<listOfSpecies>
+			<species id="x" name="unspecEnt" compartment="compartment1" initialConcentration="0"/>
+			<species id="mac" name="macroMolecule" compartment="compartment1" initialConcentration="0" sbo="SBO:0000248"/>
+			<species id="nuc" name="nucleicAcidFeat" compartment="compartment1" initialConcentration="0" sbo="SBO:0000250"/>
+			<species id="sim" name="simpleChem" compartment="compartment1" initialConcentration="0" sbo="SBO:0000247"/>
+			<species id="com" name="complex" compartment="compartment1" initialConcentration="0" sbo="SBO:0000248"/>
+			<species id="pert" name="pertubingAgent" compartment="compartment1" initialConcentration="0" sbo="SBO:0000405"/>
+			<species id="macMulti" name="mac multimer" compartment="compartment1" initialConcentration="0" sbo="SBO:0000420"/>
+			<species id="simMulti" name="simple Multimer" compartment="compartment1" initialConcentration="0" sbo="SBO:0000421"/>
+			<species id="nucMulti" name="nucMulti" compartment="compartment1" initialConcentration="0" sbo="SBO:0000419"/>
+			<species id="compMulti" name="compMulti" compartment="compartment1" initialConcentration="0" sbo="SBO:0000418"/>
+		</listOfSpecies>
+		<listOfReactions>
+			<reaction id="v1" name="sigb syn">
+				<listOfProducts>
+					<speciesReference species="x"/>
+				</listOfProducts>
+				<listOfModifiers>
+					<modifierSpeciesReference species="mac"/>
+				</listOfModifiers>
+			</reaction>
+			<reaction id="v2" name="lacz syn">
+				<listOfProducts>
+					<speciesReference species="mac"/>
+				</listOfProducts>
+				<listOfModifiers>
+					<modifierSpeciesReference species="compMulti"/>
+				</listOfModifiers>
+			</reaction>
+			<reaction id="v3" name="x syn">
+				<listOfProducts>
+					<speciesReference species="compMulti"/>
+				</listOfProducts>
+			</reaction>
+			<reaction id="v4" name="sigb degr">
+				<listOfReactants>
+					<speciesReference species="pert"/>
+				</listOfReactants>
+			</reaction>
+			<reaction id="v5" name="lacz degr">
+				<listOfReactants>
+					<speciesReference species="com"/>
+				</listOfReactants>
+				<listOfModifiers>
+					<modifierSpeciesReference species="nuc"/>
+				</listOfModifiers>
+			</reaction>
+			<reaction id="v6" name="multiple_links">
+				<listOfReactants>
+					<speciesReference species="x"/>
+				</listOfReactants>
+				<listOfProducts>
+					<speciesReference species="x"/>
+				</listOfProducts>
+				<listOfModifiers>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000535"/>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000536"/>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000460"/>
+					<modifierSpeciesReference species="x" sboTerm="SBO:0000411"/>
+				</listOfModifiers>
+			</reaction>
+		</listOfReactions>
+		</model>
+</sbml>

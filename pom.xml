@@ -3,7 +3,7 @@
     <groupId>de.uni-rostock.sbi</groupId>
     <artifactId>BiVeS-SBML</artifactId>
     <packaging>jar</packaging>
-    <version>1.9.4</version>
+    <version>1.9.5</version>
     <name>BiVeS-SBML</name>
     <properties>
         <maven.compiler.source>1.6</maven.compiler.source>
