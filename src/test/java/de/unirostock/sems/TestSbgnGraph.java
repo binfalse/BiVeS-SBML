@@ -76,10 +76,13 @@ public class TestSbgnGraph
 			//get Files
 			//File a = SIMPLE_DOC;
 			//File b = SIMPLE_DOC;
-			File a = new File ("test/BIOMD0000000329-v5.xml");
-			File b = new File ("test/BIOMD0000000329-v6.xml");
+			//File a = new File ("test/BIOMD0000000329-v5.xml");
+			//File b = new File ("test/BIOMD0000000329-v6.xml");
 			//File a = new File ("test/allGlyphsAndArcs.xml");
 			//File b = new File ("test/GlyphsAndArcs_noTypo1.xml");
+			File a = new File ("test/julias/th2_1.xml");
+			File b = new File ("test/julias/th2_2.xml");
+			
 
 			SAXBuilder builder = new SAXBuilder();
 			Document d1 = builder.build(a);
