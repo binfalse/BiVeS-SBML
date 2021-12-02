@@ -9,6 +9,7 @@ import java.util.List;
 import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.algorithm.GraphProducer;
+import de.unirostock.sems.bives.ds.rn.ReactionNetwork;
 import de.unirostock.sems.bives.ds.rn.ReactionNetworkCompartment;
 import de.unirostock.sems.bives.ds.rn.ReactionNetworkReaction;
 import de.unirostock.sems.bives.ds.rn.ReactionNetworkSubstance;
@@ -111,7 +112,8 @@ extends GraphProducer
 		LOGGER.info ("searching for compartments in A");
 		HashMap<String, SBMLCompartment> compartments = modelA.getCompartments ();
 		for (SBMLCompartment c : compartments.values ())
-			rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null));
+																				//  (ReactionNetwork rn, String labelA, String labelB, DocumentNode docA, DocumentNode docB, String outsideA, String outsideB)
+			rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null, rn.getCompartment (c.getCompartment ().getDocumentNode ()), null));
 		
 		LOGGER.info ("searching for species in A");
 		HashMap<String, SBMLSpecies> species = modelA.getSpecies ();
@@ -165,7 +167,7 @@ extends GraphProducer
 			if (con == null)
 			{
 				// no equivalent in doc a
-				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, null, c.getNameOrId (), null, c.getDocumentNode ()));
+				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, null, c.getNameOrId (), null, c.getDocumentNode (), null, rn.getCompartment (c.getCompartment ().getDocumentNode ())));
 			}
 			else
 			{
