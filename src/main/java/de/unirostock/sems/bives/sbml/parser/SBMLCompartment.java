@@ -38,7 +38,7 @@ public class SBMLCompartment
 	private SBMLCompartmentType compartmentType; // only level < 3
 	
 	/** The compartment which hosts this compartment. */
-	private SBMLCompartment outside;
+	private String outside;
 
 	/**
 	 * Instantiates a new SBML compartment.
@@ -75,11 +75,11 @@ public class SBMLCompartment
 		{
 			try
 			{
-				outside = sbmlModel.getCompartment (outsideTemp);
+				outside = outsideTemp;
 			}
 			catch (Exception e)
 			{
-				throw new BivesSBMLParseException ("spatialDimensions in compartment "+id+" of unexpected format: " + documentNode.getAttributeValue ("spatialDimensions"));
+				throw new BivesSBMLParseException ("Outside in compartment "+id+": " + documentNode.getAttributeValue ("outside"));
 			}
 		}
 		
@@ -168,7 +168,7 @@ public class SBMLCompartment
 	}
 
 	public SBMLCompartment getCompartment() {
-		return outside;
+		return sbmlModel.getCompartment (outside);
 	}
 	
 }
