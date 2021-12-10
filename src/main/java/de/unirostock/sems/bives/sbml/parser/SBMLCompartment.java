@@ -36,6 +36,9 @@ public class SBMLCompartment
 	
 	/** The compartment type. */
 	private SBMLCompartmentType compartmentType; // only level < 3
+	
+	/** The compartment which hosts this compartment. */
+	private String outside;
 
 	/**
 	 * Instantiates a new SBML compartment.
@@ -65,6 +68,18 @@ public class SBMLCompartment
 			catch (Exception e)
 			{
 				throw new BivesSBMLParseException ("spatialDimensions in compartment "+id+" of unexpected format: " + documentNode.getAttributeValue ("spatialDimensions"));
+			}
+		}
+		String outsideTemp = documentNode.getAttributeValue ("outside");
+		if (outsideTemp != null)
+		{
+			try
+			{
+				outside = outsideTemp;
+			}
+			catch (Exception e)
+			{
+				throw new BivesSBMLParseException ("Outside in compartment "+id+": " + documentNode.getAttributeValue ("outside"));
 			}
 		}
 		
@@ -150,6 +165,10 @@ public class SBMLCompartment
 		MarkupElement me = new MarkupElement (MarkupDocument.delete (getNameAndId ()));
 		me.addValue (MarkupDocument.delete ("deleted"));
 		return me;
+	}
+
+	public SBMLCompartment getCompartment() {
+		return sbmlModel.getCompartment (outside);
 	}
 	
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import de.binfalse.bflog.LOGGER;
 import de.unirostock.sems.bives.algorithm.SimpleConnectionManager;
 import de.unirostock.sems.bives.algorithm.GraphProducer;
+import de.unirostock.sems.bives.ds.rn.ReactionNetwork;
 import de.unirostock.sems.bives.ds.rn.ReactionNetworkCompartment;
 import de.unirostock.sems.bives.ds.rn.ReactionNetworkReaction;
 import de.unirostock.sems.bives.ds.rn.ReactionNetworkSubstance;
@@ -110,9 +111,21 @@ extends GraphProducer
 		SBMLModel modelA = sbmlDocA.getModel ();
 		LOGGER.info ("searching for compartments in A");
 		HashMap<String, SBMLCompartment> compartments = modelA.getCompartments ();
-		for (SBMLCompartment c : compartments.values ())
-			rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null));
+		for (SBMLCompartment c : compartments.values ()) 
+			rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, c.getNameOrId (), null, c.getDocumentNode (), null, null, null));
 		
+		//set all "outside" compartments
+		for (SBMLCompartment c : compartments.values ()) {
+			SBMLCompartment outside = c.getCompartment();
+			if(outside != null) {
+				ReactionNetworkCompartment rnCOutside = rn.getCompartment(c.getCompartment().getDocumentNode());
+				ReactionNetworkCompartment rnC = rn.getCompartment(c.getDocumentNode());
+				rnC.setOutsideA(rnCOutside);
+				System.out.println(rnC);
+			}
+	
+			
+		}
 		LOGGER.info ("searching for species in A");
 		HashMap<String, SBMLSpecies> species = modelA.getSpecies ();
 		for (SBMLSpecies s : species.values ())
@@ -165,7 +178,7 @@ extends GraphProducer
 			if (con == null)
 			{
 				// no equivalent in doc a
-				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, null, c.getNameOrId (), null, c.getDocumentNode ()));
+				rn.setCompartment (c.getDocumentNode (), new ReactionNetworkCompartment (rn, null, c.getNameOrId (), null, c.getDocumentNode (), null, null));
 			}
 			else
 			{
@@ -174,6 +187,20 @@ extends GraphProducer
 				comp.setLabelB (c.getNameOrId ());
 				rn.setCompartment (cDoc, comp);
 			}
+		}
+		//set all "outside" compartments
+		for (SBMLCompartment c : compartments.values ()) {
+			SBMLCompartment outside = c.getCompartment();
+			if(outside != null) {
+				ReactionNetworkCompartment rnCOutside = rn.getCompartment(c.getCompartment().getDocumentNode());
+				ReactionNetworkCompartment rnC = rn.getCompartment(c.getDocumentNode());
+				rnC.setOutsideB(rnCOutside);
+				//c.setOutsideB (c.getCompartment().getDocumentNode()); //ReactionNetworkCompartment rnC = rn.getCompartment(c.getCompartment().getDocumentNode());
+
+				System.out.println(rnC);
+			}
+	
+			
 		}
 		
 		LOGGER.info ("searching for species in B");
